@@ -1,0 +1,93 @@
+{
+    
+    "name": "pbaszak/ultra-mapper",
+    "title": "Ultra Mapper",
+    "description": "Ultra Mapper",
+    "type": "symfony-bundle",
+    "license": "proprietary",
+    "authors": [],
+    "keywords": [
+        "mapper",
+        "serializer",
+        "fast",
+        "normalizer"
+    ],
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=8.2",
+        "ext-ctype": "*",
+        "ext-iconv": "*",
+        "symfony/console": "^6",
+        "symfony/dotenv": "^6",
+        "symfony/flex": "^2",
+        "symfony/framework-bundle": "^6",
+        "symfony/runtime": "^6",
+        "symfony/uid": "^6",
+        "symfony/yaml": "^6"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "*",
+        "phpstan/phpdoc-parser": "*",
+        "phpstan/phpstan": "*",
+        "phpstan/phpstan-symfony": "*",
+        "phpunit/phpunit": "*"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true,
+            "phpstan/extension-installer": true,
+            "symfony/flex": true,
+            "symfony/runtime": true
+        },
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "Pbaszak\\UltraMapper\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Pbaszak\\UltraMapper\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd"
+        },
+        "post-install-cmd": [
+            "@auto-scripts"
+        ],
+        "post-update-cmd": [
+            "@auto-scripts"
+        ],
+        "cache:clear": "rm -rf var/cache /tmp/symfony-cache && bin/console cache:clear",
+        "code:fix": "vendor/bin/php-cs-fixer fix",
+        "code:analyse": "vendor/bin/phpstan analyse src -c tools/phpstan/fpm-config.neon",
+        "code:analyse:b": "vendor/bin/phpstan analyse src -c tools/phpstan/fpm-config.neon --generate-baseline tools/phpstan/fpm-baseline.neon --allow-empty-baseline",
+        "phpunit": [
+            "@putenv APP_ENV=test",
+            "vendor/bin/phpunit --colors=always"
+        ],
+        "test:cc": [
+            "@putenv XDEBUG_MODE=coverage",
+            "@phpunit --do-not-cache-result --log-junit var/coverage/phpunit-report.xml --coverage-cobertura var/coverage/phpunit-coverage.xml --coverage-text --colors=never"
+        ],
+        "test:ci": [
+            "@code:fix",
+            "@code:analyse",
+            "@phpunit"
+        ],
+        "test:unit": "@phpunit --group unit tests"
+    },
+    "conflict": {
+        "symfony/symfony": "*"
+    },
+    "extra": {
+        "symfony": {
+            "allow-contrib": false,
+            "require": "^6"
+        }
+    }
+}

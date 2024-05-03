@@ -1,0 +1,10 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true 
+
+    Pbaszak\UltraMapper\:
+        resource: '%kernel.project_dir%/vendor/pbaszak/ultra-mapper/src/'
+        exclude:
+            - '%kernel.project_dir%/vendor/pbaszak/ultra-mapper/src/DependencyInjection/'
+            - '%kernel.project_dir%/vendor/pbaszak/ultra-mapper/src/Entity/'
