@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Pbaszak\UltraMapper\DependencyInjection;
+namespace PBaszak\UltraMapper\DependencyInjection;
 
-use Pbaszak\UltraMapper\UltraMapperBundle;
+use PBaszak\UltraMapper\UltraMapperBundle;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -25,7 +25,7 @@ class UltraMapperExtension extends Extension implements PrependExtensionInterfac
 
     public function prepend(ContainerBuilder $container): void
     {
-        if ($container->hasParameter('pbaszak.ultra_mapper.dev_mode') && true === $container->getParameter('pbaszak.ultra_mapper.dev_mode')) {
+        if ($container->hasParameter('PBaszak.ultra_mapper.dev_mode') && true === $container->getParameter('PBaszak.ultra_mapper.dev_mode')) {
             return;
         }
 

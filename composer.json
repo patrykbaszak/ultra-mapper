@@ -18,6 +18,7 @@
         "php": ">=8.2",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "nette/php-generator": "^4.1",
         "symfony/console": "^6",
         "symfony/dotenv": "^6",
         "symfony/flex": "^2",
@@ -44,12 +45,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Pbaszak\\UltraMapper\\": "src/"
+            "PBaszak\\UltraMapper\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Pbaszak\\UltraMapper\\Tests\\": "tests/"
+            "PBaszak\\UltraMapper\\Tests\\": "tests/"
         }
     },
     "scripts": {

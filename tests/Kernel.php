@@ -1,6 +1,6 @@
 <?php
 
-namespace Pbaszak\UltraMapper\Tests;
+namespace PBaszak\UltraMapper\Tests;
 
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Dotenv\Dotenv;

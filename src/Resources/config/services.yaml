@@ -3,8 +3,8 @@ services:
         autowire: true
         autoconfigure: true 
 
-    Pbaszak\UltraMapper\:
-        resource: '%kernel.project_dir%/vendor/pbaszak/ultra-mapper/src/'
+    PBaszak\UltraMapper\:
+        resource: '%kernel.project_dir%/vendor/PBaszak/ultra-mapper/src/'
         exclude:
-            - '%kernel.project_dir%/vendor/pbaszak/ultra-mapper/src/DependencyInjection/'
-            - '%kernel.project_dir%/vendor/pbaszak/ultra-mapper/src/Entity/'
+            - '%kernel.project_dir%/vendor/PBaszak/ultra-mapper/src/DependencyInjection/'
+            - '%kernel.project_dir%/vendor/PBaszak/ultra-mapper/src/Entity/'

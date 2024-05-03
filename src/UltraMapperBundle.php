@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pbaszak\UltraMapper;
+namespace PBaszak\UltraMapper;
 
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;

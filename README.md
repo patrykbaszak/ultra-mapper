@@ -1,27 +1,35 @@
-# Skeleton #
+# Ultra Mapper #
 
-A minimal project that allows you to quickly create a new project based on `Symfony` using useful tools: `standard-version`, `php-cs-fixer`, `phpstan`, `phpunit`, `docker`, `xdebug` and my own `starting script`. It is ready to support debugging with **Visual Studio Code** - just look into .env.local ;). 
+// description
 
-### WHY?
-Because personally, every time I start a new project, or a library for it, I have to do all this manually. For this, I made application skeletons for different uses: `cli`, `api`, `library`, and `bundle`, to speed up and standardize my own work. These skeletons uses this project.
+## Requirements
+
+### Environments
+
+| name | usage |
+| - | - |
+| `APP_DEBUG` | If `true`, the blueprint will be checked for changes in targeted classes. | 
+
+## Usage
+
+// in progress
+
+## How it works
+
+// in progress
+
+## Performance Report
+
+// in progress
+
+## Development
 
 ### How to start
 
-Create directory for your project, get in (`cd {Your directory}`) and run command:
-```sh
-composer create-project pbaszak/skeleton . --no-interaction
-```
-
-(Everytime) Start local environment using this command:
+Start local environment using this command:
 ```sh
 bash start.sh
 ```
-
-and remove `CHANGELOG.md` (because it's owned by skeleton project. Your project will be have generated `CHANGELOG.md` after first release):
-```sh
-rm CHANGELOG.md
-```
-and voila! Your local environment is ready to development basic php app with useful tools.
 
 ### How to use **Standard Version**
 
