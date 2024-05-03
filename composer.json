@@ -73,7 +73,7 @@
         ],
         "test:cc": [
             "@putenv XDEBUG_MODE=coverage",
-            "@phpunit --do-not-cache-result --log-junit var/coverage/phpunit-report.xml --coverage-cobertura var/coverage/phpunit-coverage.xml --coverage-text --colors=never"
+            "@phpunit --do-not-cache-result --log-junit var/coverage/phpunit-report.xml --coverage-cobertura var/coverage/phpunit-coverage.xml --coverage-text"
         ],
         "test:ci": [
             "@code:fix",
