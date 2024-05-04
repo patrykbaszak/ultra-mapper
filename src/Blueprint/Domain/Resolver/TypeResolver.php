@@ -50,7 +50,7 @@ class TypeResolver
             $this->reflection instanceof \ReflectionProperty
                 ? $this->getPropertyTypeFromVarDocBlock($this->reflection)
                 : $this->getParameterTypeFromParamDocBlock($this->reflection),
-            $this->reflection->getDeclaringClass() ?? throw new ClassNotFoundException('Class not found for ' . $this->reflection->getName() . ' property.', 5932)
+            $this->reflection->getDeclaringClass() ?? throw new ClassNotFoundException('Class not found for '.$this->reflection->getName().' property.', 5932)
         );
 
         return $this;
@@ -127,8 +127,8 @@ class TypeResolver
             $type = $reflection->getName();
 
             // class type
-            if ($this->isClassExists('\\' . ltrim($type, '\\'))) {
-                $type = '\\' . ltrim($type, '\\');
+            if ($this->isClassExists('\\'.ltrim($type, '\\'))) {
+                $type = '\\'.ltrim($type, '\\');
             }
 
             // collections
@@ -173,7 +173,7 @@ class TypeResolver
                 }
 
                 if (null === $class) {
-                    throw new ClassNotFoundException('Class not found for ' . (string) $reflection . '.', 5933);
+                    throw new ClassNotFoundException('Class not found for '.(string) $reflection.'.', 5933);
                 }
 
                 $this->addType($class);
@@ -216,7 +216,7 @@ class TypeResolver
             }
 
             if (null === $class) {
-                throw new ClassNotFoundException('Class not found for ' . (string) $itemType . '.', 5934);
+                throw new ClassNotFoundException('Class not found for '.(string) $itemType.'.', 5934);
             }
 
             $this->addInnerType($class, (string) $keyType);
@@ -233,10 +233,10 @@ class TypeResolver
      */
     private function getCorrectClassName(string $possibleClass, \ReflectionClass $originClassReflection): ?string
     {
-        $class = '\\' . ltrim($possibleClass, '\\');
+        $class = '\\'.ltrim($possibleClass, '\\');
         if ($this->isClassExists($class)) {
             return $class;
-        } elseif ($this->isClassExists($classWithNamespace = '\\' . ltrim($originClassReflection->getNamespaceName() . $class, '\\'))) {
+        } elseif ($this->isClassExists($classWithNamespace = '\\'.ltrim($originClassReflection->getNamespaceName().$class, '\\'))) {
             return $classWithNamespace;
         } else {
             $imports = array_filter(array_map(
@@ -251,7 +251,7 @@ class TypeResolver
 
             /** @var class-string[] $imports */
             foreach ($imports as $import) {
-                $class = '\\' . ltrim($import, '\\');
+                $class = '\\'.ltrim($import, '\\');
                 if ($this->isClassExists($class)) {
                     return $class;
                 }

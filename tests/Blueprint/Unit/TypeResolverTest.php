@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PBaszak\UltraMapper\Tests\Blueprint\Unit;
 
-use ArrayAccess;
 use ArrayObject;
 use PBaszak\UltraMapper\Blueprint\Application\Enum\PropertyType;
 use PBaszak\UltraMapper\Blueprint\Domain\Exception\ClassNotFoundException;
@@ -14,7 +13,6 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use ReflectionMethod;
 
 #[Group('unit')]
 class TypeResolverTest extends TestCase
@@ -22,8 +20,7 @@ class TypeResolverTest extends TestCase
     #[Test]
     public function shouldNotReturnAnyTypes(): void
     {
-        $obj = new class()
-        {
+        $obj = new class() {
             public $property;
         };
 
@@ -35,9 +32,7 @@ class TypeResolverTest extends TestCase
     #[Test]
     public function shouldNotReturnAnyTypesBasedOnDocblock(): void
     {
-        $obj = new class()
-        {
-            /** @var */
+        $obj = new class() {
             public $property;
         };
 
@@ -51,8 +46,7 @@ class TypeResolverTest extends TestCase
     {
         $this->expectException(ClassNotFoundException::class);
 
-        $obj = new class()
-        {
+        $obj = new class() {
             /** @var Collection<object> */
             public $property;
         };
@@ -65,9 +59,8 @@ class TypeResolverTest extends TestCase
     {
         $this->expectException(ClassNotFoundException::class);
 
-        $obj = new class()
-        {
-            /** @var ArrayObject<object<string>> */
+        $obj = new class() {
+            /** @var \ArrayObject<object<string>> */
             public $property;
         };
 
@@ -77,14 +70,15 @@ class TypeResolverTest extends TestCase
     #[Test]
     public function shouldReturnConstructorParamTypes(): void
     {
-        $obj = new class ([]) {
+        $obj = new class([]) {
             /** @param string[] $property */
             public function __construct(
                 public array $property
-            ) {}
+            ) {
+            }
         };
 
-        $resolver = (new TypeResolver((new ReflectionMethod($obj, '__construct'))->getParameters()[0]))->process();
+        $resolver = (new TypeResolver((new \ReflectionMethod($obj, '__construct'))->getParameters()[0]))->process();
         $this->assertEquals(['array'], $resolver->getTypes());
         $this->assertEquals(['string|int' => ['string']], $resolver->getInnerTypes());
     }
@@ -92,24 +86,26 @@ class TypeResolverTest extends TestCase
     #[Test]
     public function shouldReturnConstructorParamTypesBasedOnlyOnReflection(): void
     {
-        $obj = [new class ([]) {
+        $obj = [new class([]) {
             public function __construct(
                 public array $property
-            ) {}
-        }, new class ([]) {
+            ) {
+            }
+        }, new class([]) {
             /** @method __construct */
             public function __construct(
                 public array $property
-            ) {}
-        }, new class ([]) {
-            /** @param */
+            ) {
+            }
+        }, new class([]) {
             public function __construct(
                 public array $property
-            ) {}
+            ) {
+            }
         }];
 
         foreach ($obj as $o) {
-            $resolver = (new TypeResolver((new ReflectionMethod($o, '__construct'))->getParameters()[0]))->process();
+            $resolver = (new TypeResolver((new \ReflectionMethod($o, '__construct'))->getParameters()[0]))->process();
             $this->assertEquals(['array'], $resolver->getTypes());
             $this->assertEquals(['string|int' => ['mixed']], $resolver->getInnerTypes());
         }
@@ -122,7 +118,7 @@ class TypeResolverTest extends TestCase
     public function shouldReturnTypeForPropertyClassWithSameNamespace(): void
     {
         $resolver = (new TypeResolver(new \ReflectionProperty($this, 'property')))->process();
-        $this->assertEquals(['\\' . BlueprintTest::class], $resolver->getTypes());
+        $this->assertEquals(['\\'.BlueprintTest::class], $resolver->getTypes());
         $this->assertEmpty($resolver->getInnerTypes());
     }
 
@@ -131,16 +127,14 @@ class TypeResolverTest extends TestCase
         return [
             // null
             'null' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     public null $property;
                 },
                 'expectedTypes' => ['null'],
                 'expectedInnerTypes' => [],
             ],
             'nullBasedOnDocBlock' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     /** @var null */
                     public $property;
                 },
@@ -148,8 +142,7 @@ class TypeResolverTest extends TestCase
                 'expectedInnerTypes' => [],
             ],
             'nullBasedOnDocBlockAndReflection' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     public null $property;
                 },
                 'expectedTypes' => ['null'],
@@ -158,16 +151,14 @@ class TypeResolverTest extends TestCase
 
             // boolean
             'boolean' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     public bool $property;
                 },
                 'expectedTypes' => ['bool'],
                 'expectedInnerTypes' => [],
             ],
             'booleanBasedOnDocBlock' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     /** @var bool */
                     public $property;
                 },
@@ -175,24 +166,21 @@ class TypeResolverTest extends TestCase
                 'expectedInnerTypes' => [],
             ],
             'booleanBasedOnDocBlockAndReflection' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     public bool $property;
                 },
                 'expectedTypes' => ['bool'],
                 'expectedInnerTypes' => [],
             ],
             'nullableBoolean' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     public ?bool $property;
                 },
                 'expectedTypes' => ['bool', 'null'],
                 'expectedInnerTypes' => [],
             ],
             'nullableBooleanBasedOnDocBlock' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     /** @var bool|null */
                     public $property;
                 },
@@ -200,8 +188,7 @@ class TypeResolverTest extends TestCase
                 'expectedInnerTypes' => [],
             ],
             'nullableBooleanBasedOnDocBlockAndReflection' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     public ?bool $property;
                 },
                 'expectedTypes' => ['bool', 'null'],
@@ -210,16 +197,14 @@ class TypeResolverTest extends TestCase
 
             // integer
             'integer' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     public int $property;
                 },
                 'expectedTypes' => ['int'],
                 'expectedInnerTypes' => [],
             ],
             'integerBasedOnDocBlock' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     /** @var int */
                     public $property;
                 },
@@ -227,24 +212,21 @@ class TypeResolverTest extends TestCase
                 'expectedInnerTypes' => [],
             ],
             'integerBasedOnDocBlockAndReflection' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     public int $property;
                 },
                 'expectedTypes' => ['int'],
                 'expectedInnerTypes' => [],
             ],
             'nullableInteger' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     public ?int $property;
                 },
                 'expectedTypes' => ['int', 'null'],
                 'expectedInnerTypes' => [],
             ],
             'nullableIntegerBasedOnDocBlock' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     /** @var ?int */
                     public $property;
                 },
@@ -252,8 +234,7 @@ class TypeResolverTest extends TestCase
                 'expectedInnerTypes' => [],
             ],
             'nullableIntegerBasedOnDocBlockAndReflection' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     public ?int $property;
                 },
                 'expectedTypes' => ['int', 'null'],
@@ -262,16 +243,14 @@ class TypeResolverTest extends TestCase
 
             // float
             'float' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     public float $property;
                 },
                 'expectedTypes' => ['float'],
                 'expectedInnerTypes' => [],
             ],
             'floatBasedOnDocBlock' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     /** @var float */
                     public $property;
                 },
@@ -279,24 +258,21 @@ class TypeResolverTest extends TestCase
                 'expectedInnerTypes' => [],
             ],
             'floatBasedOnDocBlockAndReflection' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     public float $property;
                 },
                 'expectedTypes' => ['float'],
                 'expectedInnerTypes' => [],
             ],
             'nullableFloat' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     public ?float $property;
                 },
                 'expectedTypes' => ['float', 'null'],
                 'expectedInnerTypes' => [],
             ],
             'nullableFloatBasedOnDocBlock' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     /** @var float|null */
                     public $property;
                 },
@@ -304,8 +280,7 @@ class TypeResolverTest extends TestCase
                 'expectedInnerTypes' => [],
             ],
             'nullableFloatBasedOnDocBlockAndReflection' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     public ?float $property;
                 },
                 'expectedTypes' => ['float', 'null'],
@@ -314,16 +289,14 @@ class TypeResolverTest extends TestCase
 
             // string
             'string' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     public string $property;
                 },
                 'expectedTypes' => ['string'],
                 'expectedInnerTypes' => [],
             ],
             'stringBasedOnDocBlock' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     /** @var string */
                     public $property;
                 },
@@ -331,24 +304,21 @@ class TypeResolverTest extends TestCase
                 'expectedInnerTypes' => [],
             ],
             'stringBasedOnDocBlockAndReflection' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     public string $property;
                 },
                 'expectedTypes' => ['string'],
                 'expectedInnerTypes' => [],
             ],
             'nullableString' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     public ?string $property;
                 },
                 'expectedTypes' => ['string', 'null'],
                 'expectedInnerTypes' => [],
             ],
             'nullableStringBasedOnDocBlock' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     /** @var string|null */
                     public $property;
                 },
@@ -356,8 +326,7 @@ class TypeResolverTest extends TestCase
                 'expectedInnerTypes' => [],
             ],
             'nullableStringBasedOnDocBlockAndReflection' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     public ?string $property;
                 },
                 'expectedTypes' => ['string', 'null'],
@@ -366,16 +335,14 @@ class TypeResolverTest extends TestCase
 
             // array
             'array' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     public array $property;
                 },
                 'expectedTypes' => ['array'],
                 'expectedInnerTypes' => ['string|int' => ['mixed']],
             ],
             'arrayBasedOnDocBlock' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     /** @var array */
                     public $property;
                 },
@@ -383,24 +350,21 @@ class TypeResolverTest extends TestCase
                 'expectedInnerTypes' => ['string|int' => ['mixed']],
             ],
             'arrayBasedOnDocBlockAndReflection' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     public array $property;
                 },
                 'expectedTypes' => ['array'],
                 'expectedInnerTypes' => ['string|int' => ['mixed']],
             ],
             'nullableArray' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     public ?array $property;
                 },
                 'expectedTypes' => ['array', 'null'],
                 'expectedInnerTypes' => ['string|int' => ['mixed']],
             ],
             'nullableArrayBasedOnDocBlock' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     /** @var array|null */
                     public $property;
                 },
@@ -408,8 +372,7 @@ class TypeResolverTest extends TestCase
                 'expectedInnerTypes' => ['string|int' => ['mixed']],
             ],
             'nullableArrayBasedOnDocBlockAndReflection' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     public ?array $property;
                 },
                 'expectedTypes' => ['array', 'null'],
@@ -418,8 +381,7 @@ class TypeResolverTest extends TestCase
 
             // array with value type
             'arrayWithStringValueType' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     /** @var string[] */
                     public array $property;
                 },
@@ -427,8 +389,7 @@ class TypeResolverTest extends TestCase
                 'expectedInnerTypes' => ['string|int' => ['string']],
             ],
             'arrayWithStringValueTypeBasedOnlyOnDocBlock' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     /** @var string[] */
                     public $property;
                 },
@@ -438,8 +399,7 @@ class TypeResolverTest extends TestCase
 
             // array with key and value types
             'arrayWithStringKeyAndValueType' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     /** @var array<string, mixed> */
                     public array $property;
                 },
@@ -447,8 +407,7 @@ class TypeResolverTest extends TestCase
                 'expectedInnerTypes' => ['string' => ['mixed']],
             ],
             'arrayWithStringKeyAndValueTypeBasedOnlyOnDocBlock' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     /** @var array<string, ?array> */
                     public $property;
                 },
@@ -456,8 +415,7 @@ class TypeResolverTest extends TestCase
                 'expectedInnerTypes' => ['string' => ['null', 'array']],
             ],
             'arrayWithStringKeyAndArrayAsValueTypeBasedOnDocBlock' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     /** @var array<string, string[]> */
                     public array $property;
                 },
@@ -467,16 +425,14 @@ class TypeResolverTest extends TestCase
 
             // ArrayObject
             'ArrayObject' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     public \ArrayObject $property;
                 },
                 'expectedTypes' => ['\\ArrayObject'],
                 'expectedInnerTypes' => ['string|int' => ['mixed']],
             ],
             'ArrayObjectBasedOnDocBlock' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     /** @var \ArrayObject<mixed> */
                     public $property;
                 },
@@ -484,8 +440,7 @@ class TypeResolverTest extends TestCase
                 'expectedInnerTypes' => ['string|int' => ['mixed']],
             ],
             'ArrayObjectBasedOnDocBlockAndReflection' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     /** @var \ArrayObject<mixed> */
                     public \ArrayObject $property;
                 },
@@ -493,8 +448,7 @@ class TypeResolverTest extends TestCase
                 'expectedInnerTypes' => ['string|int' => ['mixed']],
             ],
             'nullableArrayObject' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     public ?\ArrayObject $property;
                 },
                 'expectedTypes' => ['\\ArrayObject', 'null'],
@@ -503,16 +457,14 @@ class TypeResolverTest extends TestCase
 
             // object
             'object' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     public object $property;
                 },
                 'expectedTypes' => ['object'],
                 'expectedInnerTypes' => [],
             ],
             'objectBasedOnDocBlock' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     /** @var object */
                     public $property;
                 },
@@ -520,24 +472,21 @@ class TypeResolverTest extends TestCase
                 'expectedInnerTypes' => [],
             ],
             'objectBasedOnDocBlockAndReflection' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     public object $property;
                 },
                 'expectedTypes' => ['object'],
                 'expectedInnerTypes' => [],
             ],
             'nullableObject' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     public ?object $property;
                 },
                 'expectedTypes' => ['object', 'null'],
                 'expectedInnerTypes' => [],
             ],
             'nullableObjectBasedOnDocBlock' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     /** @var object|null */
                     public $property;
                 },
@@ -545,8 +494,7 @@ class TypeResolverTest extends TestCase
                 'expectedInnerTypes' => [],
             ],
             'nullableObjectBasedOnDocBlockAndReflection' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     public ?object $property;
                 },
                 'expectedTypes' => ['object', 'null'],
@@ -555,68 +503,60 @@ class TypeResolverTest extends TestCase
 
             // class
             'class' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     public Dummy $property;
                 },
-                'expectedTypes' => ['\\' . Dummy::class],
+                'expectedTypes' => ['\\'.Dummy::class],
                 'expectedInnerTypes' => [],
             ],
             'classBasedOnDocBlock' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     /** @var Dummy */
                     public $property;
                 },
-                'expectedTypes' => ['\\' . Dummy::class],
+                'expectedTypes' => ['\\'.Dummy::class],
                 'expectedInnerTypes' => [],
             ],
             'classBasedOnDocBlockAndReflection' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     public Dummy $property;
                 },
-                'expectedTypes' => ['\\' . Dummy::class],
+                'expectedTypes' => ['\\'.Dummy::class],
                 'expectedInnerTypes' => [],
             ],
             'nullableClass' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     public ?Dummy $property;
                 },
-                'expectedTypes' => ['\\' . Dummy::class, 'null'],
+                'expectedTypes' => ['\\'.Dummy::class, 'null'],
                 'expectedInnerTypes' => [],
             ],
             'nullableClassBasedOnDocBlock' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     /** @var Dummy|null */
                     public $property;
                 },
-                'expectedTypes' => ['\\' . Dummy::class, 'null'],
+                'expectedTypes' => ['\\'.Dummy::class, 'null'],
                 'expectedInnerTypes' => [],
             ],
             'nullableClassBasedOnDocBlockAndReflection' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     public ?Dummy $property;
                 },
-                'expectedTypes' => ['\\' . Dummy::class, 'null'],
+                'expectedTypes' => ['\\'.Dummy::class, 'null'],
                 'expectedInnerTypes' => [],
             ],
 
             // DateTime
             'DateTime' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     public \DateTime $property;
                 },
                 'expectedTypes' => ['\\DateTime'],
                 'expectedInnerTypes' => [],
             ],
             'nullableDateTime' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     public ?\DateTime $property;
                 },
                 'expectedTypes' => ['\\DateTime', 'null'],
@@ -625,55 +565,49 @@ class TypeResolverTest extends TestCase
 
             // Complex structure (Array of objects)
             'arrayOfObjects' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     /** @var Dummy[] */
                     public array $property;
                 },
                 'expectedTypes' => ['array'],
-                'expectedInnerTypes' => ['string|int' => ['\\' . Dummy::class]],
+                'expectedInnerTypes' => ['string|int' => ['\\'.Dummy::class]],
             ],
             'nullableArrayOfObjects' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     /** @var Dummy[]|null */
                     public ?array $property;
                 },
                 'expectedTypes' => ['array', 'null'],
-                'expectedInnerTypes' => ['string|int' => ['\\' . Dummy::class]],
+                'expectedInnerTypes' => ['string|int' => ['\\'.Dummy::class]],
             ],
 
             // Complex structure (ArrayObject of objects)
             'ArrayObjectOfObjects' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     /** @var \ArrayObject<Dummy> */
                     public \ArrayObject $property;
                 },
                 'expectedTypes' => ['\\ArrayObject'],
-                'expectedInnerTypes' => ['string|int' => ['\\' . Dummy::class]],
+                'expectedInnerTypes' => ['string|int' => ['\\'.Dummy::class]],
             ],
 
             // Union types
             'unionTypes' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     public int|string $property;
                 },
                 'expectedTypes' => ['int', 'string'],
                 'expectedInnerTypes' => [],
             ],
             'nullableUnionTypes' => [
-                'obj' => new class()
-                {
-                    public null|int|string $property;
+                'obj' => new class() {
+                    public int|string|null $property;
                 },
                 'expectedTypes' => ['int', 'string', 'null'],
                 'expectedInnerTypes' => [],
             ],
             'unionTypesBasedOnDocBlock' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     /** @var int|string */
                     public $property;
                 },
@@ -681,84 +615,73 @@ class TypeResolverTest extends TestCase
                 'expectedInnerTypes' => [],
             ],
             'nullableUnionTypesBasedOnDocBlock' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     /** @var int|string|null */
                     public $property;
                 },
                 'expectedTypes' => ['int', 'string', 'null'],
                 'expectedInnerTypes' => [],
             ],
-            `unionTypesBasedOnDocBlockAndReflection` => [
-                'obj' => new class()
-                {
-                    /** @var int|string */
+            shell_exec('unionTypesBasedOnDocBlockAndReflection') => [
+                'obj' => new class() {
                     public int|string $property;
                 },
                 'expectedTypes' => ['int', 'string'],
                 'expectedInnerTypes' => [],
             ],
-            `unionTypesWithClasses` => [
-                'obj' => new class()
-                {
-                    public Dummy|ArrayObject $property;
+            shell_exec('unionTypesWithClasses') => [
+                'obj' => new class() {
+                    public Dummy|\ArrayObject $property;
                 },
-                'expectedTypes' => ['\\' . Dummy::class, '\\ArrayObject'],
-                'expectedInnerTypes' => ["string|int" => ["mixed"]],
+                'expectedTypes' => ['\\'.Dummy::class, '\\ArrayObject'],
+                'expectedInnerTypes' => ['string|int' => ['mixed']],
             ],
 
-            # Intersection types
+            // Intersection types
             'intersectionTypes' => [
-                'obj' => new class()
-                {
-                    public ArrayAccess&ArrayObject $property;
+                'obj' => new class() {
+                    public \ArrayAccess&\ArrayObject $property;
                 },
                 'expectedTypes' => ['\\ArrayAccess', '\\ArrayObject'],
                 'expectedInnerTypes' => ['string|int' => ['mixed']],
             ],
 
-            # enum types
+            // enum types
             'enumTypes' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     public PropertyType $property;
                 },
-                'expectedTypes' => ['\\' . PropertyType::class],
+                'expectedTypes' => ['\\'.PropertyType::class],
                 'expectedInnerTypes' => [],
             ],
             'nullableEnumTypes' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     public ?PropertyType $property;
                 },
-                'expectedTypes' => ['\\' . PropertyType::class, 'null'],
+                'expectedTypes' => ['\\'.PropertyType::class, 'null'],
                 'expectedInnerTypes' => [],
             ],
             'enumTypesBasedOnDocBlock' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     /** @var PropertyType */
                     public $property;
                 },
-                'expectedTypes' => ['\\' . PropertyType::class],
+                'expectedTypes' => ['\\'.PropertyType::class],
                 'expectedInnerTypes' => [],
             ],
             'nullableEnumTypesBasedOnDocBlock' => [
-                'obj' => new class()
-                {
+                'obj' => new class() {
                     /** @var PropertyType|null */
                     public $property;
                 },
-                'expectedTypes' => ['\\' . PropertyType::class, 'null'],
+                'expectedTypes' => ['\\'.PropertyType::class, 'null'],
                 'expectedInnerTypes' => [],
             ],
             'enumTypesBasedOnDocBlockAndReflection' => [
-                'obj' => new class()
-                {
-                    /** @var PropertyType */
+                'obj' => new class() {
                     public PropertyType $property;
                 },
-                'expectedTypes' => ['\\' . PropertyType::class],
+                'expectedTypes' => ['\\'.PropertyType::class],
                 'expectedInnerTypes' => [],
             ],
         ];

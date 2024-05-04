@@ -16,6 +16,7 @@ class Property
     public string $originName;
 
     public PropertyVisibility $visibility;
+    public Type $type;
     public bool $isStatic;
     public bool $isReadOnly;
     public bool $hasDefaultValue;
@@ -34,6 +35,7 @@ class Property
             $property->isProtected() => PropertyVisibility::PROTECTED,
             default => PropertyVisibility::PUBLIC,
         };
+        $instance->type = Type::create($instance);
         $instance->isStatic = $property->isStatic();
         $instance->isReadOnly = $property->isReadOnly();
         $instance->hasDefaultValue = $property->hasDefaultValue();
