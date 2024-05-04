@@ -143,3 +143,7 @@ private function mapAppTestX765(array $source, Meta $meta): Test
     return $output;
 }
 ```
+
+### Exceptions
+
+The exception code are started from `5920`

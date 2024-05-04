@@ -31,6 +31,24 @@ class BlueprintSerializerTest extends TestCase
     }
 
     #[Test]
+    public function testSerializeAnonymousClass(): void
+    {
+        $blueprintName = '857a34a275ad7d8d15fced51bef25eb2';
+        $class = get_class(new class() {
+            public string $test;
+        });
+        if (file_exists(self::PATH.'/'.$blueprintName.'.yaml')) {
+            unlink(self::PATH.'/'.$blueprintName.'.yaml');
+        }
+        $blueprint = Blueprint::create($class, null);
+        $serializer = new BlueprintSerializer(self::PATH);
+
+        $serializer->serialize($blueprint);
+
+        $this->assertFileExists(self::PATH.'/'.$blueprintName.'.yaml');
+    }
+
+    #[Test]
     #[Depends('testSerialize')]
     public function testDeserialize(): void
     {
@@ -42,7 +60,7 @@ class BlueprintSerializerTest extends TestCase
         $this->assertEquals('Blueprint', $blueprint->shortName);
         $this->assertStringContainsString('PBaszak\\UltraMapper\\Blueprint\\Domain\\Entity', $blueprint->namespace);
         $this->assertNotNull($blueprint->filePath);
-        $this->assertNotNull($blueprint->fileHash);
+        $this->assertNotNull($blueprint->hash);
         $this->assertEquals(ClassType::STANDARD, $blueprint->type);
         $this->assertIsArray($blueprint->attributes);
         $this->assertIsArray($blueprint->properties);

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PBaszak\UltraMapper\Blueprint\Domain\Entity;
 
 use PBaszak\UltraMapper\Blueprint\Application\Enum\ClassType;
+use PBaszak\UltraMapper\Blueprint\Domain\Exception\ClassNotFoundException;
 use PBaszak\UltraMapper\Blueprint\Domain\Serializer\Normalizable;
 use PBaszak\UltraMapper\Blueprint\Domain\Serializer\NormalizeTrait;
 
@@ -22,8 +23,8 @@ class Blueprint implements Normalizable
     public string $name;
     public string $shortName;
     public string $namespace;
-    public string $filePath;
-    public string $fileHash;
+    public false|string $filePath;
+    public string $hash;
     public ClassType $type;
     public false|string $docBlock;
 
@@ -41,7 +42,12 @@ class Blueprint implements Normalizable
      */
     public static function create(string $class, ?Property $parent): self
     {
-        $reflection = new \ReflectionClass($class);
+        try {
+            $reflection = new \ReflectionClass($class);
+            /* @phpstan-ignore-next-line */
+        } catch (\ReflectionException $e) {
+            throw new ClassNotFoundException(sprintf('Class %s not found. %s', $class, $e->getMessage()), 5921, $e);
+        }
         $instance = new self();
 
         $instance->parent = $parent;
@@ -49,10 +55,10 @@ class Blueprint implements Normalizable
         $instance->shortName = $reflection->getShortName();
         $instance->namespace = $reflection->getNamespaceName();
 
-        $instance->blueprintName = strtolower(str_replace('\\', '_', $instance->name));
+        $instance->blueprintName = $reflection->isAnonymous() ? md5($instance->name) : strtolower(str_replace('\\', '_', $instance->name));
 
-        $instance->filePath = $reflection->getFileName() ?: throw new \RuntimeException('File path not found.');
-        $instance->fileHash = md5_file($instance->filePath) ?: throw new \RuntimeException('File hash not found.');
+        $instance->filePath = $reflection->getFileName();
+        $instance->hash = md5($reflection->__toString());
         $instance->type = match (true) {
             $reflection->isAbstract() => ClassType::ABSTRACT,
             $reflection->isEnum() => ClassType::ENUM,

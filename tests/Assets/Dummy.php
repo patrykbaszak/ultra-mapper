@@ -2,7 +2,12 @@
 
 namespace PBaszak\UltraMapper\Tests\Assets;
 
-class Dummy
+abstract class AbstractDummy
+{
+    public string $abstractField = 'abstractField';
+}
+
+class Dummy extends AbstractDummy
 {
     public function __construct(
         public string $id,
