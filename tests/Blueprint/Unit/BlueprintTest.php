@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace PBaszak\UltraMapper\Tests\Blueprint\Unit;
+
 use PBaszak\UltraMapper\Blueprint\Application\Enum\ClassType;
 use PBaszak\UltraMapper\Blueprint\Domain\Aggregate\AttributeAggregate;
 use PBaszak\UltraMapper\Blueprint\Domain\Aggregate\MethodAggregate;
@@ -106,7 +108,7 @@ class BlueprintTest extends TestCase
         $blueprint = Blueprint::create(Blueprint::class, null);
         $reflection = $blueprint->getReflection();
 
-        $this->assertInstanceOf(ReflectionClass::class, $reflection);
+        $this->assertInstanceOf(\ReflectionClass::class, $reflection);
         $this->assertEquals(Blueprint::class, $reflection->getName());
     }
 }

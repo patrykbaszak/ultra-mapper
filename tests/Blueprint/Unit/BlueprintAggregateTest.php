@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PBaszak\UltraMapper\Blueprint\Domain\Entity;
+namespace PBaszak\UltraMapper\Tests\Blueprint\Unit;
 
 use PBaszak\UltraMapper\Blueprint\Domain\Aggregate\BlueprintAggregate;
+use PBaszak\UltraMapper\Blueprint\Domain\Entity\Blueprint;
 use PBaszak\UltraMapper\Tests\Assets\Dummy;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;

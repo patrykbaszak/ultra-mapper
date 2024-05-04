@@ -18,7 +18,7 @@ class Type
     public PropertyType $type;
     /** @var string[] */
     public array $types = [];
-    /** @var string[] */
+    /** @var array<string, string[]> */
     public array $innerTypes = [];
 
     public static function create(Property $parent): self

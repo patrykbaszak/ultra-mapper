@@ -2,11 +2,6 @@
 
 namespace PBaszak\UltraMapper\Tests\Assets;
 
-abstract class AbstractDummy
-{
-    public string $abstractField = 'abstractField';
-}
-
 class Dummy extends AbstractDummy
 {
     public function __construct(
@@ -16,6 +11,11 @@ class Dummy extends AbstractDummy
         public EmbeddedDTO $_embedded,
     ) {
     }
+}
+
+abstract class AbstractDummy
+{
+    public string $abstractField = 'abstractField';
 }
 
 class EmbeddedDTO

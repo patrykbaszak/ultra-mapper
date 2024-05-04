@@ -19,3 +19,18 @@ parameters:
 			message: "#^Parameter \\#3 \\$filesHashes of class PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\Aggregate\\\\BlueprintAggregate constructor expects array\\<string, string\\>, array\\<int\\|string, string\\|false\\> given\\.$#"
 			count: 1
 			path: ../../src/Blueprint/Domain/Aggregate/BlueprintAggregate.php
+
+		-
+			message: "#^Method PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\Resolver\\\\TypeResolver\\:\\:getCorrectClassName\\(\\) should return class\\-string\\|null but returns string\\.$#"
+			count: 3
+			path: ../../src/Blueprint/Domain/Resolver/TypeResolver.php
+
+		-
+			message: "#^Offset 0 does not exist on array\\{string\\|null\\}\\|null\\.$#"
+			count: 1
+			path: ../../src/Blueprint/Domain/Resolver/TypeResolver.php
+
+		-
+			message: "#^Parameter \\#1 \\$string of function trim expects string, string\\|null given\\.$#"
+			count: 1
+			path: ../../src/Blueprint/Domain/Resolver/TypeResolver.php
