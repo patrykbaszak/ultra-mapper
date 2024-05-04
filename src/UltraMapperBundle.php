@@ -7,6 +7,7 @@ namespace PBaszak\UltraMapper;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
+/** @codeCoverageIgnore */
 class UltraMapperBundle extends Bundle
 {
     public const ALIAS = 'pbaszak.ultra_mapper';

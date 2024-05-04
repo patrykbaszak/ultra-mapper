@@ -9,4 +9,13 @@ namespace PBaszak\UltraMapper\Blueprint\Domain\Entity;
  */
 class Method
 {
+    public Blueprint $parent;
+
+    public static function create(\ReflectionMethod $method, Blueprint $parent): self
+    {
+        $instance = new self();
+        $instance->parent = $parent;
+
+        return $instance;
+    }
 }

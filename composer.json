@@ -19,6 +19,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "nette/php-generator": "^4.1",
+        "phpdocumentor/reflection-docblock": "^5.4",
         "symfony/console": "^6",
         "symfony/dotenv": "^6",
         "symfony/flex": "^2",
@@ -73,7 +74,7 @@
         ],
         "test:cc": [
             "@putenv XDEBUG_MODE=coverage",
-            "@phpunit --do-not-cache-result --log-junit var/coverage/phpunit-report.xml --coverage-cobertura var/coverage/phpunit-coverage.xml --coverage-text"
+            "@phpunit --do-not-cache-result --log-junit var/coverage/phpunit-report.xml --coverage-cobertura var/coverage/phpunit-coverage.xml --coverage-html var/coverage/html --coverage-text"
         ],
         "test:ci": [
             "@code:fix",

@@ -3,6 +3,9 @@
 declare(strict_types=1);
 
 use PBaszak\UltraMapper\Blueprint\Application\Enum\ClassType;
+use PBaszak\UltraMapper\Blueprint\Domain\Aggregate\AttributeAggregate;
+use PBaszak\UltraMapper\Blueprint\Domain\Aggregate\MethodAggregate;
+use PBaszak\UltraMapper\Blueprint\Domain\Aggregate\PropertyAggregate;
 use PBaszak\UltraMapper\Blueprint\Domain\Entity\Blueprint;
 use PBaszak\UltraMapper\Blueprint\Domain\Exception\ClassNotFoundException;
 use PBaszak\UltraMapper\Tests\Assets\Dummy;
@@ -19,16 +22,16 @@ class BlueprintTest extends TestCase
         $class = Blueprint::class;
         $blueprint = Blueprint::create($class, null);
 
-        $this->assertInstanceOf(Blueprint::class, $blueprint);
         $this->assertEquals($class, $blueprint->name);
         $this->assertEquals('Blueprint', $blueprint->shortName);
         $this->assertStringContainsString('PBaszak\\UltraMapper\\Blueprint\\Domain\\Entity', $blueprint->namespace);
         $this->assertNotNull($blueprint->filePath);
         $this->assertNotNull($blueprint->hash);
         $this->assertEquals(ClassType::STANDARD, $blueprint->type);
-        $this->assertIsArray($blueprint->attributes);
-        $this->assertIsArray($blueprint->properties);
-        $this->assertIsArray($blueprint->methods);
+        $this->assertInstanceOf(AttributeAggregate::class, $blueprint->attributes);
+        $this->assertInstanceOf(PropertyAggregate::class, $blueprint->properties);
+        $this->assertInstanceOf(MethodAggregate::class, $blueprint->methods);
+        $this->assertTrue($blueprint->hasDeclarationFile());
     }
 
     #[Test]
@@ -37,16 +40,16 @@ class BlueprintTest extends TestCase
         $class = Dummy::class;
         $blueprint = Blueprint::create($class, null);
 
-        $this->assertInstanceOf(Blueprint::class, $blueprint);
         $this->assertEquals($class, $blueprint->name);
         $this->assertEquals('Dummy', $blueprint->shortName);
         $this->assertStringContainsString('PBaszak\\UltraMapper\\Tests\\Assets', $blueprint->namespace);
         $this->assertNotNull($blueprint->filePath);
         $this->assertNotNull($blueprint->hash);
         $this->assertEquals(ClassType::STANDARD, $blueprint->type);
-        $this->assertIsArray($blueprint->attributes);
-        $this->assertIsArray($blueprint->properties);
-        $this->assertIsArray($blueprint->methods);
+        $this->assertInstanceOf(AttributeAggregate::class, $blueprint->attributes);
+        $this->assertInstanceOf(PropertyAggregate::class, $blueprint->properties);
+        $this->assertInstanceOf(MethodAggregate::class, $blueprint->methods);
+        $this->assertTrue($blueprint->hasDeclarationFile());
     }
 
     #[Test]
@@ -59,26 +62,25 @@ class BlueprintTest extends TestCase
         });
         $blueprint = Blueprint::create($class, null);
 
-        $this->assertInstanceOf(Blueprint::class, $blueprint);
         $this->assertEquals($class, $blueprint->name);
         $this->assertStringContainsString('class@anonymous', $blueprint->shortName);
         $this->assertEquals('', $blueprint->namespace);
         $this->assertEquals(__FILE__, $blueprint->filePath);
         $this->assertNotNull($blueprint->hash);
         $this->assertEquals(ClassType::STANDARD, $blueprint->type);
-        $this->assertIsArray($blueprint->attributes);
-        $this->assertIsArray($blueprint->properties);
-        $this->assertIsArray($blueprint->methods);
+        $this->assertInstanceOf(AttributeAggregate::class, $blueprint->attributes);
+        $this->assertInstanceOf(PropertyAggregate::class, $blueprint->properties);
+        $this->assertInstanceOf(MethodAggregate::class, $blueprint->methods);
+        $this->assertTrue($blueprint->hasDeclarationFile());
     }
 
     #[Test]
     public function testcreateWithValidClassAndAbstractClass(): void
     {
-        $this->markTestSkipped('Properties are not set correctly yet.');
         $class = Dummy::class;
         $blueprint = Blueprint::create($class, null);
 
-        $this->assertInstanceOf(Blueprint::class, $blueprint);
+        $this->assertArrayHasKey('abstractField', $blueprint->properties->properties);
     }
 
     #[Test]

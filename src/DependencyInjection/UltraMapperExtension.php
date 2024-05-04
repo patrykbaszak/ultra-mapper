@@ -11,6 +11,7 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
+/** @codeCoverageIgnore */
 class UltraMapperExtension extends Extension implements PrependExtensionInterface
 {
     public function load(array $configs, ContainerBuilder $container): void
@@ -25,7 +26,7 @@ class UltraMapperExtension extends Extension implements PrependExtensionInterfac
 
     public function prepend(ContainerBuilder $container): void
     {
-        if ($container->hasParameter('PBaszak.ultra_mapper.dev_mode') && true === $container->getParameter('PBaszak.ultra_mapper.dev_mode')) {
+        if ($container->hasParameter('pbaszak.ultra_mapper.dev_mode') && true === $container->getParameter('pbaszak.ultra_mapper.dev_mode')) {
             return;
         }
 

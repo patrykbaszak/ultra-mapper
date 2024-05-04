@@ -1,2 +1,21 @@
 parameters:
 	ignoreErrors:
+		-
+			message: "#^Parameter \\#1 \\$filePath of method PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\Aggregate\\\\BlueprintAggregate\\:\\:addFileHash\\(\\) expects string, string\\|false given\\.$#"
+			count: 1
+			path: ../../src/Blueprint/Domain/Aggregate/BlueprintAggregate.php
+
+		-
+			message: "#^Parameter \\#1 \\$key of function array_key_exists expects int\\|string, string\\|false given\\.$#"
+			count: 1
+			path: ../../src/Blueprint/Domain/Aggregate/BlueprintAggregate.php
+
+		-
+			message: "#^Parameter \\#2 \\$fileHash of method PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\Aggregate\\\\BlueprintAggregate\\:\\:addFileHash\\(\\) expects string, string\\|false given\\.$#"
+			count: 1
+			path: ../../src/Blueprint/Domain/Aggregate/BlueprintAggregate.php
+
+		-
+			message: "#^Parameter \\#3 \\$filesHashes of class PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\Aggregate\\\\BlueprintAggregate constructor expects array\\<string, string\\>, array\\<int\\|string, string\\|false\\> given\\.$#"
+			count: 1
+			path: ../../src/Blueprint/Domain/Aggregate/BlueprintAggregate.php
