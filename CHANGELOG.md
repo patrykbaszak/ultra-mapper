@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.2.0](///compare/0.1.0...0.2.0) (2024-05-05)
+
+
+### Features
+
+* Added generate blueprint command acad5f5
+* Added type to the property e91d8ef
+* Blueprint is almost ready - require more tests 9bdd556
+* Test Resolver is fully tested - 100% test coverage 16c8a0b
+
 ## 0.1.0 (2024-05-04)
 
 
