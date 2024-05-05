@@ -1,6 +1,46 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Access to an undefined property PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\Entity\\\\Attribute\\|PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\Entity\\\\Blueprint\\|PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\Entity\\\\Method\\|PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\Entity\\\\Parameter\\|PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\Entity\\\\Property\\|PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\Entity\\\\Type\\:\\:\\$aggregate\\.$#"
+			count: 1
+			path: ../../src/Blueprint/Domain/Accessor/Accessor.php
+
+		-
+			message: "#^Access to an undefined property PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\Entity\\\\Blueprint\\|PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\Entity\\\\Method\\:\\:\\$aggregate\\.$#"
+			count: 1
+			path: ../../src/Blueprint/Domain/Accessor/Accessor.php
+
+		-
+			message: "#^Cannot access property \\$aggregate on PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\Entity\\\\Blueprint\\|PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\Entity\\\\Method\\|PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\Entity\\\\Parameter\\|PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\Entity\\\\Property\\|null\\.$#"
+			count: 2
+			path: ../../src/Blueprint/Domain/Accessor/Accessor.php
+
+		-
+			message: "#^Cannot access property \\$aggregate on PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\Entity\\\\Blueprint\\|PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\Entity\\\\Method\\|PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\Entity\\\\Property\\|null\\.$#"
+			count: 2
+			path: ../../src/Blueprint/Domain/Accessor/Accessor.php
+
+		-
+			message: "#^Cannot access property \\$parent on PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\Entity\\\\Blueprint\\|PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\Entity\\\\Method\\|PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\Entity\\\\Parameter\\|PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\Entity\\\\Property\\|null\\.$#"
+			count: 4
+			path: ../../src/Blueprint/Domain/Accessor/Accessor.php
+
+		-
+			message: "#^Cannot access property \\$parent on PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\Entity\\\\Method\\|PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\Entity\\\\Parameter\\|PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\Entity\\\\Property\\|null\\.$#"
+			count: 2
+			path: ../../src/Blueprint/Domain/Accessor/Accessor.php
+
+		-
+			message: "#^Match expression does not handle remaining value\\: class\\-string$#"
+			count: 2
+			path: ../../src/Blueprint/Domain/Accessor/Accessor.php
+
+		-
+			message: "#^Method PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\Accessor\\\\Accessor\\:\\:getBlueprint\\(\\) should return PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\Entity\\\\Blueprint but returns PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\Entity\\\\Attribute\\|PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\Entity\\\\Blueprint\\|PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\Entity\\\\Method\\|PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\Entity\\\\Parameter\\|PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\Entity\\\\Property\\|PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\Entity\\\\Type\\|null\\.$#"
+			count: 1
+			path: ../../src/Blueprint/Domain/Accessor/Accessor.php
+
+		-
 			message: "#^Parameter \\#1 \\$filePath of method PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\Aggregate\\\\BlueprintAggregate\\:\\:addFileHash\\(\\) expects string, string\\|false given\\.$#"
 			count: 1
 			path: ../../src/Blueprint/Domain/Aggregate/BlueprintAggregate.php
@@ -19,6 +59,11 @@ parameters:
 			message: "#^Parameter \\#3 \\$filesHashes of class PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\Aggregate\\\\BlueprintAggregate constructor expects array\\<string, string\\>, array\\<int\\|string, string\\|false\\> given\\.$#"
 			count: 1
 			path: ../../src/Blueprint/Domain/Aggregate/BlueprintAggregate.php
+
+		-
+			message: "#^Match expression does not handle remaining value\\: true$#"
+			count: 1
+			path: ../../src/Blueprint/Domain/Entity/Method.php
 
 		-
 			message: "#^Method PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\Resolver\\\\TypeResolver\\:\\:getCorrectClassName\\(\\) should return class\\-string\\|null but returns string\\.$#"

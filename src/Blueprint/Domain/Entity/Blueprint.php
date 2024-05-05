@@ -9,12 +9,14 @@ use PBaszak\UltraMapper\Blueprint\Domain\Aggregate\AttributeAggregate;
 use PBaszak\UltraMapper\Blueprint\Domain\Aggregate\BlueprintAggregate;
 use PBaszak\UltraMapper\Blueprint\Domain\Aggregate\MethodAggregate;
 use PBaszak\UltraMapper\Blueprint\Domain\Aggregate\PropertyAggregate;
+use PBaszak\UltraMapper\Blueprint\Domain\Exception\BlueprintException;
 use PBaszak\UltraMapper\Blueprint\Domain\Exception\ClassNotFoundException;
+use PBaszak\UltraMapper\Blueprint\Domain\Normalizer\Normalizable;
 
 /**
  * The representation of the class.
  */
-class Blueprint
+class Blueprint implements Normalizable
 {
     public ?BlueprintAggregate $aggregate;
     public ?Property $parent;
@@ -39,6 +41,10 @@ class Blueprint
      */
     public static function create(string $class, ?Property $parent, ?BlueprintAggregate $aggregate = null): self
     {
+        if (__CLASS__ === $class) {
+            throw new BlueprintException('Unable to create a Blueprint for the Blueprint class. This would create an infinite loop.', 5922);
+        }
+
         try {
             $reflection = new \ReflectionClass($class);
             /* @phpstan-ignore-next-line */
@@ -46,13 +52,17 @@ class Blueprint
             throw new ClassNotFoundException(sprintf('Class %s not found. %s', $class, $e->getMessage()), 5931, $e);
         }
         $instance = new self();
+        $instance->blueprintName = $reflection->isAnonymous() ? md5($reflection->getName()) : strtolower(str_replace('\\', '_', $reflection->getName()));
+
+        if ($aggregate && array_key_exists($instance->blueprintName, $aggregate->blueprints)) {
+            return $aggregate->blueprints[$instance->blueprintName];
+        }
+
         $instance->aggregate = $aggregate;
         $instance->parent = $parent;
         $instance->name = $reflection->getName();
         $instance->shortName = $reflection->getShortName();
         $instance->namespace = $reflection->getNamespaceName();
-
-        $instance->blueprintName = $reflection->isAnonymous() ? md5($instance->name) : strtolower(str_replace('\\', '_', $instance->name));
 
         $instance->filePath = $reflection->getFileName();
         $instance->fileHash = $instance->filePath ? md5_file($instance->filePath) : false;
@@ -85,5 +95,22 @@ class Blueprint
     public function hasDeclarationFile(): bool
     {
         return false !== $this->filePath;
+    }
+
+    public function normalize(): array
+    {
+        return [
+            'name' => $this->name,
+            'shortName' => $this->shortName,
+            'namespace' => $this->namespace,
+            'filePath' => $this->filePath,
+            'fileHash' => $this->fileHash,
+            'hash' => $this->hash,
+            'type' => $this->type->value,
+            'docBlock' => $this->docBlock,
+            'attributes' => $this->attributes->normalize(),
+            'properties' => $this->properties->normalize(),
+            'methods' => $this->methods->normalize(),
+        ];
     }
 }

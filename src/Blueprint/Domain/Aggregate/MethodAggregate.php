@@ -6,8 +6,9 @@ namespace PBaszak\UltraMapper\Blueprint\Domain\Aggregate;
 
 use PBaszak\UltraMapper\Blueprint\Domain\Entity\Blueprint;
 use PBaszak\UltraMapper\Blueprint\Domain\Entity\Method;
+use PBaszak\UltraMapper\Blueprint\Domain\Normalizer\Normalizable;
 
-class MethodAggregate
+class MethodAggregate implements Normalizable
 {
     public function __construct(
         public Blueprint $root,
@@ -26,5 +27,10 @@ class MethodAggregate
         }
 
         return new self($root, $properties);
+    }
+
+    public function normalize(): array
+    {
+        return array_map(fn (Normalizable&Method $method) => $method->normalize(), $this->methods);
     }
 }

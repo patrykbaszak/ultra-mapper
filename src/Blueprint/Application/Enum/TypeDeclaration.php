@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PBaszak\UltraMapper\Blueprint\Application\Enum;
 
-enum PropertyType: string
+enum TypeDeclaration: string
 {
     case INTERSECTION = 'intersection';
     case NAMED = 'named';

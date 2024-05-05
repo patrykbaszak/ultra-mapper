@@ -48,7 +48,7 @@ class TypeResolver
         $this->processReflectionType($this->reflection->getType());
         $this->processPhpDocumentorReflectionType(
             $this->reflection instanceof \ReflectionProperty
-                ? $this->getPropertyTypeFromVarDocBlock($this->reflection)
+                ? $this->getTypeDeclarationFromVarDocBlock($this->reflection)
                 : $this->getParameterTypeFromParamDocBlock($this->reflection),
             $this->reflection->getDeclaringClass() ?? throw new ClassNotFoundException('Class not found for '.$this->reflection->getName().' property.', 5932)
         );
@@ -56,7 +56,7 @@ class TypeResolver
         return $this;
     }
 
-    private function getPropertyTypeFromVarDocBlock(\ReflectionProperty $property): ?PhpDocumentorReflectionType
+    private function getTypeDeclarationFromVarDocBlock(\ReflectionProperty $property): ?PhpDocumentorReflectionType
     {
         $docBlock = $property->getDocComment();
         if (false === $docBlock) {

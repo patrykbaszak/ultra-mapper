@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace PBaszak\UltraMapper\Blueprint\Domain\Entity;
 
-use PBaszak\UltraMapper\Blueprint\Application\Enum\PropertyVisibility;
+use PBaszak\UltraMapper\Blueprint\Application\Enum\Visibility;
 use PBaszak\UltraMapper\Blueprint\Domain\Aggregate\AttributeAggregate;
+use PBaszak\UltraMapper\Blueprint\Domain\Normalizer\Normalizable;
 
 /**
  * The representation of the class property.
  */
-class Property
+class Property implements Normalizable
 {
     public Blueprint $parent;
     public string $originName;
 
-    public PropertyVisibility $visibility;
+    public Visibility $visibility;
     public Type $type;
     public bool $isStatic;
     public bool $isReadOnly;
@@ -31,15 +32,18 @@ class Property
         $instance->parent = $parent;
         $instance->originName = $property->getName();
         $instance->visibility = match (true) {
-            $property->isPrivate() => PropertyVisibility::PRIVATE,
-            $property->isProtected() => PropertyVisibility::PROTECTED,
-            default => PropertyVisibility::PUBLIC,
+            $property->isPrivate() => Visibility::PRIVATE,
+            $property->isProtected() => Visibility::PROTECTED,
+            default => Visibility::PUBLIC,
         };
         $instance->type = Type::create($instance);
         $instance->isStatic = $property->isStatic();
         $instance->isReadOnly = $property->isReadOnly();
         $instance->hasDefaultValue = $property->hasDefaultValue();
         $instance->defaultValue = $property->getDefaultValue();
+        $instance->docBlock = $property->getDocComment();
+
+        $instance->attributes = AttributeAggregate::create($instance);
 
         return $instance;
     }
@@ -47,5 +51,20 @@ class Property
     public function getReflection(): \ReflectionProperty
     {
         return new \ReflectionProperty($this->parent->name, $this->originName);
+    }
+
+    public function normalize(): array
+    {
+        return [
+            'originName' => $this->originName,
+            'visibility' => $this->visibility->value,
+            'type' => $this->type->normalize(),
+            'isStatic' => $this->isStatic,
+            'isReadOnly' => $this->isReadOnly,
+            'hasDefaultValue' => $this->hasDefaultValue,
+            'defaultValue' => $this->defaultValue,
+            'docBlock' => $this->docBlock,
+            'attributes' => $this->attributes->normalize(),
+        ];
     }
 }

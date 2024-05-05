@@ -19,24 +19,6 @@ use PHPUnit\Framework\TestCase;
 class BlueprintTest extends TestCase
 {
     #[Test]
-    public function testCreateWithValidClass(): void
-    {
-        $class = Blueprint::class;
-        $blueprint = Blueprint::create($class, null);
-
-        $this->assertEquals($class, $blueprint->name);
-        $this->assertEquals('Blueprint', $blueprint->shortName);
-        $this->assertStringContainsString('PBaszak\\UltraMapper\\Blueprint\\Domain\\Entity', $blueprint->namespace);
-        $this->assertNotNull($blueprint->filePath);
-        $this->assertNotNull($blueprint->hash);
-        $this->assertEquals(ClassType::STANDARD, $blueprint->type);
-        $this->assertInstanceOf(AttributeAggregate::class, $blueprint->attributes);
-        $this->assertInstanceOf(PropertyAggregate::class, $blueprint->properties);
-        $this->assertInstanceOf(MethodAggregate::class, $blueprint->methods);
-        $this->assertTrue($blueprint->hasDeclarationFile());
-    }
-
-    #[Test]
     public function testCreateWithValidDummyClass(): void
     {
         $class = Dummy::class;
@@ -86,9 +68,9 @@ class BlueprintTest extends TestCase
     }
 
     #[Test]
-    public function testPropertyTypesAreSetCorrectly(): void
+    public function testTypeDeclarationsAreSetCorrectly(): void
     {
-        $blueprint = Blueprint::create(Blueprint::class, null);
+        $blueprint = Blueprint::create(Dummy::class, null);
 
         $this->assertNull($blueprint->parent);
         $this->assertTrue(false === $blueprint->docBlock || is_string($blueprint->docBlock));
@@ -105,10 +87,10 @@ class BlueprintTest extends TestCase
     #[Test]
     public function testGetReflection(): void
     {
-        $blueprint = Blueprint::create(Blueprint::class, null);
+        $blueprint = Blueprint::create(Dummy::class, null);
         $reflection = $blueprint->getReflection();
 
         $this->assertInstanceOf(\ReflectionClass::class, $reflection);
-        $this->assertEquals(Blueprint::class, $reflection->getName());
+        $this->assertEquals(Dummy::class, $reflection->getName());
     }
 }

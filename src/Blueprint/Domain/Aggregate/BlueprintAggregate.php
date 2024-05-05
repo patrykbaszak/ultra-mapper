@@ -6,8 +6,9 @@ namespace PBaszak\UltraMapper\Blueprint\Domain\Aggregate;
 
 use PBaszak\UltraMapper\Blueprint\Domain\Entity\Blueprint;
 use PBaszak\UltraMapper\Blueprint\Domain\Exception\BlueprintException;
+use PBaszak\UltraMapper\Blueprint\Domain\Normalizer\Normalizable;
 
-class BlueprintAggregate
+class BlueprintAggregate implements Normalizable
 {
     public function __construct(
         public string $root,
@@ -23,9 +24,10 @@ class BlueprintAggregate
     /**
      * @param class-string $rootClass
      */
-    public static function create(string $rootClass): self
+    public static function create(string|Blueprint $rootClass): self
     {
-        $blueprint = Blueprint::create($rootClass, null);
+        $blueprint = $rootClass instanceof Blueprint ? $rootClass : Blueprint::create($rootClass, null);
+        $rootClass = $blueprint->name;
 
         $instance = new self(
             $blueprint->blueprintName,
@@ -70,5 +72,15 @@ class BlueprintAggregate
     public function addEvent(string $event): void
     {
         $this->events[] = $event;
+    }
+
+    public function normalize(): array
+    {
+        return [
+            'root' => $this->root,
+            'blueprints' => array_map(fn (Normalizable&Blueprint $blueprint) => $blueprint->normalize(), $this->blueprints),
+            'filesHashes' => $this->filesHashes,
+            'events' => $this->events,
+        ];
     }
 }

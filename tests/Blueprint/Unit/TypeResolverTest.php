@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PBaszak\UltraMapper\Tests\Blueprint\Unit;
 
 use ArrayObject;
-use PBaszak\UltraMapper\Blueprint\Application\Enum\PropertyType;
+use PBaszak\UltraMapper\Blueprint\Application\Enum\TypeDeclaration;
 use PBaszak\UltraMapper\Blueprint\Domain\Exception\ClassNotFoundException;
 use PBaszak\UltraMapper\Blueprint\Domain\Resolver\TypeResolver;
 use PBaszak\UltraMapper\Tests\Assets\Dummy;
@@ -649,39 +649,39 @@ class TypeResolverTest extends TestCase
             // enum types
             'enumTypes' => [
                 'obj' => new class() {
-                    public PropertyType $property;
+                    public TypeDeclaration $property;
                 },
-                'expectedTypes' => ['\\'.PropertyType::class],
+                'expectedTypes' => ['\\'.TypeDeclaration::class],
                 'expectedInnerTypes' => [],
             ],
             'nullableEnumTypes' => [
                 'obj' => new class() {
-                    public ?PropertyType $property;
+                    public ?TypeDeclaration $property;
                 },
-                'expectedTypes' => ['\\'.PropertyType::class, 'null'],
+                'expectedTypes' => ['\\'.TypeDeclaration::class, 'null'],
                 'expectedInnerTypes' => [],
             ],
             'enumTypesBasedOnDocBlock' => [
                 'obj' => new class() {
-                    /** @var PropertyType */
+                    /** @var TypeDeclaration */
                     public $property;
                 },
-                'expectedTypes' => ['\\'.PropertyType::class],
+                'expectedTypes' => ['\\'.TypeDeclaration::class],
                 'expectedInnerTypes' => [],
             ],
             'nullableEnumTypesBasedOnDocBlock' => [
                 'obj' => new class() {
-                    /** @var PropertyType|null */
+                    /** @var TypeDeclaration|null */
                     public $property;
                 },
-                'expectedTypes' => ['\\'.PropertyType::class, 'null'],
+                'expectedTypes' => ['\\'.TypeDeclaration::class, 'null'],
                 'expectedInnerTypes' => [],
             ],
             'enumTypesBasedOnDocBlockAndReflection' => [
                 'obj' => new class() {
-                    public PropertyType $property;
+                    public TypeDeclaration $property;
                 },
-                'expectedTypes' => ['\\'.PropertyType::class],
+                'expectedTypes' => ['\\'.TypeDeclaration::class],
                 'expectedInnerTypes' => [],
             ],
         ];
