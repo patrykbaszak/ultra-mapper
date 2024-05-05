@@ -8,7 +8,9 @@
 
 | name | usage |
 | - | - |
-| `APP_DEBUG` | If `true`, the blueprint will be checked for changes in targeted classes. | 
+| `APP_DEBUG` | If `true`, the blueprint will be checked for changes in targeted classes. |
+| `ULTRAMAPPER_BLUEPRINTS_DIR` | Default is `%kernel.project_dir%/var/ultra-mapper/blueprints/` |
+| `ULTRAMAPPER_MAPPERS_DIR` | Default is `%kernel.project_dir%/var/ultra-mapper/mappers/` |
 
 ## Usage
 
