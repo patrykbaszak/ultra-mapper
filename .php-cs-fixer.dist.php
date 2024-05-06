@@ -2,7 +2,7 @@
 
 $finder = (new PhpCsFixer\Finder())
     ->in(__DIR__)
-    ->exclude('var')
+    ->exclude(['var', 'tests/Blueprint/Unit'])
 ;
 
 return (new PhpCsFixer\Config())

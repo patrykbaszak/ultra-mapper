@@ -4,16 +4,22 @@ declare(strict_types=1);
 
 namespace PBaszak\UltraMapper\Blueprint\Domain\Resolver;
 
+use PBaszak\UltraMapper\Blueprint\Application\Enum\TypeDeclaration;
 use PBaszak\UltraMapper\Blueprint\Domain\Exception\ClassNotFoundException;
 use phpDocumentor\Reflection\DocBlock\Tags\InvalidTag;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use phpDocumentor\Reflection\DocBlockFactory;
+use phpDocumentor\Reflection\PseudoType;
+use phpDocumentor\Reflection\PseudoTypes\False_;
+use phpDocumentor\Reflection\PseudoTypes\True_;
 use phpDocumentor\Reflection\Type as PhpDocumentorReflectionType;
 use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\Collection;
 use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Intersection;
+use phpDocumentor\Reflection\Types\Mixed_;
+use phpDocumentor\Reflection\Types\Null_;
 use phpDocumentor\Reflection\Types\Object_;
 
 /**
@@ -21,6 +27,8 @@ use phpDocumentor\Reflection\Types\Object_;
  */
 class TypeResolver
 {
+    public ?TypeDeclaration $type = null;
+
     /** @var string[] */
     public array $types = [];
     /** @var array<string, string[]> only if isCollection is `true` */
@@ -43,15 +51,29 @@ class TypeResolver
         return $this->innerTypes;
     }
 
+    public function getTypeDeclaration(): TypeDeclaration
+    {
+        return $this->type ?? TypeDeclaration::UNKNOWN;
+    }
+
     public function process(): self
     {
+        $docBlockTypeRef = $this->reflection instanceof \ReflectionProperty
+            ? $this->getTypeDeclarationFromVarDocBlock($this->reflection)
+            : $this->getParameterTypeFromParamDocBlock($this->reflection);
         $this->processReflectionType($this->reflection->getType());
         $this->processPhpDocumentorReflectionType(
-            $this->reflection instanceof \ReflectionProperty
-                ? $this->getTypeDeclarationFromVarDocBlock($this->reflection)
-                : $this->getParameterTypeFromParamDocBlock($this->reflection),
+            $docBlockTypeRef,
             $this->reflection->getDeclaringClass() ?? throw new ClassNotFoundException('Class not found for '.$this->reflection->getName().' property.', 5932)
         );
+
+        $this->setTypeFromPHPReflection($this->reflection);
+        if (null === $this->type) {
+            $this->setTypeFromDocBlock($docBlockTypeRef);
+        }
+        if (null === $this->type) {
+            $this->type = TypeDeclaration::UNKNOWN;
+        }
 
         return $this;
     }
@@ -73,6 +95,84 @@ class TypeResolver
         }
 
         return $varTags[0]->getType();
+    }
+
+    private function setTypeFromPHPReflection(\ReflectionProperty|\ReflectionParameter $reflection): void
+    {
+        $reflection = $reflection->getType();
+        $this->type = match (true) {
+            $reflection instanceof \ReflectionIntersectionType => TypeDeclaration::INTERSECTION,
+            $reflection instanceof \ReflectionNamedType => TypeDeclaration::NAMED,
+            $reflection instanceof \ReflectionUnionType => TypeDeclaration::UNION,
+            default => null,
+        };
+
+        // if null|(type1&type2) then it's nullable intersection type
+        if ($reflection instanceof \ReflectionUnionType) {
+            $types = $reflection->getTypes();
+            if (2 === count($types)) {
+                $hasNull = false;
+                $hasIntersection = false;
+                foreach ($types as $type) {
+                    if ($type instanceof \ReflectionNamedType && 'null' === $type->getName()) {
+                        $hasNull = true;
+                    } elseif ($type instanceof \ReflectionIntersectionType) {
+                        $hasIntersection = true;
+                    }
+                }
+
+                if ($hasNull && $hasIntersection) {
+                    $this->type = TypeDeclaration::INTERSECTION;
+                }
+            }
+        }
+    }
+
+    private function setTypeFromDocBlock(?PhpDocumentorReflectionType $reflection): void
+    {
+        if (null === $reflection) {
+            return;
+        }
+
+        if ($reflection instanceof Compound) {
+            $types = $reflection->getIterator();
+
+            // if null|type then it's nullable named type
+            if (2 === count($this->types) && in_array('null', $this->types)) {
+                $this->type = TypeDeclaration::NAMED;
+
+                return;
+            }
+
+            // if null|(type1&type2) then it's nullable intersection type
+            if (2 === count($types)) {
+                $hasNull = false;
+                $hasIntersection = false;
+                foreach ($types as $type) {
+                    if ($type instanceof Null_) {
+                        $hasNull = true;
+                    } elseif ($type instanceof Intersection) {
+                        $hasIntersection = true;
+                    }
+                }
+
+                if ($hasNull && $hasIntersection) {
+                    $this->type = TypeDeclaration::INTERSECTION;
+
+                    return;
+                }
+            }
+
+            // any other case is union type
+            $this->type = TypeDeclaration::UNION;
+
+            return;
+        }
+
+        $this->type = match (true) {
+            $reflection instanceof Intersection => TypeDeclaration::INTERSECTION,
+            default => TypeDeclaration::NAMED,
+        };
     }
 
     private function getParameterTypeFromParamDocBlock(\ReflectionParameter $parameter): ?PhpDocumentorReflectionType
@@ -191,7 +291,22 @@ class TypeResolver
 
             $this->addType($class ?? 'object');
 
+            if ($class && is_subclass_of($class, \ArrayAccess::class)) {
+                $this->addInnerType('mixed', 'string|int');
+            }
+
             return;
+        }
+
+        if (
+            $reflection instanceof PseudoType
+            && !($reflection instanceof True_ || $reflection instanceof False_)
+        ) {
+            $reflection = $reflection->underlyingType();
+        }
+
+        if ($reflection instanceof Mixed_) {
+            $this->addType('null');
         }
 
         // single type
@@ -203,8 +318,31 @@ class TypeResolver
         $keyType = $reflection->getKeyType();
         $itemType = $reflection->getValueType();
 
+        // if key is defined then ReflectionType doesn't matter and library have to correct it
+        if ('string' === (string) $keyType) {
+            unset($this->innerTypes['int']);
+        }
+        if ('int' === (string) $keyType) {
+            unset($this->innerTypes['string']);
+        }
+
+        // multitypes
+        if ($itemType instanceof Compound || $itemType instanceof Intersection) {
+            $types = $itemType->getIterator();
+            foreach ($types as $type) {
+                $this->addCorrectInnerType((string) $keyType, $type, $classReflection);
+            }
+
+            return;
+        }
+
+        $this->addCorrectInnerType((string) $keyType, $itemType, $classReflection);
+    }
+
+    private function addCorrectInnerType(string $keyType, PhpDocumentorReflectionType $itemType, \ReflectionClass $classReflection): void
+    {
         if ($itemType instanceof Array_) {
-            $this->addInnerType('array', (string) $keyType);
+            $this->addInnerType('array', $keyType);
 
             return;
         }
@@ -219,13 +357,13 @@ class TypeResolver
                 throw new ClassNotFoundException('Class not found for '.(string) $itemType.'.', 5934);
             }
 
-            $this->addInnerType($class, (string) $keyType);
+            $this->addInnerType($class, $keyType);
 
             return;
         }
 
         // class not exists! It's simple type
-        $this->addInnerType((string) $itemType, (string) $keyType);
+        $this->addInnerType((string) $itemType, $keyType);
     }
 
     /**
@@ -283,31 +421,25 @@ class TypeResolver
 
     private function addInnerType(string $type, string $keyType): void
     {
-        if ('?' === $type[0]) {
-            $type = substr($type, 1);
-            $this->addInnerType('null', $keyType);
-        }
+        $key = explode('|', $keyType);
 
-        if (!isset($this->innerTypes[$keyType])) {
-            $this->innerTypes[$keyType] = [];
-        }
+        foreach ($key as $keyType) {
+            if (!isset($this->innerTypes[$keyType])) {
+                $this->innerTypes[$keyType] = [];
+            }
 
-        if (!in_array($type, $this->innerTypes[$keyType])) {
-            $this->innerTypes[$keyType][] = $type;
-        }
+            if (!in_array($type, $this->innerTypes[$keyType])) {
+                $this->innerTypes[$keyType][] = $type;
+            }
 
-        // removing `mixed` type from inner types
-        $isNull = in_array('null', $this->innerTypes[$keyType]) ? 1 : 0;
-        $isMixed = in_array('mixed', $this->innerTypes[$keyType]) ? 1 : 0;
+            // removing `mixed` type from inner types
+            $isNull = in_array('null', $this->innerTypes[$keyType]) ? 1 : 0;
+            $isMixed = in_array('mixed', $this->innerTypes[$keyType]) ? 1 : 0;
 
-        if ($isMixed && count($this->innerTypes[$keyType]) > 1 + $isNull) {
-            unset($this->innerTypes[$keyType][array_search('mixed', $this->innerTypes[$keyType])]);
-            $this->innerTypes[$keyType] = array_values($this->innerTypes[$keyType]);
-        }
-
-        // removing `string|int` from key types if any other key type exists
-        if (count($this->innerTypes) > 1) {
-            unset($this->innerTypes['string|int']);
+            if ($isMixed && count($this->innerTypes[$keyType]) > 1 + $isNull) {
+                unset($this->innerTypes[$keyType][array_search('mixed', $this->innerTypes[$keyType])]);
+                $this->innerTypes[$keyType] = array_values($this->innerTypes[$keyType]);
+            }
         }
     }
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PBaszak\UltraMapper\Tests\Blueprint\Unit;
 
-use ArrayObject;
 use PBaszak\UltraMapper\Blueprint\Application\Enum\TypeDeclaration;
 use PBaszak\UltraMapper\Blueprint\Domain\Exception\ClassNotFoundException;
 use PBaszak\UltraMapper\Blueprint\Domain\Resolver\TypeResolver;
@@ -27,6 +26,7 @@ class TypeResolverTest extends TestCase
         $resolver = (new TypeResolver(new \ReflectionProperty($obj, 'property')))->process();
         $this->assertEmpty($resolver->getTypes());
         $this->assertEmpty($resolver->getInnerTypes());
+        $this->assertEquals(TypeDeclaration::UNKNOWN, $resolver->getTypeDeclaration());
     }
 
     #[Test]
@@ -39,6 +39,7 @@ class TypeResolverTest extends TestCase
         $resolver = (new TypeResolver(new \ReflectionProperty($obj, 'property')))->process();
         $this->assertEmpty($resolver->getTypes());
         $this->assertEmpty($resolver->getInnerTypes());
+        $this->assertEquals(TypeDeclaration::UNKNOWN, $resolver->getTypeDeclaration());
     }
 
     #[Test]
@@ -80,7 +81,8 @@ class TypeResolverTest extends TestCase
 
         $resolver = (new TypeResolver((new \ReflectionMethod($obj, '__construct'))->getParameters()[0]))->process();
         $this->assertEquals(['array'], $resolver->getTypes());
-        $this->assertEquals(['string|int' => ['string']], $resolver->getInnerTypes());
+        $this->assertEquals(['string' => ['string'], 'int' => ['string']], $resolver->getInnerTypes());
+        $this->assertEquals(TypeDeclaration::NAMED, $resolver->getTypeDeclaration());
     }
 
     #[Test]
@@ -97,17 +99,13 @@ class TypeResolverTest extends TestCase
                 public array $property
             ) {
             }
-        }, new class([]) {
-            public function __construct(
-                public array $property
-            ) {
-            }
         }];
 
         foreach ($obj as $o) {
             $resolver = (new TypeResolver((new \ReflectionMethod($o, '__construct'))->getParameters()[0]))->process();
             $this->assertEquals(['array'], $resolver->getTypes());
-            $this->assertEquals(['string|int' => ['mixed']], $resolver->getInnerTypes());
+            $this->assertEquals(['string' => ['mixed'], 'int' => ['mixed']], $resolver->getInnerTypes());
+            $this->assertEquals(TypeDeclaration::NAMED, $resolver->getTypeDeclaration());
         }
     }
 
@@ -125,13 +123,14 @@ class TypeResolverTest extends TestCase
     public static function dataProvider(): array
     {
         return [
-            // null
+            // (simple types + nullable simple types) x (based on docblock + based on reflection + based on docblock and reflection)
             'null' => [
                 'obj' => new class() {
                     public null $property;
                 },
                 'expectedTypes' => ['null'],
                 'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
             ],
             'nullBasedOnDocBlock' => [
                 'obj' => new class() {
@@ -140,6 +139,7 @@ class TypeResolverTest extends TestCase
                 },
                 'expectedTypes' => ['null'],
                 'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
             ],
             'nullBasedOnDocBlockAndReflection' => [
                 'obj' => new class() {
@@ -147,107 +147,215 @@ class TypeResolverTest extends TestCase
                 },
                 'expectedTypes' => ['null'],
                 'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
             ],
-
-            // boolean
-            'boolean' => [
+            'false' => [
+                'obj' => new class() {
+                    public false $property;
+                },
+                'expectedTypes' => ['false'],
+                'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
+            ],
+            'falseBasedOnDocBlock' => [
+                'obj' => new class() {
+                    /** @var false */
+                    public $property;
+                },
+                'expectedTypes' => ['false'],
+                'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
+            ],
+            'falseBasedOnDocBlockAndReflection' => [
+                'obj' => new class() {
+                    public false $property;
+                },
+                'expectedTypes' => ['false'],
+                'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
+            ],
+            '?false' => [
+                'obj' => new class() {
+                    public ?false $property;
+                },
+                'expectedTypes' => ['false', 'null'],
+                'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
+            ],
+            '?falseBasedOnDocBlock' => [
+                'obj' => new class() {
+                    /** @var false|null */
+                    public $property;
+                },
+                'expectedTypes' => ['false', 'null'],
+                'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
+            ],
+            '?falseBasedOnDocBlockAndReflection' => [
+                'obj' => new class() {
+                    public ?false $property;
+                },
+                'expectedTypes' => ['false', 'null'],
+                'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
+            ],
+            'true' => [
+                'obj' => new class() {
+                    public true $property;
+                },
+                'expectedTypes' => ['true'],
+                'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
+            ],
+            'trueBasedOnDocBlock' => [
+                'obj' => new class() {
+                    /** @var true */
+                    public $property;
+                },
+                'expectedTypes' => ['true'],
+                'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
+            ],
+            'trueBasedOnDocBlockAndReflection' => [
+                'obj' => new class() {
+                    public true $property;
+                },
+                'expectedTypes' => ['true'],
+                'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
+            ],
+            '?true' => [
+                'obj' => new class() {
+                    public ?true $property;
+                },
+                'expectedTypes' => ['true', 'null'],
+                'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
+            ],
+            '?trueBasedOnDocBlock' => [
+                'obj' => new class() {
+                    /** @var true|null */
+                    public $property;
+                },
+                'expectedTypes' => ['true', 'null'],
+                'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
+            ],
+            '?trueBasedOnDocBlockAndReflection' => [
+                'obj' => new class() {
+                    public ?true $property;
+                },
+                'expectedTypes' => ['true', 'null'],
+                'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
+            ],
+            'bool' => [
                 'obj' => new class() {
                     public bool $property;
                 },
                 'expectedTypes' => ['bool'],
                 'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
             ],
-            'booleanBasedOnDocBlock' => [
+            'boolBasedOnDocBlock' => [
                 'obj' => new class() {
                     /** @var bool */
                     public $property;
                 },
                 'expectedTypes' => ['bool'],
                 'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
             ],
-            'booleanBasedOnDocBlockAndReflection' => [
+            'boolBasedOnDocBlockAndReflection' => [
                 'obj' => new class() {
                     public bool $property;
                 },
                 'expectedTypes' => ['bool'],
                 'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
             ],
-            'nullableBoolean' => [
+            '?bool' => [
                 'obj' => new class() {
                     public ?bool $property;
                 },
                 'expectedTypes' => ['bool', 'null'],
                 'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
             ],
-            'nullableBooleanBasedOnDocBlock' => [
+            '?boolBasedOnDocBlock' => [
                 'obj' => new class() {
                     /** @var bool|null */
                     public $property;
                 },
                 'expectedTypes' => ['bool', 'null'],
                 'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
             ],
-            'nullableBooleanBasedOnDocBlockAndReflection' => [
+            '?boolBasedOnDocBlockAndReflection' => [
                 'obj' => new class() {
                     public ?bool $property;
                 },
                 'expectedTypes' => ['bool', 'null'],
                 'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
             ],
-
-            // integer
-            'integer' => [
+            'int' => [
                 'obj' => new class() {
                     public int $property;
                 },
                 'expectedTypes' => ['int'],
                 'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
             ],
-            'integerBasedOnDocBlock' => [
+            'intBasedOnDocBlock' => [
                 'obj' => new class() {
                     /** @var int */
                     public $property;
                 },
                 'expectedTypes' => ['int'],
                 'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
             ],
-            'integerBasedOnDocBlockAndReflection' => [
+            'intBasedOnDocBlockAndReflection' => [
                 'obj' => new class() {
                     public int $property;
                 },
                 'expectedTypes' => ['int'],
                 'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
             ],
-            'nullableInteger' => [
+            '?int' => [
                 'obj' => new class() {
                     public ?int $property;
                 },
                 'expectedTypes' => ['int', 'null'],
                 'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
             ],
-            'nullableIntegerBasedOnDocBlock' => [
+            '?intBasedOnDocBlock' => [
                 'obj' => new class() {
                     /** @var ?int */
                     public $property;
                 },
                 'expectedTypes' => ['int', 'null'],
                 'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
             ],
-            'nullableIntegerBasedOnDocBlockAndReflection' => [
+            '?intBasedOnDocBlockAndReflection' => [
                 'obj' => new class() {
                     public ?int $property;
                 },
                 'expectedTypes' => ['int', 'null'],
                 'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
             ],
-
-            // float
             'float' => [
                 'obj' => new class() {
                     public float $property;
                 },
                 'expectedTypes' => ['float'],
                 'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
             ],
             'floatBasedOnDocBlock' => [
                 'obj' => new class() {
@@ -256,6 +364,7 @@ class TypeResolverTest extends TestCase
                 },
                 'expectedTypes' => ['float'],
                 'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
             ],
             'floatBasedOnDocBlockAndReflection' => [
                 'obj' => new class() {
@@ -263,37 +372,40 @@ class TypeResolverTest extends TestCase
                 },
                 'expectedTypes' => ['float'],
                 'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
             ],
-            'nullableFloat' => [
+            '?float' => [
                 'obj' => new class() {
                     public ?float $property;
                 },
                 'expectedTypes' => ['float', 'null'],
                 'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
             ],
-            'nullableFloatBasedOnDocBlock' => [
+            '?floatBasedOnDocBlock' => [
                 'obj' => new class() {
                     /** @var float|null */
                     public $property;
                 },
                 'expectedTypes' => ['float', 'null'],
                 'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
             ],
-            'nullableFloatBasedOnDocBlockAndReflection' => [
+            '?floatBasedOnDocBlockAndReflection' => [
                 'obj' => new class() {
                     public ?float $property;
                 },
                 'expectedTypes' => ['float', 'null'],
                 'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
             ],
-
-            // string
             'string' => [
                 'obj' => new class() {
                     public string $property;
                 },
                 'expectedTypes' => ['string'],
                 'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
             ],
             'stringBasedOnDocBlock' => [
                 'obj' => new class() {
@@ -302,6 +414,7 @@ class TypeResolverTest extends TestCase
                 },
                 'expectedTypes' => ['string'],
                 'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
             ],
             'stringBasedOnDocBlockAndReflection' => [
                 'obj' => new class() {
@@ -309,159 +422,40 @@ class TypeResolverTest extends TestCase
                 },
                 'expectedTypes' => ['string'],
                 'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
             ],
-            'nullableString' => [
+            '?string' => [
                 'obj' => new class() {
                     public ?string $property;
                 },
                 'expectedTypes' => ['string', 'null'],
                 'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
             ],
-            'nullableStringBasedOnDocBlock' => [
+            '?stringBasedOnDocBlock' => [
                 'obj' => new class() {
                     /** @var string|null */
                     public $property;
                 },
                 'expectedTypes' => ['string', 'null'],
                 'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
             ],
-            'nullableStringBasedOnDocBlockAndReflection' => [
+            '?stringBasedOnDocBlockAndReflection' => [
                 'obj' => new class() {
                     public ?string $property;
                 },
                 'expectedTypes' => ['string', 'null'],
                 'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
             ],
-
-            // array
-            'array' => [
-                'obj' => new class() {
-                    public array $property;
-                },
-                'expectedTypes' => ['array'],
-                'expectedInnerTypes' => ['string|int' => ['mixed']],
-            ],
-            'arrayBasedOnDocBlock' => [
-                'obj' => new class() {
-                    /** @var array */
-                    public $property;
-                },
-                'expectedTypes' => ['array'],
-                'expectedInnerTypes' => ['string|int' => ['mixed']],
-            ],
-            'arrayBasedOnDocBlockAndReflection' => [
-                'obj' => new class() {
-                    public array $property;
-                },
-                'expectedTypes' => ['array'],
-                'expectedInnerTypes' => ['string|int' => ['mixed']],
-            ],
-            'nullableArray' => [
-                'obj' => new class() {
-                    public ?array $property;
-                },
-                'expectedTypes' => ['array', 'null'],
-                'expectedInnerTypes' => ['string|int' => ['mixed']],
-            ],
-            'nullableArrayBasedOnDocBlock' => [
-                'obj' => new class() {
-                    /** @var array|null */
-                    public $property;
-                },
-                'expectedTypes' => ['array', 'null'],
-                'expectedInnerTypes' => ['string|int' => ['mixed']],
-            ],
-            'nullableArrayBasedOnDocBlockAndReflection' => [
-                'obj' => new class() {
-                    public ?array $property;
-                },
-                'expectedTypes' => ['array', 'null'],
-                'expectedInnerTypes' => ['string|int' => ['mixed']],
-            ],
-
-            // array with value type
-            'arrayWithStringValueType' => [
-                'obj' => new class() {
-                    /** @var string[] */
-                    public array $property;
-                },
-                'expectedTypes' => ['array'],
-                'expectedInnerTypes' => ['string|int' => ['string']],
-            ],
-            'arrayWithStringValueTypeBasedOnlyOnDocBlock' => [
-                'obj' => new class() {
-                    /** @var string[] */
-                    public $property;
-                },
-                'expectedTypes' => ['array'],
-                'expectedInnerTypes' => ['string|int' => ['string']],
-            ],
-
-            // array with key and value types
-            'arrayWithStringKeyAndValueType' => [
-                'obj' => new class() {
-                    /** @var array<string, mixed> */
-                    public array $property;
-                },
-                'expectedTypes' => ['array'],
-                'expectedInnerTypes' => ['string' => ['mixed']],
-            ],
-            'arrayWithStringKeyAndValueTypeBasedOnlyOnDocBlock' => [
-                'obj' => new class() {
-                    /** @var array<string, ?array> */
-                    public $property;
-                },
-                'expectedTypes' => ['array'],
-                'expectedInnerTypes' => ['string' => ['null', 'array']],
-            ],
-            'arrayWithStringKeyAndArrayAsValueTypeBasedOnDocBlock' => [
-                'obj' => new class() {
-                    /** @var array<string, string[]> */
-                    public array $property;
-                },
-                'expectedTypes' => ['array'],
-                'expectedInnerTypes' => ['string' => ['array']],
-            ],
-
-            // ArrayObject
-            'ArrayObject' => [
-                'obj' => new class() {
-                    public \ArrayObject $property;
-                },
-                'expectedTypes' => ['\\ArrayObject'],
-                'expectedInnerTypes' => ['string|int' => ['mixed']],
-            ],
-            'ArrayObjectBasedOnDocBlock' => [
-                'obj' => new class() {
-                    /** @var \ArrayObject<mixed> */
-                    public $property;
-                },
-                'expectedTypes' => ['\\ArrayObject'],
-                'expectedInnerTypes' => ['string|int' => ['mixed']],
-            ],
-            'ArrayObjectBasedOnDocBlockAndReflection' => [
-                'obj' => new class() {
-                    /** @var \ArrayObject<mixed> */
-                    public \ArrayObject $property;
-                },
-                'expectedTypes' => ['\\ArrayObject'],
-                'expectedInnerTypes' => ['string|int' => ['mixed']],
-            ],
-            'nullableArrayObject' => [
-                'obj' => new class() {
-                    public ?\ArrayObject $property;
-                },
-                'expectedTypes' => ['\\ArrayObject', 'null'],
-                'expectedInnerTypes' => ['string|int' => ['mixed']],
-            ],
-
-            // object
             'object' => [
                 'obj' => new class() {
                     public object $property;
                 },
                 'expectedTypes' => ['object'],
                 'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
             ],
             'objectBasedOnDocBlock' => [
                 'obj' => new class() {
@@ -470,6 +464,7 @@ class TypeResolverTest extends TestCase
                 },
                 'expectedTypes' => ['object'],
                 'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
             ],
             'objectBasedOnDocBlockAndReflection' => [
                 'obj' => new class() {
@@ -477,219 +472,641 @@ class TypeResolverTest extends TestCase
                 },
                 'expectedTypes' => ['object'],
                 'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
             ],
-            'nullableObject' => [
+            '?object' => [
                 'obj' => new class() {
                     public ?object $property;
                 },
                 'expectedTypes' => ['object', 'null'],
                 'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
             ],
-            'nullableObjectBasedOnDocBlock' => [
+            '?objectBasedOnDocBlock' => [
                 'obj' => new class() {
                     /** @var object|null */
                     public $property;
                 },
                 'expectedTypes' => ['object', 'null'],
                 'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
             ],
-            'nullableObjectBasedOnDocBlockAndReflection' => [
+            '?objectBasedOnDocBlockAndReflection' => [
                 'obj' => new class() {
                     public ?object $property;
                 },
                 'expectedTypes' => ['object', 'null'],
                 'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
             ],
-
-            // class
-            'class' => [
-                'obj' => new class() {
-                    public Dummy $property;
-                },
-                'expectedTypes' => ['\\'.Dummy::class],
-                'expectedInnerTypes' => [],
-            ],
-            'classBasedOnDocBlock' => [
-                'obj' => new class() {
-                    /** @var Dummy */
-                    public $property;
-                },
-                'expectedTypes' => ['\\'.Dummy::class],
-                'expectedInnerTypes' => [],
-            ],
-            'classBasedOnDocBlockAndReflection' => [
-                'obj' => new class() {
-                    public Dummy $property;
-                },
-                'expectedTypes' => ['\\'.Dummy::class],
-                'expectedInnerTypes' => [],
-            ],
-            'nullableClass' => [
-                'obj' => new class() {
-                    public ?Dummy $property;
-                },
-                'expectedTypes' => ['\\'.Dummy::class, 'null'],
-                'expectedInnerTypes' => [],
-            ],
-            'nullableClassBasedOnDocBlock' => [
-                'obj' => new class() {
-                    /** @var Dummy|null */
-                    public $property;
-                },
-                'expectedTypes' => ['\\'.Dummy::class, 'null'],
-                'expectedInnerTypes' => [],
-            ],
-            'nullableClassBasedOnDocBlockAndReflection' => [
-                'obj' => new class() {
-                    public ?Dummy $property;
-                },
-                'expectedTypes' => ['\\'.Dummy::class, 'null'],
-                'expectedInnerTypes' => [],
-            ],
-
-            // DateTime
             'DateTime' => [
                 'obj' => new class() {
                     public \DateTime $property;
                 },
                 'expectedTypes' => ['\\DateTime'],
                 'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
             ],
-            'nullableDateTime' => [
+            '?DateTime' => [
                 'obj' => new class() {
                     public ?\DateTime $property;
                 },
                 'expectedTypes' => ['\\DateTime', 'null'],
                 'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
             ],
-
-            // Complex structure (Array of objects)
-            'arrayOfObjects' => [
+            '\\'.Dummy::class => [
                 'obj' => new class() {
-                    /** @var Dummy[] */
-                    public array $property;
+                    public Dummy $property;
                 },
-                'expectedTypes' => ['array'],
-                'expectedInnerTypes' => ['string|int' => ['\\'.Dummy::class]],
-            ],
-            'nullableArrayOfObjects' => [
-                'obj' => new class() {
-                    /** @var Dummy[]|null */
-                    public ?array $property;
-                },
-                'expectedTypes' => ['array', 'null'],
-                'expectedInnerTypes' => ['string|int' => ['\\'.Dummy::class]],
-            ],
-
-            // Complex structure (ArrayObject of objects)
-            'ArrayObjectOfObjects' => [
-                'obj' => new class() {
-                    /** @var \ArrayObject<Dummy> */
-                    public \ArrayObject $property;
-                },
-                'expectedTypes' => ['\\ArrayObject'],
-                'expectedInnerTypes' => ['string|int' => ['\\'.Dummy::class]],
-            ],
-
-            // Union types
-            'unionTypes' => [
-                'obj' => new class() {
-                    public int|string $property;
-                },
-                'expectedTypes' => ['int', 'string'],
+                'expectedTypes' => ['\\'.Dummy::class],
                 'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
             ],
-            'nullableUnionTypes' => [
+            '\\'.Dummy::class.'BasedOnDocBlock' => [
                 'obj' => new class() {
-                    public int|string|null $property;
-                },
-                'expectedTypes' => ['int', 'string', 'null'],
-                'expectedInnerTypes' => [],
-            ],
-            'unionTypesBasedOnDocBlock' => [
-                'obj' => new class() {
-                    /** @var int|string */
+                    /** @var Dummy */
                     public $property;
                 },
-                'expectedTypes' => ['int', 'string'],
+                'expectedTypes' => ['\\'.Dummy::class],
                 'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
             ],
-            'nullableUnionTypesBasedOnDocBlock' => [
+            '\\'.Dummy::class.'BasedOnDocBlockAndReflection' => [
                 'obj' => new class() {
-                    /** @var int|string|null */
+                    public Dummy $property;
+                },
+                'expectedTypes' => ['\\'.Dummy::class],
+                'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
+            ],
+            '?\\'.Dummy::class => [
+                'obj' => new class() {
+                    public ?Dummy $property;
+                },
+                'expectedTypes' => ['\\'.Dummy::class, 'null'],
+                'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
+            ],
+            '?\\'.Dummy::class.'BasedOnDocBlock' => [
+                'obj' => new class() {
+                    /** @var Dummy|null */
                     public $property;
                 },
-                'expectedTypes' => ['int', 'string', 'null'],
+                'expectedTypes' => ['\\'.Dummy::class, 'null'],
                 'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
             ],
-            shell_exec('unionTypesBasedOnDocBlockAndReflection') => [
+            '?\\'.Dummy::class.'BasedOnDocBlockAndReflection' => [
                 'obj' => new class() {
-                    public int|string $property;
+                    public ?Dummy $property;
                 },
-                'expectedTypes' => ['int', 'string'],
+                'expectedTypes' => ['\\'.Dummy::class, 'null'],
                 'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
             ],
-            shell_exec('unionTypesWithClasses') => [
-                'obj' => new class() {
-                    public Dummy|\ArrayObject $property;
-                },
-                'expectedTypes' => ['\\'.Dummy::class, '\\ArrayObject'],
-                'expectedInnerTypes' => ['string|int' => ['mixed']],
-            ],
-
-            // Intersection types
-            'intersectionTypes' => [
-                'obj' => new class() {
-                    public \ArrayAccess&\ArrayObject $property;
-                },
-                'expectedTypes' => ['\\ArrayAccess', '\\ArrayObject'],
-                'expectedInnerTypes' => ['string|int' => ['mixed']],
-            ],
-
-            // enum types
-            'enumTypes' => [
+            '\\'.TypeDeclaration::class => [
                 'obj' => new class() {
                     public TypeDeclaration $property;
                 },
                 'expectedTypes' => ['\\'.TypeDeclaration::class],
                 'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
             ],
-            'nullableEnumTypes' => [
-                'obj' => new class() {
-                    public ?TypeDeclaration $property;
-                },
-                'expectedTypes' => ['\\'.TypeDeclaration::class, 'null'],
-                'expectedInnerTypes' => [],
-            ],
-            'enumTypesBasedOnDocBlock' => [
+            '\\'.TypeDeclaration::class.'BasedOnDocBlock' => [
                 'obj' => new class() {
                     /** @var TypeDeclaration */
                     public $property;
                 },
                 'expectedTypes' => ['\\'.TypeDeclaration::class],
                 'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
             ],
-            'nullableEnumTypesBasedOnDocBlock' => [
+            '\\'.TypeDeclaration::class.'BasedOnDocBlockAndReflection' => [
+                'obj' => new class() {
+                    public TypeDeclaration $property;
+                },
+                'expectedTypes' => ['\\'.TypeDeclaration::class],
+                'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
+            ],
+            '?\\'.TypeDeclaration::class => [
+                'obj' => new class() {
+                    public ?TypeDeclaration $property;
+                },
+                'expectedTypes' => ['\\'.TypeDeclaration::class, 'null'],
+                'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
+            ],
+            '?\\'.TypeDeclaration::class.'BasedOnDocBlock' => [
                 'obj' => new class() {
                     /** @var TypeDeclaration|null */
                     public $property;
                 },
                 'expectedTypes' => ['\\'.TypeDeclaration::class, 'null'],
                 'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
             ],
-            'enumTypesBasedOnDocBlockAndReflection' => [
+            '?\\'.TypeDeclaration::class.'BasedOnDocBlockAndReflection' => [
                 'obj' => new class() {
-                    public TypeDeclaration $property;
+                    public ?TypeDeclaration $property;
                 },
-                'expectedTypes' => ['\\'.TypeDeclaration::class],
+                'expectedTypes' => ['\\'.TypeDeclaration::class, 'null'],
                 'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
+            ],
+            'mixed' => [
+                'obj' => new class() {
+                    public mixed $property;
+                },
+                'expectedTypes' => ['mixed', 'null'],
+                'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
+            ],
+            'mixedBasedOnDocBlock' => [
+                'obj' => new class() {
+                    /** @var mixed */
+                    public $property;
+                },
+                'expectedTypes' => ['mixed', 'null'],
+                'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
+            ],
+            'mixedBasedOnDocBlockAndReflection' => [
+                'obj' => new class() {
+                    public mixed $property;
+                },
+                'expectedTypes' => ['mixed', 'null'],
+                'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
+            ],
+
+            // special simple types
+            'class-stringBasedOnDocBlock' => [
+                'obj' => new class() {
+                    /** @var class-string */
+                    public $property;
+                },
+                'expectedTypes' => ['string'],
+                'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
+            ],
+            'class-stringBasedOnDocBlockAndReflection' => [
+                'obj' => new class() {
+                    /** @var class-string */
+                    public string $property;
+                },
+                'expectedTypes' => ['string'],
+                'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::NAMED,
+            ],
+
+            // intersection types
+            \JsonSerializable::class.'&\\'.Dummy::class => [
+                'obj' => new class() {
+                    public \JsonSerializable&Dummy $property;
+                },
+                'expectedTypes' => ['\\'.\JsonSerializable::class, '\\'.Dummy::class],
+                'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::INTERSECTION,
+            ],
+            \JsonSerializable::class.'&\\'.Dummy::class.'BasedOnDocBlock' => [
+                'obj' => new class() {
+                    /** @var \JsonSerializable&Dummy */
+                    public $property;
+                },
+                'expectedTypes' => ['\\'.\JsonSerializable::class, '\\'.Dummy::class],
+                'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::INTERSECTION,
+            ],
+            \JsonSerializable::class.'&\\'.Dummy::class.'BasedOnDocBlockAndReflection' => [
+                'obj' => new class() {
+                    public \JsonSerializable&Dummy $property;
+                },
+                'expectedTypes' => ['\\'.\JsonSerializable::class, '\\'.Dummy::class],
+                'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::INTERSECTION,
+            ],
+            '?'.\JsonSerializable::class.'&\\'.Dummy::class => [
+                'obj' => new class() {
+                    public (\JsonSerializable&Dummy)|null $property;
+                },
+                'expectedTypes' => ['\\'.\JsonSerializable::class, '\\'.Dummy::class, 'null'],
+                'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::INTERSECTION,
+            ],
+
+            // union types
+            'false|int' => [
+                'obj' => new class() {
+                    public int|false $property;
+                },
+                'expectedTypes' => ['int', 'false'],
+                'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::UNION,
+            ],
+            'false|intBasedOnDocBlock' => [
+                'obj' => new class() {
+                    /** @var int|false */
+                    public $property;
+                },
+                'expectedTypes' => ['int', 'false'],
+                'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::UNION,
+            ],
+            'false|intBasedOnDocBlockAndReflection' => [
+                'obj' => new class() {
+                    public int|false $property;
+                },
+                'expectedTypes' => ['int', 'false'],
+                'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::UNION,
+            ],
+            '?false|int' => [
+                'obj' => new class() {
+                    public int|false|null $property;
+                },
+                'expectedTypes' => ['int', 'false', 'null'],
+                'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::UNION,
+            ],
+            '?false|intBasedOnDocBlock' => [
+                'obj' => new class() {
+                    /** @var int|false|null */
+                    public $property;
+                },
+                'expectedTypes' => ['int', 'false', 'null'],
+                'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::UNION,
+            ],
+            '?false|intBasedOnDocBlockAndReflection' => [
+                'obj' => new class() {
+                    public int|false|null $property;
+                },
+                'expectedTypes' => ['int', 'false', 'null'],
+                'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::UNION,
+            ],
+            'int|float' => [
+                'obj' => new class() {
+                    public int|float $property;
+                },
+                'expectedTypes' => ['int', 'float'],
+                'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::UNION,
+            ],
+            'int|floatBasedOnDocBlock' => [
+                'obj' => new class() {
+                    /** @var int|float */
+                    public $property;
+                },
+                'expectedTypes' => ['int', 'float'],
+                'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::UNION,
+            ],
+            'int|floatBasedOnDocBlockAndReflection' => [
+                'obj' => new class() {
+                    public int|float $property;
+                },
+                'expectedTypes' => ['int', 'float'],
+                'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::UNION,
+            ],
+            '?int|float' => [
+                'obj' => new class() {
+                    public int|float|null $property;
+                },
+                'expectedTypes' => ['int', 'float', 'null'],
+                'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::UNION,
+            ],
+            '?int|floatBasedOnDocBlock' => [
+                'obj' => new class() {
+                    /** @var int|float|null */
+                    public $property;
+                },
+                'expectedTypes' => ['int', 'float', 'null'],
+                'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::UNION,
+            ],
+            '?int|floatBasedOnDocBlockAndReflection' => [
+                'obj' => new class() {
+                    public int|float|null $property;
+                },
+                'expectedTypes' => ['int', 'float', 'null'],
+                'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::UNION,
+            ],
+            'int|float|string' => [
+                'obj' => new class() {
+                    public int|float|string $property;
+                },
+                'expectedTypes' => ['int', 'float', 'string'],
+                'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::UNION,
+            ],
+            'int|float|stringBasedOnDocBlock' => [
+                'obj' => new class() {
+                    /** @var int|float|string */
+                    public $property;
+                },
+                'expectedTypes' => ['int', 'float', 'string'],
+                'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::UNION,
+            ],
+            'int|float|stringBasedOnDocBlockAndReflection' => [
+                'obj' => new class() {
+                    public int|float|string $property;
+                },
+                'expectedTypes' => ['int', 'float', 'string'],
+                'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::UNION,
+            ],
+            '?int|float|string' => [
+                'obj' => new class() {
+                    public int|float|string|null $property;
+                },
+                'expectedTypes' => ['int', 'float', 'string', 'null'],
+                'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::UNION,
+            ],
+            '?int|float|stringBasedOnDocBlock' => [
+                'obj' => new class() {
+                    /** @var int|float|string|null */
+                    public $property;
+                },
+                'expectedTypes' => ['int', 'float', 'string', 'null'],
+                'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::UNION,
+            ],
+            '?int|float|stringBasedOnDocBlockAndReflection' => [
+                'obj' => new class() {
+                    public int|float|string|null $property;
+                },
+                'expectedTypes' => ['int', 'float', 'string', 'null'],
+                'expectedInnerTypes' => [],
+                'type' => TypeDeclaration::UNION,
+            ],
+
+            // collection types
+            'array' => [
+                'obj' => new class() {
+                    public array $property;
+                },
+                'expectedTypes' => ['array'],
+                'expectedInnerTypes' => ['string' => ['mixed'], 'int' => ['mixed']],
+                'type' => TypeDeclaration::NAMED,
+            ],
+            'arrayBasedOnDocBlock' => [
+                'obj' => new class() {
+                    /** @var array */
+                    public $property;
+                },
+                'expectedTypes' => ['array'],
+                'expectedInnerTypes' => ['string' => ['mixed'], 'int' => ['mixed']],
+                'type' => TypeDeclaration::NAMED,
+            ],
+            'arrayBasedOnDocBlockAndReflection' => [
+                'obj' => new class() {
+                    public array $property;
+                },
+                'expectedTypes' => ['array'],
+                'expectedInnerTypes' => ['string' => ['mixed'], 'int' => ['mixed']],
+                'type' => TypeDeclaration::NAMED,
+            ],
+            '?array' => [
+                'obj' => new class() {
+                    public ?array $property;
+                },
+                'expectedTypes' => ['array', 'null'],
+                'expectedInnerTypes' => ['string' => ['mixed'], 'int' => ['mixed']],
+                'type' => TypeDeclaration::NAMED,
+            ],
+            '?arrayBasedOnDocBlock' => [
+                'obj' => new class() {
+                    /** @var array|null */
+                    public $property;
+                },
+                'expectedTypes' => ['array', 'null'],
+                'expectedInnerTypes' => ['string' => ['mixed'], 'int' => ['mixed']],
+                'type' => TypeDeclaration::NAMED,
+            ],
+            '?arrayBasedOnDocBlockAndReflection' => [
+                'obj' => new class() {
+                    public ?array $property;
+                },
+                'expectedTypes' => ['array', 'null'],
+                'expectedInnerTypes' => ['string' => ['mixed'], 'int' => ['mixed']],
+                'type' => TypeDeclaration::NAMED,
+            ],
+            '\\ArrayObject' => [
+                'obj' => new class() {
+                    public \ArrayObject $property;
+                },
+                'expectedTypes' => ['\\ArrayObject'],
+                'expectedInnerTypes' => ['string' => ['mixed'], 'int' => ['mixed']],
+                'type' => TypeDeclaration::NAMED,
+            ],
+            '\\ArrayObjectBasedOnDocBlock' => [
+                'obj' => new class() {
+                    /** @var \ArrayObject */
+                    public $property;
+                },
+                'expectedTypes' => ['\\ArrayObject'],
+                'expectedInnerTypes' => ['string' => ['mixed'], 'int' => ['mixed']],
+                'type' => TypeDeclaration::NAMED,
+            ],
+            '\\ArrayObjectBasedOnDocBlockAndReflection' => [
+                'obj' => new class() {
+                    public \ArrayObject $property;
+                },
+                'expectedTypes' => ['\\ArrayObject'],
+                'expectedInnerTypes' => ['string' => ['mixed'], 'int' => ['mixed']],
+                'type' => TypeDeclaration::NAMED,
+            ],
+            '?\\ArrayObject' => [
+                'obj' => new class() {
+                    public ?\ArrayObject $property;
+                },
+                'expectedTypes' => ['\\ArrayObject', 'null'],
+                'expectedInnerTypes' => ['string' => ['mixed'], 'int' => ['mixed']],
+                'type' => TypeDeclaration::NAMED,
+            ],
+            '?\\ArrayObjectBasedOnDocBlock' => [
+                'obj' => new class() {
+                    /** @var \ArrayObject|null */
+                    public $property;
+                },
+                'expectedTypes' => ['\\ArrayObject', 'null'],
+                'expectedInnerTypes' => ['string' => ['mixed'], 'int' => ['mixed']],
+                'type' => TypeDeclaration::NAMED,
+            ],
+            '?\\ArrayObjectBasedOnDocBlockAndReflection' => [
+                'obj' => new class() {
+                    public ?\ArrayObject $property;
+                },
+                'expectedTypes' => ['\\ArrayObject', 'null'],
+                'expectedInnerTypes' => ['string' => ['mixed'], 'int' => ['mixed']],
+                'type' => TypeDeclaration::NAMED,
+            ],
+
+            // collection with string key
+            'array<string, mixed>BasedOnDocBlock' => [
+                'obj' => new class() {
+                    /** @var array<string, mixed> */
+                    public $property;
+                },
+                'expectedTypes' => ['array'],
+                'expectedInnerTypes' => ['string' => ['mixed']],
+                'type' => TypeDeclaration::NAMED,
+            ],
+            'array<int, mixed>BasedOnDocBlockAndReflection' => [
+                'obj' => new class() {
+                    /** @var array<int, mixed> */
+                    public array $property;
+                },
+                'expectedTypes' => ['array'],
+                'expectedInnerTypes' => ['int' => ['mixed']],
+                'type' => TypeDeclaration::NAMED,
+            ],
+            '?array<string, mixed>BasedOnDocBlock' => [
+                'obj' => new class() {
+                    /** @var array<string, mixed>|null */
+                    public $property;
+                },
+                'expectedTypes' => ['array', 'null'],
+                'expectedInnerTypes' => ['string' => ['mixed']],
+                'type' => TypeDeclaration::NAMED,
+            ],
+            '?array<string, mixed>BasedOnDocBlockAndReflection' => [
+                'obj' => new class() {
+                    /** @var array<string, mixed>|null */
+                    public ?array $property;
+                },
+                'expectedTypes' => ['array', 'null'],
+                'expectedInnerTypes' => ['string' => ['mixed']],
+                'type' => TypeDeclaration::NAMED,
+            ],
+            '\\ArrayObject<string, mixed>BasedOnDocBlock' => [
+                'obj' => new class() {
+                    /** @var \ArrayObject<string, mixed> */
+                    public $property;
+                },
+                'expectedTypes' => ['\\ArrayObject'],
+                'expectedInnerTypes' => ['string' => ['mixed']],
+                'type' => TypeDeclaration::NAMED,
+            ],
+            '\\ArrayObject<string, mixed>BasedOnDocBlockAndReflection' => [
+                'obj' => new class() {
+                    /** @var \ArrayObject<string, mixed> */
+                    public \ArrayObject $property;
+                },
+                'expectedTypes' => ['\\ArrayObject'],
+                'expectedInnerTypes' => ['string' => ['mixed']],
+                'type' => TypeDeclaration::NAMED,
+            ],
+            '?\\ArrayObject<string, mixed>BasedOnDocBlock' => [
+                'obj' => new class() {
+                    /** @var \ArrayObject<string, mixed>|null */
+                    public $property;
+                },
+                'expectedTypes' => ['\\ArrayObject', 'null'],
+                'expectedInnerTypes' => ['string' => ['mixed']],
+                'type' => TypeDeclaration::NAMED,
+            ],
+            '?\\ArrayObject<string, mixed>BasedOnDocBlockAndReflection' => [
+                'obj' => new class() {
+                    /** @var \ArrayObject<string, mixed>|null */
+                    public ?\ArrayObject $property;
+                },
+                'expectedTypes' => ['\\ArrayObject', 'null'],
+                'expectedInnerTypes' => ['string' => ['mixed']],
+                'type' => TypeDeclaration::NAMED,
+            ],
+
+            // collection of collection
+            'array<string, array<int, string>>BasedOnDocBlock' => [
+                'obj' => new class() {
+                    /** @var array<string, array<int, string>> */
+                    public $property;
+                },
+                'expectedTypes' => ['array'],
+                'expectedInnerTypes' => ['string' => ['array']],
+                'type' => TypeDeclaration::NAMED,
+            ],
+            'array<string, array<int, string>>BasedOnDocBlockAndReflection' => [
+                'obj' => new class() {
+                    /** @var array<string, array<int, string>> */
+                    public array $property;
+                },
+                'expectedTypes' => ['array'],
+                'expectedInnerTypes' => ['string' => ['array']],
+                'type' => TypeDeclaration::NAMED,
+            ],
+
+            // collection of union
+            'array<string, int|float>BasedOnDocBlock' => [
+                'obj' => new class() {
+                    /** @var array<string, int|float> */
+                    public $property;
+                },
+                'expectedTypes' => ['array'],
+                'expectedInnerTypes' => ['string' => ['int', 'float']],
+                'type' => TypeDeclaration::NAMED,
+            ],
+            'array<string, int|float>BasedOnDocBlockAndReflection' => [
+                'obj' => new class() {
+                    /** @var array<string, int|float> */
+                    public array $property;
+                },
+                'expectedTypes' => ['array'],
+                'expectedInnerTypes' => ['string' => ['int', 'float']],
+                'type' => TypeDeclaration::NAMED,
+            ],
+            '\\ArrayObject<int|float>BasedOnDocBlock' => [
+                'obj' => new class() {
+                    /** @var \ArrayObject<int|float> */
+                    public $property;
+                },
+                'expectedTypes' => ['\\ArrayObject'],
+                'expectedInnerTypes' => ['string' => ['int', 'float'], 'int' => ['int', 'float']],
+                'type' => TypeDeclaration::NAMED,
+            ],
+            '\\ArrayObject<int|float>BasedOnDocBlockAndReflection' => [
+                'obj' => new class() {
+                    /** @var \ArrayObject<string|int, int|float> */
+                    public \ArrayObject $property;
+                },
+                'expectedTypes' => ['\\ArrayObject'],
+                'expectedInnerTypes' => ['string' => ['int', 'float'], 'int' => ['int', 'float']],
+                'type' => TypeDeclaration::NAMED,
+            ],
+
+            // collection of intersection
+            'array<string, JsonSerializable&Dummy>BasedOnDocBlock' => [
+                'obj' => new class() {
+                    /** @var array<string, \JsonSerializable&Dummy> */
+                    public $property;
+                },
+                'expectedTypes' => ['array'],
+                'expectedInnerTypes' => ['string' => ['\\'.\JsonSerializable::class, '\\'.Dummy::class]],
+                'type' => TypeDeclaration::NAMED,
+            ],
+            'array<string, JsonSerializable&Dummy>BasedOnDocBlockAndReflection' => [
+                'obj' => new class() {
+                    /** @var array<string, \JsonSerializable&Dummy> */
+                    public array $property;
+                },
+                'expectedTypes' => ['array'],
+                'expectedInnerTypes' => ['string' => ['\\'.\JsonSerializable::class, '\\'.Dummy::class]],
+                'type' => TypeDeclaration::NAMED,
             ],
         ];
     }
 
     #[Test]
     #[DataProvider('dataProvider')]
-    public function testOnDataFromDataProvider(object $obj, array $expectedTypes, array $expectedInnerTypes): void
+    public function testOnDataFromDataProvider(object $obj, array $expectedTypes, array $expectedInnerTypes, ?TypeDeclaration $type = null): void
     {
         $resolver = (new TypeResolver(new \ReflectionProperty($obj, 'property')))->process();
         $types = $resolver->getTypes();
@@ -721,5 +1138,6 @@ class TypeResolverTest extends TestCase
                 json_encode($innerTypes),
             )
         );
+        $this->assertEquals($type, $resolver->getTypeDeclaration());
     }
 }
