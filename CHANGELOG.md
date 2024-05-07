@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.1](///compare/0.2.0...0.2.1) (2024-05-07)
+
+
+### Features
+
+* 100% code coverage for blueprint component adf2519
+* Added attributes bc51144
+
+
+### Bug Fixes
+
+* Added tests for entities 7d9e7db
+* Added tests for more coverage 84fcf04
+* Refactored TypeResolver and created ~110 data sets for testing 2456b0d
+
 ## [0.2.0](///compare/0.1.0...0.2.0) (2024-05-05)
 
 
