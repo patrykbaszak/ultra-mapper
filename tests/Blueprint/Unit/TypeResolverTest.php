@@ -12,6 +12,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use ReflectionMethod;
 
 #[Group('unit')]
 class TypeResolverTest extends TestCase
@@ -33,10 +34,27 @@ class TypeResolverTest extends TestCase
     public function shouldNotReturnAnyTypesBasedOnDocblock(): void
     {
         $obj = new class() {
+            /** @var */
             public $property;
         };
 
         $resolver = (new TypeResolver(new \ReflectionProperty($obj, 'property')))->process();
+        $this->assertEmpty($resolver->getTypes());
+        $this->assertEmpty($resolver->getInnerTypes());
+        $this->assertEquals(TypeDeclaration::UNKNOWN, $resolver->getTypeDeclaration());
+    }
+
+    #[Test]
+    public function shouldNotReturnAnyParameterTypesBasedOnDocblock(): void
+    {
+        $obj = new class('') {
+            /** @param */
+            public function __construct(
+                public $property,
+            ) {}
+        };
+
+        $resolver = (new TypeResolver((new ReflectionMethod($obj, '__construct'))->getParameters()[0]))->process();
         $this->assertEmpty($resolver->getTypes());
         $this->assertEmpty($resolver->getInnerTypes());
         $this->assertEquals(TypeDeclaration::UNKNOWN, $resolver->getTypeDeclaration());

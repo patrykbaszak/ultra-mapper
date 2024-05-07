@@ -14,7 +14,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Yaml\Yaml;
 
-/** @codeCoverageIgnore until this command will be ready */
 #[AsCommand(
     name: 'ultramapper:blueprint:generate',
     description: 'Generates a blueprint from a given source class.'

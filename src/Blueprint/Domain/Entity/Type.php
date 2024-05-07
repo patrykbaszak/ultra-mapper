@@ -32,6 +32,7 @@ class Type implements Normalizable
         $instance->parent = $parent;
         $typeResolver = new TypeResolver($parent->getReflection());
         $typeResolver->process();
+        $instance->type = $typeResolver->type ?? TypeDeclaration::UNKNOWN;
         $instance->types = $typeResolver->types;
         $instance->innerTypes = $typeResolver->innerTypes;
 
@@ -41,25 +42,6 @@ class Type implements Normalizable
                 : new TypeNotDeclaredException('Type not declared for '.$parent->name.' parameter. '.$parent->parent->name.' method. '.$parent->parent->parent->name.' class.', 5942);
 
             throw $exception;
-        }
-
-        if ($parent->getReflection()->getType()) {
-            $instance->type = match (true) {
-                $parent->getReflection()->getType() instanceof \ReflectionNamedType => TypeDeclaration::NAMED,
-                $parent->getReflection()->getType() instanceof \ReflectionUnionType => TypeDeclaration::UNION,
-                $parent->getReflection()->getType() instanceof \ReflectionIntersectionType => TypeDeclaration::INTERSECTION,
-                default => TypeDeclaration::UNKNOWN,
-            };
-        } else {
-            $types = $instance->types;
-            if (in_array('null', $types)) {
-                $types = array_diff($types, ['null']);
-            }
-            $instance->type = match (true) {
-                count($instance->types) > 1 => TypeDeclaration::UNION,
-                1 === count($instance->types) => TypeDeclaration::NAMED,
-                default => TypeDeclaration::UNKNOWN,
-            };
         }
 
         if ($parent instanceof Property && 0 < count($classTypes = $instance->getAllClassTypes())) {

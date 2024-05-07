@@ -79,9 +79,11 @@
         "test:ci": [
             "@code:fix",
             "@code:analyse",
-            "@phpunit"
+            "@test:unit",
+            "@test:e2e"
         ],
-        "test:unit": "@phpunit --group unit tests"
+        "test:unit": "@phpunit --group unit tests",
+        "test:e2e": "@phpunit --group e2e tests"
     },
     "conflict": {
         "symfony/symfony": "*"

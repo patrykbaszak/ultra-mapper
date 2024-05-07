@@ -145,23 +145,24 @@ class TypeResolver
             }
 
             // if null|(type1&type2) then it's nullable intersection type
-            if (2 === count($types)) {
-                $hasNull = false;
-                $hasIntersection = false;
-                foreach ($types as $type) {
-                    if ($type instanceof Null_) {
-                        $hasNull = true;
-                    } elseif ($type instanceof Intersection) {
-                        $hasIntersection = true;
-                    }
-                }
+            // but it's not supported by phpDocumentor to get nullable intersection type
+            // if (2 === count($types)) {
+            //     $hasNull = false;
+            //     $hasIntersection = false;
+            //     foreach ($types as $type) {
+            //         if ($type instanceof Null_) {
+            //             $hasNull = true;
+            //         } elseif ($type instanceof Intersection) {
+            //             $hasIntersection = true;
+            //         }
+            //     }
 
-                if ($hasNull && $hasIntersection) {
-                    $this->type = TypeDeclaration::INTERSECTION;
+            //     if ($hasNull && $hasIntersection) {
+            //         $this->type = TypeDeclaration::INTERSECTION;
 
-                    return;
-                }
-            }
+            //         return;
+            //     }
+            // }
 
             // any other case is union type
             $this->type = TypeDeclaration::UNION;
