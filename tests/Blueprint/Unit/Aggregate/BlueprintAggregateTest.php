@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PBaszak\UltraMapper\Tests\Blueprint\Unit;
+namespace PBaszak\UltraMapper\Tests\Blueprint\Unit\Aggregate;
 
 use PBaszak\UltraMapper\Blueprint\Domain\Aggregate\BlueprintAggregate;
 use PBaszak\UltraMapper\Tests\Assets\Dummy;

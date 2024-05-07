@@ -2,13 +2,17 @@
 
 declare(strict_types=1);
 
-namespace PBaszak\UltraMapper\Tests\Blueprint\Unit;
+namespace PBaszak\UltraMapper\Tests\Blueprint\Unit\Accessor;
 
+use Attribute;
+use PBaszak\UltraMapper\Attribute\ApplyToCollectionItem;
+use PBaszak\UltraMapper\Attribute\Ignore;
 use PBaszak\UltraMapper\Blueprint\Domain\Accessor\Accessor;
 use PBaszak\UltraMapper\Blueprint\Domain\Aggregate\BlueprintAggregate;
 use PBaszak\UltraMapper\Blueprint\Domain\Entity\Blueprint;
 use PBaszak\UltraMapper\Tests\Assets\Dummy;
 use PBaszak\UltraMapper\Tests\Assets\DummySimple;
+use PBaszak\UltraMapper\Tests\Assets\DummySimpleWithAttribute;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
@@ -137,5 +141,32 @@ class AccessorTest extends TestCase
 
         // getBlueprint
         $this->assertSame($blueprint, (new Accessor($type))->getBlueprint());
+    }
+
+    #[Test]
+    public function shouldReturnResourceForPropertyAttribute(): void
+    {
+        $blueprint = Blueprint::create(DummySimpleWithAttribute::class, null);
+        $property = $blueprint->properties->properties['description'];
+        $attribute = $property->attributes->attributes[Ignore::class][0];
+
+        // getBlueprintAggregate
+        $this->assertSame(null, (new Accessor($attribute))->getBlueprintAggregate());
+
+        // getBlueprint
+        $this->assertSame($blueprint, (new Accessor($attribute))->getBlueprint());
+    }
+
+    #[Test]
+    public function shouldReturnResourceForBlueprintAttribute(): void
+    {
+        $blueprint = Blueprint::create(ApplyToCollectionItem::class, null);
+        $attribute = $blueprint->attributes->attributes[Attribute::class][0];
+
+        // getBlueprintAggregate
+        $this->assertSame(null, (new Accessor($attribute))->getBlueprintAggregate());
+
+        // getBlueprint
+        $this->assertSame($blueprint, (new Accessor($attribute))->getBlueprint());
     }
 }

@@ -7,6 +7,7 @@ namespace PBaszak\UltraMapper\Tests\Blueprint\E2e;
 use PBaszak\UltraMapper\Blueprint\Presentation\CLI\GenerateBlueprint;
 use PBaszak\UltraMapper\Tests\Assets\Dummy;
 use PBaszak\UltraMapper\Tests\Assets\DummySimple;
+use PBaszak\UltraMapper\Tests\Assets\DummySimpleWithAttribute;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -37,6 +38,22 @@ class GenerateBlueprintCommandTest extends KernelTestCase
     {
         $class = Dummy::class;
         $blueprint = file_get_contents(__DIR__.'/../../Assets/pbaszak_ultramapper_tests_assets_dummy.yaml');
+        $command = new GenerateBlueprint(dirname(__DIR__, 3));
+        $commandTester = new CommandTester($command);
+
+        $commandTester->execute([
+            'class' => $class,
+        ]);
+
+        $display = $commandTester->getDisplay();
+        $this->assertEquals(rtrim($blueprint, "\n"), rtrim($display, "\n"));
+    }
+
+    #[Test]
+    public function shouldReturnBlueprintOfDummySimpleWithAttribute(): void
+    {
+        $class = DummySimpleWithAttribute::class;
+        $blueprint = file_get_contents(__DIR__.'/../../Assets/pbaszak_ultramapper_tests_assets_dummysimplewithattribute.yaml');
         $command = new GenerateBlueprint(dirname(__DIR__, 3));
         $commandTester = new CommandTester($command);
 

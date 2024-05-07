@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PBaszak\UltraMapper\Tests\Blueprint\Unit;
+namespace PBaszak\UltraMapper\Tests\Blueprint\Unit\Resolver;
 
 use PBaszak\UltraMapper\Blueprint\Application\Enum\TypeDeclaration;
 use PBaszak\UltraMapper\Blueprint\Domain\Exception\ClassNotFoundException;
@@ -127,14 +127,14 @@ class TypeResolverTest extends TestCase
         }
     }
 
-    /** @var BlueprintTest */
+    /** @var TestedClass */
     public $property;
 
     #[Test]
     public function shouldReturnTypeForPropertyClassWithSameNamespace(): void
     {
         $resolver = (new TypeResolver(new \ReflectionProperty($this, 'property')))->process();
-        $this->assertEquals(['\\'.BlueprintTest::class], $resolver->getTypes());
+        $this->assertEquals(['\\'.TestedClass::class], $resolver->getTypes());
         $this->assertEmpty($resolver->getInnerTypes());
     }
 

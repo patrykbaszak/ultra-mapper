@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PBaszak\UltraMapper\Tests\Blueprint\Unit;
+namespace PBaszak\UltraMapper\Tests\Blueprint\Unit\Entity;
 
 use PBaszak\UltraMapper\Blueprint\Application\Enum\ClassType;
 use PBaszak\UltraMapper\Blueprint\Domain\Aggregate\AttributeAggregate;

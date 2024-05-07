@@ -2,25 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PBaszak\UltraMapper\Tests\Blueprint\Unit;
+namespace PBaszak\UltraMapper\Tests\Blueprint\Unit\Entity;
 
-use PBaszak\UltraMapper\Blueprint\Application\Enum\ClassType;
-use PBaszak\UltraMapper\Blueprint\Domain\Aggregate\AttributeAggregate;
-use PBaszak\UltraMapper\Blueprint\Domain\Aggregate\MethodAggregate;
-use PBaszak\UltraMapper\Blueprint\Domain\Aggregate\PropertyAggregate;
 use PBaszak\UltraMapper\Blueprint\Domain\Entity\Blueprint;
 use PBaszak\UltraMapper\Blueprint\Domain\Entity\Method;
-use PBaszak\UltraMapper\Blueprint\Domain\Entity\Parameter;
-use PBaszak\UltraMapper\Blueprint\Domain\Entity\Property;
-use PBaszak\UltraMapper\Blueprint\Domain\Exception\BlueprintException;
-use PBaszak\UltraMapper\Blueprint\Domain\Exception\ClassNotFoundException;
 use PBaszak\UltraMapper\Tests\Assets\Dummy;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use ReflectionMethod;
-use ReflectionParameter;
-use ReflectionProperty;
 
 #[Group('unit')]
 class MethodTest extends TestCase

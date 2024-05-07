@@ -2,17 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PBaszak\UltraMapper\Tests\Blueprint\Unit;
+namespace PBaszak\UltraMapper\Tests\Blueprint\Unit\Entity;
 
 use PBaszak\UltraMapper\Blueprint\Domain\Entity\Blueprint;
-use PBaszak\UltraMapper\Blueprint\Domain\Entity\Property;
 use PBaszak\UltraMapper\Blueprint\Domain\Entity\Type;
 use PBaszak\UltraMapper\Blueprint\Domain\Exception\TypeNotDeclaredException;
 use PBaszak\UltraMapper\Tests\Assets\Dummy;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use ReflectionProperty;
 use ReflectionType;
 
 #[Group('unit')]

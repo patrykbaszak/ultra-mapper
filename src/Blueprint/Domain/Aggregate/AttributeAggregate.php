@@ -13,7 +13,7 @@ class AttributeAggregate implements Normalizable
 {
     public function __construct(
         public Blueprint|Property $root,
-        /** @var array<string, Attribute> $attributes */
+        /** @var array<string, Attribute[]> $attributes */
         public array $attributes,
     ) {
     }
@@ -24,7 +24,7 @@ class AttributeAggregate implements Normalizable
 
         $attributes = [];
         foreach ($ref->getAttributes() as $attribute) {
-            $attributes[$attribute->getName()] = Attribute::create($attribute, $root);
+            $attributes[$attribute->getName()][] = Attribute::create($attribute, $root);
         }
 
         return new self($root, $attributes);
@@ -32,6 +32,12 @@ class AttributeAggregate implements Normalizable
 
     public function normalize(): array
     {
-        return array_map(fn (Normalizable&Attribute $attr) => $attr->normalize(), $this->attributes);
+        return array_map(
+            fn (array $attributes) => array_map(
+                fn (Normalizable&Attribute $attr) => $attr->normalize(),
+                $attributes
+            ),
+            $this->attributes
+        );
     }
 }

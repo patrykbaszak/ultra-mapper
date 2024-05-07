@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PBaszak\UltraMapper\Blueprint\Domain\Entity;
 
+use PBaszak\UltraMapper\Blueprint\Domain\Exception\BlueprintException;
 use PBaszak\UltraMapper\Blueprint\Domain\Normalizer\Normalizable;
 
 /**
@@ -36,6 +37,24 @@ class Attribute implements Normalizable
     public function isBlueprintAttribute(): bool
     {
         return $this->parent instanceof Blueprint;
+    }
+
+    public function getReflection(): \ReflectionAttribute
+    {
+        $attr = $this->parent->getReflection()->getAttributes($this->class);
+        if (0 === count($attr)) {
+            throw new BlueprintException(sprintf('Attribute %s not found on %s.', $this->class, $this->parent->getReflection()->getName()), 5921);
+        }
+        if (1 === count($attr)) {
+            return $attr[0];
+        }
+        foreach ($attr as $a) {
+            if ($this->arguments === $a->getArguments()) {
+                return $a;
+            }
+        }
+
+        throw new BlueprintException(sprintf('Attribute %s not found on %s.', $this->class, $this->parent->getReflection()->getName()), 5924);
     }
 
     public function normalize(): array
