@@ -74,6 +74,11 @@ class Type implements Normalizable
         return $classTypes;
     }
 
+    public function getReflection(): ?\ReflectionType
+    {
+        return $this->parent->getReflection()->getType();
+    }
+
     public function normalize(): array
     {
         return [

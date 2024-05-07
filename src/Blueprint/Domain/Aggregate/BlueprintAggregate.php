@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace PBaszak\UltraMapper\Blueprint\Domain\Aggregate;
 
 use PBaszak\UltraMapper\Blueprint\Domain\Entity\Blueprint;
-use PBaszak\UltraMapper\Blueprint\Domain\Exception\BlueprintException;
 use PBaszak\UltraMapper\Blueprint\Domain\Normalizer\Normalizable;
 
 class BlueprintAggregate implements Normalizable
@@ -33,10 +32,13 @@ class BlueprintAggregate implements Normalizable
             $blueprint->blueprintName,
             [$blueprint->blueprintName => $blueprint],
             $blueprint->hasDeclarationFile() ? [$blueprint->filePath => $blueprint->fileHash] : [],
-            [
-                'Blueprint Aggregate created. Root class: '.$rootClass.'.',
-            ]
+            []
         );
+
+        $instance->addEvent('Blueprint Aggregate created. Root class: '.$rootClass.'.');
+        if ($blueprint->hasDeclarationFile()) {
+            $instance->addFileHash($blueprint->filePath, $blueprint->fileHash);
+        }
 
         $blueprint->aggregate = $instance;
 
@@ -46,19 +48,16 @@ class BlueprintAggregate implements Normalizable
     public function addBlueprint(Blueprint $blueprint): void
     {
         if (array_key_exists($blueprint->blueprintName, $this->blueprints)) {
-            $this->events[] = 'Blueprint '.$blueprint->name.' already exists. Blueprint name: '.$blueprint->blueprintName.'.';
+            $this->addEvent('Blueprint '.$blueprint->name.' already exists. Blueprint name: '.$blueprint->blueprintName.'.');
 
             return;
         }
 
         $this->blueprints[$blueprint->blueprintName] = $blueprint;
-        $this->events[] = 'Blueprint '.$blueprint->name.' added. Blueprint name: '.$blueprint->blueprintName.'.';
+        $this->addEvent('Blueprint '.$blueprint->name.' added. Blueprint name: '.$blueprint->blueprintName.'.');
 
         if ($blueprint->hasDeclarationFile()) {
-            if (array_key_exists($blueprint->filePath, $this->filesHashes) && $this->filesHashes[$blueprint->filePath] !== $blueprint->fileHash) {
-                throw new BlueprintException('File hash mismatch. File: '.$blueprint->filePath.'.', 5921);
-            }
-
+            /* @phpstan-ignore-next-line */
             $this->addFileHash($blueprint->filePath, $blueprint->fileHash);
         }
     }
@@ -66,7 +65,7 @@ class BlueprintAggregate implements Normalizable
     public function addFileHash(string $filePath, string $fileHash): void
     {
         $this->filesHashes[$filePath] = $fileHash;
-        $this->events[] = 'File hash added. File: '.$filePath.', hash: '.$fileHash.'.';
+        $this->addEvent('File hash added. File: '.$filePath.', hash: '.$fileHash.'.');
     }
 
     public function addEvent(string $event): void

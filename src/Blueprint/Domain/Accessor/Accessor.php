@@ -40,7 +40,9 @@ class Accessor
             Method::class => $this->entity->parent->aggregate,
             Parameter::class => $this->entity->parent->parent->aggregate,
             Property::class => $this->entity->parent->aggregate,
-            Type::class => $this->entity->parent->parent->aggregate,
+            Type::class => $this->entity->parent instanceof Property
+                ? $this->entity->parent->parent->aggregate
+                : $this->entity->parent->parent->parent->aggregate,
         };
     }
 
@@ -54,7 +56,9 @@ class Accessor
             Method::class => $this->entity->parent,
             Parameter::class => $this->entity->parent->parent,
             Property::class => $this->entity->parent,
-            Type::class => $this->entity->parent->parent,
+            Type::class => $this->entity->parent instanceof Property
+                ? $this->entity->parent->parent
+                : $this->entity->parent->parent->parent,
         };
     }
 }

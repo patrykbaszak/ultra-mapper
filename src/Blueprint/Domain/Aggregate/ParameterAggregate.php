@@ -6,6 +6,7 @@ namespace PBaszak\UltraMapper\Blueprint\Domain\Aggregate;
 
 use PBaszak\UltraMapper\Blueprint\Domain\Entity\Method;
 use PBaszak\UltraMapper\Blueprint\Domain\Entity\Parameter;
+use PBaszak\UltraMapper\Blueprint\Domain\Exception\TypeNotDeclaredException;
 use PBaszak\UltraMapper\Blueprint\Domain\Normalizer\Normalizable;
 
 class ParameterAggregate implements Normalizable
@@ -23,7 +24,13 @@ class ParameterAggregate implements Normalizable
 
         $parameters = [];
         foreach ($ref->getParameters() as $parameter) {
-            $parameters[$parameter->getName()] = Parameter::create($parameter, $root);
+            try {
+                $parameters[$parameter->getName()] = Parameter::create($parameter, $root);
+            } catch (TypeNotDeclaredException $e) {
+                if ($root->isConstructor) {
+                    throw $e;
+                }
+            }
         }
 
         return new self($root, $parameters);

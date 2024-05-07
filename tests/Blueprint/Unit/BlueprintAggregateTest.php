@@ -24,4 +24,12 @@ class BlueprintAggregateTest extends TestCase
         $this->assertArrayHasKey($aggregate->blueprints['pbaszak_ultramapper_tests_assets_dummy']->filePath, $aggregate->filesHashes);
         $this->assertContains('Blueprint Aggregate created. Root class: PBaszak\UltraMapper\Tests\Assets\Dummy.', $aggregate->events);
     }
+
+    #[Test]
+    public function shouldThrowExceptionWithInvalidClass(): void
+    {
+        $this->expectException(\PBaszak\UltraMapper\Blueprint\Domain\Exception\ClassNotFoundException::class);
+
+        BlueprintAggregate::create('InvalidClass', null);
+    }
 }

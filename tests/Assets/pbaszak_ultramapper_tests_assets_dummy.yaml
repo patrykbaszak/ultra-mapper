@@ -1111,6 +1111,7 @@ filesHashes:
     /app/tests/Assets/Dummy.php: 5a2d8a89e94995686a3b963881953a43
 events:
     - 'Blueprint Aggregate created. Root class: PBaszak\UltraMapper\Tests\Assets\Dummy.'
+    - 'File hash added. File: /app/tests/Assets/Dummy.php, hash: 5a2d8a89e94995686a3b963881953a43.'
     - 'Blueprint PBaszak\UltraMapper\Tests\Assets\MetadataDTO added. Blueprint name: pbaszak_ultramapper_tests_assets_metadatadto.'
     - 'File hash added. File: /app/tests/Assets/Dummy.php, hash: 5a2d8a89e94995686a3b963881953a43.'
     - 'Blueprint PBaszak\UltraMapper\Tests\Assets\MetadataDTO already exists. Blueprint name: pbaszak_ultramapper_tests_assets_metadatadto.'

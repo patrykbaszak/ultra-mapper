@@ -9,6 +9,7 @@ use PBaszak\UltraMapper\Blueprint\Domain\Aggregate\AttributeAggregate;
 use PBaszak\UltraMapper\Blueprint\Domain\Aggregate\MethodAggregate;
 use PBaszak\UltraMapper\Blueprint\Domain\Aggregate\PropertyAggregate;
 use PBaszak\UltraMapper\Blueprint\Domain\Entity\Blueprint;
+use PBaszak\UltraMapper\Blueprint\Domain\Exception\BlueprintException;
 use PBaszak\UltraMapper\Blueprint\Domain\Exception\ClassNotFoundException;
 use PBaszak\UltraMapper\Tests\Assets\Dummy;
 use PHPUnit\Framework\Attributes\Group;
@@ -18,6 +19,24 @@ use PHPUnit\Framework\TestCase;
 #[Group('unit')]
 class BlueprintTest extends TestCase
 {
+    #[Test]
+    public function shouldThrowExceptionWhenBlueprintClassGiven(): void
+    {
+        $this->expectException(BlueprintException::class);
+        $this->expectExceptionCode(5922);
+
+        Blueprint::create(Blueprint::class, null);
+    }
+
+    #[Test]
+    public function shouldThrowExceptionWhenClassNotFound(): void
+    {
+        $this->expectException(ClassNotFoundException::class);
+        $this->expectExceptionCode(5931);
+
+        Blueprint::create('InvalidClass', null);
+    }
+
     #[Test]
     public function testCreateWithValidDummyClass(): void
     {
