@@ -24,3 +24,7 @@ services:
         resource: '../tests/Assets/'
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    PBaszak\UltraMapper\Blueprint\Application\Service\BlueprintService:
+        arguments:
+            $blueprintDir: '%kernel.project_dir%/var/ultra-mapper/blueprints/'

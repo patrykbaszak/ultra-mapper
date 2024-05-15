@@ -134,6 +134,487 @@ blueprints:
                             blueprints: {  }
                         hasDefaultValue: false
                         defaultValue: null
+    pbaszak_ultramapper_tests_assets_embeddeddto:
+        name: PBaszak\UltraMapper\Tests\Assets\EmbeddedDTO
+        shortName: EmbeddedDTO
+        namespace: PBaszak\UltraMapper\Tests\Assets
+        filePath: /app/tests/Assets/Dummy.php
+        fileHash: 5a2d8a89e94995686a3b963881953a43
+        hash: 3ecec90a0bbc55e9a3fc81b24f73cb0e
+        type: class
+        docBlock: false
+        attributes: {  }
+        properties:
+            page:
+                originName: page
+                visibility: public
+                type:
+                    type: named
+                    types:
+                        - int
+                    innerTypes: {  }
+                    blueprints: {  }
+                isStatic: false
+                isReadOnly: false
+                hasDefaultValue: false
+                defaultValue: null
+                docBlock: false
+                attributes: {  }
+            pageSize:
+                originName: pageSize
+                visibility: public
+                type:
+                    type: named
+                    types:
+                        - int
+                    innerTypes: {  }
+                    blueprints: {  }
+                isStatic: false
+                isReadOnly: false
+                hasDefaultValue: false
+                defaultValue: null
+                docBlock: false
+                attributes: {  }
+            total:
+                originName: total
+                visibility: public
+                type:
+                    type: named
+                    types:
+                        - int
+                    innerTypes: {  }
+                    blueprints: {  }
+                isStatic: false
+                isReadOnly: false
+                hasDefaultValue: false
+                defaultValue: null
+                docBlock: false
+                attributes: {  }
+            items:
+                originName: items
+                visibility: public
+                type:
+                    type: named
+                    types:
+                        - array
+                    innerTypes:
+                        string:
+                            - \PBaszak\UltraMapper\Tests\Assets\ItemDTO
+                        int:
+                            - \PBaszak\UltraMapper\Tests\Assets\ItemDTO
+                    blueprints:
+                        \PBaszak\UltraMapper\Tests\Assets\ItemDTO: pbaszak_ultramapper_tests_assets_itemdto
+                isStatic: false
+                isReadOnly: false
+                hasDefaultValue: false
+                defaultValue: null
+                docBlock: '/** @var ItemDTO[] */'
+                attributes: {  }
+        methods:
+            __construct:
+                visibility: public
+                isConstructor: true
+                isStatic: false
+                docBlock: false
+                parameters:
+                    page:
+                        name: page
+                        type:
+                            type: named
+                            types:
+                                - int
+                            innerTypes: {  }
+                            blueprints: {  }
+                        hasDefaultValue: false
+                        defaultValue: null
+                    pageSize:
+                        name: pageSize
+                        type:
+                            type: named
+                            types:
+                                - int
+                            innerTypes: {  }
+                            blueprints: {  }
+                        hasDefaultValue: false
+                        defaultValue: null
+                    total:
+                        name: total
+                        type:
+                            type: named
+                            types:
+                                - int
+                            innerTypes: {  }
+                            blueprints: {  }
+                        hasDefaultValue: false
+                        defaultValue: null
+                    items:
+                        name: items
+                        type:
+                            type: named
+                            types:
+                                - array
+                            innerTypes:
+                                string:
+                                    - mixed
+                                int:
+                                    - mixed
+                            blueprints: {  }
+                        hasDefaultValue: false
+                        defaultValue: null
+    pbaszak_ultramapper_tests_assets_itemdto:
+        name: PBaszak\UltraMapper\Tests\Assets\ItemDTO
+        shortName: ItemDTO
+        namespace: PBaszak\UltraMapper\Tests\Assets
+        filePath: /app/tests/Assets/Dummy.php
+        fileHash: 5a2d8a89e94995686a3b963881953a43
+        hash: 348f48e80922b3902887012fe01a36f8
+        type: class
+        docBlock: false
+        attributes: {  }
+        properties:
+            id:
+                originName: id
+                visibility: public
+                type:
+                    type: named
+                    types:
+                        - string
+                    innerTypes: {  }
+                    blueprints: {  }
+                isStatic: false
+                isReadOnly: false
+                hasDefaultValue: false
+                defaultValue: null
+                docBlock: false
+                attributes: {  }
+            name:
+                originName: name
+                visibility: public
+                type:
+                    type: named
+                    types:
+                        - string
+                    innerTypes: {  }
+                    blueprints: {  }
+                isStatic: false
+                isReadOnly: false
+                hasDefaultValue: false
+                defaultValue: null
+                docBlock: false
+                attributes: {  }
+            description:
+                originName: description
+                visibility: public
+                type:
+                    type: named
+                    types:
+                        - string
+                    innerTypes: {  }
+                    blueprints: {  }
+                isStatic: false
+                isReadOnly: false
+                hasDefaultValue: false
+                defaultValue: null
+                docBlock: false
+                attributes: {  }
+            price:
+                originName: price
+                visibility: public
+                type:
+                    type: named
+                    types:
+                        - float
+                    innerTypes: {  }
+                    blueprints: {  }
+                isStatic: false
+                isReadOnly: false
+                hasDefaultValue: false
+                defaultValue: null
+                docBlock: false
+                attributes: {  }
+            currency:
+                originName: currency
+                visibility: public
+                type:
+                    type: named
+                    types:
+                        - string
+                    innerTypes: {  }
+                    blueprints: {  }
+                isStatic: false
+                isReadOnly: false
+                hasDefaultValue: false
+                defaultValue: null
+                docBlock: false
+                attributes: {  }
+            quantity:
+                originName: quantity
+                visibility: public
+                type:
+                    type: named
+                    types:
+                        - int
+                    innerTypes: {  }
+                    blueprints: {  }
+                isStatic: false
+                isReadOnly: false
+                hasDefaultValue: false
+                defaultValue: null
+                docBlock: false
+                attributes: {  }
+            type:
+                originName: type
+                visibility: public
+                type:
+                    type: named
+                    types:
+                        - string
+                    innerTypes: {  }
+                    blueprints: {  }
+                isStatic: false
+                isReadOnly: false
+                hasDefaultValue: false
+                defaultValue: null
+                docBlock: false
+                attributes: {  }
+            category:
+                originName: category
+                visibility: public
+                type:
+                    type: named
+                    types:
+                        - string
+                    innerTypes: {  }
+                    blueprints: {  }
+                isStatic: false
+                isReadOnly: false
+                hasDefaultValue: false
+                defaultValue: null
+                docBlock: false
+                attributes: {  }
+            vat:
+                originName: vat
+                visibility: public
+                type:
+                    type: named
+                    types:
+                        - int
+                    innerTypes: {  }
+                    blueprints: {  }
+                isStatic: false
+                isReadOnly: false
+                hasDefaultValue: false
+                defaultValue: null
+                docBlock: false
+                attributes: {  }
+            metadata:
+                originName: metadata
+                visibility: public
+                type:
+                    type: named
+                    types:
+                        - \PBaszak\UltraMapper\Tests\Assets\MetadataDTO
+                    innerTypes: {  }
+                    blueprints:
+                        \PBaszak\UltraMapper\Tests\Assets\MetadataDTO: pbaszak_ultramapper_tests_assets_metadatadto
+                isStatic: false
+                isReadOnly: false
+                hasDefaultValue: false
+                defaultValue: null
+                docBlock: false
+                attributes: {  }
+            created_at:
+                originName: created_at
+                visibility: public
+                type:
+                    type: named
+                    types:
+                        - \DateTime
+                    innerTypes: {  }
+                    blueprints:
+                        \DateTime: datetime
+                isStatic: false
+                isReadOnly: false
+                hasDefaultValue: false
+                defaultValue: null
+                docBlock: false
+                attributes: {  }
+            updated_at:
+                originName: updated_at
+                visibility: public
+                type:
+                    type: named
+                    types:
+                        - \DateTime
+                    innerTypes: {  }
+                    blueprints:
+                        \DateTime: datetime
+                isStatic: false
+                isReadOnly: false
+                hasDefaultValue: false
+                defaultValue: null
+                docBlock: false
+                attributes: {  }
+            availableActions:
+                originName: availableActions
+                visibility: public
+                type:
+                    type: named
+                    types:
+                        - array
+                    innerTypes:
+                        string:
+                            - string
+                        int:
+                            - string
+                    blueprints: {  }
+                isStatic: false
+                isReadOnly: false
+                hasDefaultValue: false
+                defaultValue: null
+                docBlock: '/** @var array<string> */'
+                attributes: {  }
+        methods:
+            __construct:
+                visibility: public
+                isConstructor: true
+                isStatic: false
+                docBlock: false
+                parameters:
+                    id:
+                        name: id
+                        type:
+                            type: named
+                            types:
+                                - string
+                            innerTypes: {  }
+                            blueprints: {  }
+                        hasDefaultValue: false
+                        defaultValue: null
+                    name:
+                        name: name
+                        type:
+                            type: named
+                            types:
+                                - string
+                            innerTypes: {  }
+                            blueprints: {  }
+                        hasDefaultValue: false
+                        defaultValue: null
+                    description:
+                        name: description
+                        type:
+                            type: named
+                            types:
+                                - string
+                            innerTypes: {  }
+                            blueprints: {  }
+                        hasDefaultValue: false
+                        defaultValue: null
+                    price:
+                        name: price
+                        type:
+                            type: named
+                            types:
+                                - float
+                            innerTypes: {  }
+                            blueprints: {  }
+                        hasDefaultValue: false
+                        defaultValue: null
+                    currency:
+                        name: currency
+                        type:
+                            type: named
+                            types:
+                                - string
+                            innerTypes: {  }
+                            blueprints: {  }
+                        hasDefaultValue: false
+                        defaultValue: null
+                    quantity:
+                        name: quantity
+                        type:
+                            type: named
+                            types:
+                                - int
+                            innerTypes: {  }
+                            blueprints: {  }
+                        hasDefaultValue: false
+                        defaultValue: null
+                    type:
+                        name: type
+                        type:
+                            type: named
+                            types:
+                                - string
+                            innerTypes: {  }
+                            blueprints: {  }
+                        hasDefaultValue: false
+                        defaultValue: null
+                    category:
+                        name: category
+                        type:
+                            type: named
+                            types:
+                                - string
+                            innerTypes: {  }
+                            blueprints: {  }
+                        hasDefaultValue: false
+                        defaultValue: null
+                    vat:
+                        name: vat
+                        type:
+                            type: named
+                            types:
+                                - int
+                            innerTypes: {  }
+                            blueprints: {  }
+                        hasDefaultValue: false
+                        defaultValue: null
+                    metadata:
+                        name: metadata
+                        type:
+                            type: named
+                            types:
+                                - \PBaszak\UltraMapper\Tests\Assets\MetadataDTO
+                            innerTypes: {  }
+                            blueprints: {  }
+                        hasDefaultValue: false
+                        defaultValue: null
+                    created_at:
+                        name: created_at
+                        type:
+                            type: named
+                            types:
+                                - \DateTime
+                            innerTypes: {  }
+                            blueprints: {  }
+                        hasDefaultValue: false
+                        defaultValue: null
+                    updated_at:
+                        name: updated_at
+                        type:
+                            type: named
+                            types:
+                                - \DateTime
+                            innerTypes: {  }
+                            blueprints: {  }
+                        hasDefaultValue: false
+                        defaultValue: null
+                    availableActions:
+                        name: availableActions
+                        type:
+                            type: named
+                            types:
+                                - array
+                            innerTypes:
+                                string:
+                                    - mixed
+                                int:
+                                    - mixed
+                            blueprints: {  }
+                        hasDefaultValue: false
+                        defaultValue: null
     pbaszak_ultramapper_tests_assets_metadatadto:
         name: PBaszak\UltraMapper\Tests\Assets\MetadataDTO
         shortName: MetadataDTO
@@ -626,502 +1107,20 @@ blueprints:
                             blueprints: {  }
                         hasDefaultValue: true
                         defaultValue: false
-    pbaszak_ultramapper_tests_assets_itemdto:
-        name: PBaszak\UltraMapper\Tests\Assets\ItemDTO
-        shortName: ItemDTO
-        namespace: PBaszak\UltraMapper\Tests\Assets
-        filePath: /app/tests/Assets/Dummy.php
-        fileHash: 5a2d8a89e94995686a3b963881953a43
-        hash: 348f48e80922b3902887012fe01a36f8
-        type: class
-        docBlock: false
-        attributes: {  }
-        properties:
-            id:
-                originName: id
-                visibility: public
-                type:
-                    type: named
-                    types:
-                        - string
-                    innerTypes: {  }
-                    blueprints: {  }
-                isStatic: false
-                isReadOnly: false
-                hasDefaultValue: false
-                defaultValue: null
-                docBlock: false
-                attributes: {  }
-            name:
-                originName: name
-                visibility: public
-                type:
-                    type: named
-                    types:
-                        - string
-                    innerTypes: {  }
-                    blueprints: {  }
-                isStatic: false
-                isReadOnly: false
-                hasDefaultValue: false
-                defaultValue: null
-                docBlock: false
-                attributes: {  }
-            description:
-                originName: description
-                visibility: public
-                type:
-                    type: named
-                    types:
-                        - string
-                    innerTypes: {  }
-                    blueprints: {  }
-                isStatic: false
-                isReadOnly: false
-                hasDefaultValue: false
-                defaultValue: null
-                docBlock: false
-                attributes: {  }
-            price:
-                originName: price
-                visibility: public
-                type:
-                    type: named
-                    types:
-                        - float
-                    innerTypes: {  }
-                    blueprints: {  }
-                isStatic: false
-                isReadOnly: false
-                hasDefaultValue: false
-                defaultValue: null
-                docBlock: false
-                attributes: {  }
-            currency:
-                originName: currency
-                visibility: public
-                type:
-                    type: named
-                    types:
-                        - string
-                    innerTypes: {  }
-                    blueprints: {  }
-                isStatic: false
-                isReadOnly: false
-                hasDefaultValue: false
-                defaultValue: null
-                docBlock: false
-                attributes: {  }
-            quantity:
-                originName: quantity
-                visibility: public
-                type:
-                    type: named
-                    types:
-                        - int
-                    innerTypes: {  }
-                    blueprints: {  }
-                isStatic: false
-                isReadOnly: false
-                hasDefaultValue: false
-                defaultValue: null
-                docBlock: false
-                attributes: {  }
-            type:
-                originName: type
-                visibility: public
-                type:
-                    type: named
-                    types:
-                        - string
-                    innerTypes: {  }
-                    blueprints: {  }
-                isStatic: false
-                isReadOnly: false
-                hasDefaultValue: false
-                defaultValue: null
-                docBlock: false
-                attributes: {  }
-            category:
-                originName: category
-                visibility: public
-                type:
-                    type: named
-                    types:
-                        - string
-                    innerTypes: {  }
-                    blueprints: {  }
-                isStatic: false
-                isReadOnly: false
-                hasDefaultValue: false
-                defaultValue: null
-                docBlock: false
-                attributes: {  }
-            vat:
-                originName: vat
-                visibility: public
-                type:
-                    type: named
-                    types:
-                        - int
-                    innerTypes: {  }
-                    blueprints: {  }
-                isStatic: false
-                isReadOnly: false
-                hasDefaultValue: false
-                defaultValue: null
-                docBlock: false
-                attributes: {  }
-            metadata:
-                originName: metadata
-                visibility: public
-                type:
-                    type: named
-                    types:
-                        - \PBaszak\UltraMapper\Tests\Assets\MetadataDTO
-                    innerTypes: {  }
-                    blueprints:
-                        \PBaszak\UltraMapper\Tests\Assets\MetadataDTO: pbaszak_ultramapper_tests_assets_metadatadto
-                isStatic: false
-                isReadOnly: false
-                hasDefaultValue: false
-                defaultValue: null
-                docBlock: false
-                attributes: {  }
-            created_at:
-                originName: created_at
-                visibility: public
-                type:
-                    type: named
-                    types:
-                        - \DateTime
-                    innerTypes: {  }
-                    blueprints:
-                        \DateTime: datetime
-                isStatic: false
-                isReadOnly: false
-                hasDefaultValue: false
-                defaultValue: null
-                docBlock: false
-                attributes: {  }
-            updated_at:
-                originName: updated_at
-                visibility: public
-                type:
-                    type: named
-                    types:
-                        - \DateTime
-                    innerTypes: {  }
-                    blueprints:
-                        \DateTime: datetime
-                isStatic: false
-                isReadOnly: false
-                hasDefaultValue: false
-                defaultValue: null
-                docBlock: false
-                attributes: {  }
-            availableActions:
-                originName: availableActions
-                visibility: public
-                type:
-                    type: named
-                    types:
-                        - array
-                    innerTypes:
-                        string:
-                            - string
-                        int:
-                            - string
-                    blueprints: {  }
-                isStatic: false
-                isReadOnly: false
-                hasDefaultValue: false
-                defaultValue: null
-                docBlock: '/** @var array<string> */'
-                attributes: {  }
-        methods:
-            __construct:
-                visibility: public
-                isConstructor: true
-                isStatic: false
-                docBlock: false
-                parameters:
-                    id:
-                        name: id
-                        type:
-                            type: named
-                            types:
-                                - string
-                            innerTypes: {  }
-                            blueprints: {  }
-                        hasDefaultValue: false
-                        defaultValue: null
-                    name:
-                        name: name
-                        type:
-                            type: named
-                            types:
-                                - string
-                            innerTypes: {  }
-                            blueprints: {  }
-                        hasDefaultValue: false
-                        defaultValue: null
-                    description:
-                        name: description
-                        type:
-                            type: named
-                            types:
-                                - string
-                            innerTypes: {  }
-                            blueprints: {  }
-                        hasDefaultValue: false
-                        defaultValue: null
-                    price:
-                        name: price
-                        type:
-                            type: named
-                            types:
-                                - float
-                            innerTypes: {  }
-                            blueprints: {  }
-                        hasDefaultValue: false
-                        defaultValue: null
-                    currency:
-                        name: currency
-                        type:
-                            type: named
-                            types:
-                                - string
-                            innerTypes: {  }
-                            blueprints: {  }
-                        hasDefaultValue: false
-                        defaultValue: null
-                    quantity:
-                        name: quantity
-                        type:
-                            type: named
-                            types:
-                                - int
-                            innerTypes: {  }
-                            blueprints: {  }
-                        hasDefaultValue: false
-                        defaultValue: null
-                    type:
-                        name: type
-                        type:
-                            type: named
-                            types:
-                                - string
-                            innerTypes: {  }
-                            blueprints: {  }
-                        hasDefaultValue: false
-                        defaultValue: null
-                    category:
-                        name: category
-                        type:
-                            type: named
-                            types:
-                                - string
-                            innerTypes: {  }
-                            blueprints: {  }
-                        hasDefaultValue: false
-                        defaultValue: null
-                    vat:
-                        name: vat
-                        type:
-                            type: named
-                            types:
-                                - int
-                            innerTypes: {  }
-                            blueprints: {  }
-                        hasDefaultValue: false
-                        defaultValue: null
-                    metadata:
-                        name: metadata
-                        type:
-                            type: named
-                            types:
-                                - \PBaszak\UltraMapper\Tests\Assets\MetadataDTO
-                            innerTypes: {  }
-                            blueprints: {  }
-                        hasDefaultValue: false
-                        defaultValue: null
-                    created_at:
-                        name: created_at
-                        type:
-                            type: named
-                            types:
-                                - \DateTime
-                            innerTypes: {  }
-                            blueprints: {  }
-                        hasDefaultValue: false
-                        defaultValue: null
-                    updated_at:
-                        name: updated_at
-                        type:
-                            type: named
-                            types:
-                                - \DateTime
-                            innerTypes: {  }
-                            blueprints: {  }
-                        hasDefaultValue: false
-                        defaultValue: null
-                    availableActions:
-                        name: availableActions
-                        type:
-                            type: named
-                            types:
-                                - array
-                            innerTypes:
-                                string:
-                                    - mixed
-                                int:
-                                    - mixed
-                            blueprints: {  }
-                        hasDefaultValue: false
-                        defaultValue: null
-    pbaszak_ultramapper_tests_assets_embeddeddto:
-        name: PBaszak\UltraMapper\Tests\Assets\EmbeddedDTO
-        shortName: EmbeddedDTO
-        namespace: PBaszak\UltraMapper\Tests\Assets
-        filePath: /app/tests/Assets/Dummy.php
-        fileHash: 5a2d8a89e94995686a3b963881953a43
-        hash: 3ecec90a0bbc55e9a3fc81b24f73cb0e
-        type: class
-        docBlock: false
-        attributes: {  }
-        properties:
-            page:
-                originName: page
-                visibility: public
-                type:
-                    type: named
-                    types:
-                        - int
-                    innerTypes: {  }
-                    blueprints: {  }
-                isStatic: false
-                isReadOnly: false
-                hasDefaultValue: false
-                defaultValue: null
-                docBlock: false
-                attributes: {  }
-            pageSize:
-                originName: pageSize
-                visibility: public
-                type:
-                    type: named
-                    types:
-                        - int
-                    innerTypes: {  }
-                    blueprints: {  }
-                isStatic: false
-                isReadOnly: false
-                hasDefaultValue: false
-                defaultValue: null
-                docBlock: false
-                attributes: {  }
-            total:
-                originName: total
-                visibility: public
-                type:
-                    type: named
-                    types:
-                        - int
-                    innerTypes: {  }
-                    blueprints: {  }
-                isStatic: false
-                isReadOnly: false
-                hasDefaultValue: false
-                defaultValue: null
-                docBlock: false
-                attributes: {  }
-            items:
-                originName: items
-                visibility: public
-                type:
-                    type: named
-                    types:
-                        - array
-                    innerTypes:
-                        string:
-                            - \PBaszak\UltraMapper\Tests\Assets\ItemDTO
-                        int:
-                            - \PBaszak\UltraMapper\Tests\Assets\ItemDTO
-                    blueprints:
-                        \PBaszak\UltraMapper\Tests\Assets\ItemDTO: pbaszak_ultramapper_tests_assets_itemdto
-                isStatic: false
-                isReadOnly: false
-                hasDefaultValue: false
-                defaultValue: null
-                docBlock: '/** @var ItemDTO[] */'
-                attributes: {  }
-        methods:
-            __construct:
-                visibility: public
-                isConstructor: true
-                isStatic: false
-                docBlock: false
-                parameters:
-                    page:
-                        name: page
-                        type:
-                            type: named
-                            types:
-                                - int
-                            innerTypes: {  }
-                            blueprints: {  }
-                        hasDefaultValue: false
-                        defaultValue: null
-                    pageSize:
-                        name: pageSize
-                        type:
-                            type: named
-                            types:
-                                - int
-                            innerTypes: {  }
-                            blueprints: {  }
-                        hasDefaultValue: false
-                        defaultValue: null
-                    total:
-                        name: total
-                        type:
-                            type: named
-                            types:
-                                - int
-                            innerTypes: {  }
-                            blueprints: {  }
-                        hasDefaultValue: false
-                        defaultValue: null
-                    items:
-                        name: items
-                        type:
-                            type: named
-                            types:
-                                - array
-                            innerTypes:
-                                string:
-                                    - mixed
-                                int:
-                                    - mixed
-                            blueprints: {  }
-                        hasDefaultValue: false
-                        defaultValue: null
 filesHashes:
     /app/tests/Assets/Dummy.php: 5a2d8a89e94995686a3b963881953a43
 events:
-    - 'Blueprint Aggregate created. Root class: PBaszak\UltraMapper\Tests\Assets\Dummy.'
+    - 'Blueprint created. Root class: PBaszak\UltraMapper\Tests\Assets\Dummy.'
+    - 'Class Blueprint PBaszak\UltraMapper\Tests\Assets\EmbeddedDTO added. Blueprint name: pbaszak_ultramapper_tests_assets_embeddeddto.'
     - 'File hash added. File: /app/tests/Assets/Dummy.php, hash: 5a2d8a89e94995686a3b963881953a43.'
-    - 'Blueprint PBaszak\UltraMapper\Tests\Assets\MetadataDTO added. Blueprint name: pbaszak_ultramapper_tests_assets_metadatadto.'
+    - 'Class Blueprint PBaszak\UltraMapper\Tests\Assets\ItemDTO added. Blueprint name: pbaszak_ultramapper_tests_assets_itemdto.'
     - 'File hash added. File: /app/tests/Assets/Dummy.php, hash: 5a2d8a89e94995686a3b963881953a43.'
-    - 'Blueprint PBaszak\UltraMapper\Tests\Assets\MetadataDTO already exists. Blueprint name: pbaszak_ultramapper_tests_assets_metadatadto.'
-    - 'Blueprint DateTime added. Blueprint name: datetime.'
-    - 'Blueprint DateTime already exists. Blueprint name: datetime.'
-    - 'Blueprint DateTime already exists. Blueprint name: datetime.'
-    - 'Blueprint PBaszak\UltraMapper\Tests\Assets\ItemDTO added. Blueprint name: pbaszak_ultramapper_tests_assets_itemdto.'
+    - 'Class Blueprint PBaszak\UltraMapper\Tests\Assets\MetadataDTO added. Blueprint name: pbaszak_ultramapper_tests_assets_metadatadto.'
     - 'File hash added. File: /app/tests/Assets/Dummy.php, hash: 5a2d8a89e94995686a3b963881953a43.'
-    - 'Blueprint PBaszak\UltraMapper\Tests\Assets\ItemDTO already exists. Blueprint name: pbaszak_ultramapper_tests_assets_itemdto.'
-    - 'Blueprint PBaszak\UltraMapper\Tests\Assets\ItemDTO already exists. Blueprint name: pbaszak_ultramapper_tests_assets_itemdto.'
-    - 'Blueprint PBaszak\UltraMapper\Tests\Assets\EmbeddedDTO added. Blueprint name: pbaszak_ultramapper_tests_assets_embeddeddto.'
-    - 'File hash added. File: /app/tests/Assets/Dummy.php, hash: 5a2d8a89e94995686a3b963881953a43.'
-    - 'Blueprint PBaszak\UltraMapper\Tests\Assets\EmbeddedDTO already exists. Blueprint name: pbaszak_ultramapper_tests_assets_embeddeddto.'
+    - 'Class Blueprint PBaszak\UltraMapper\Tests\Assets\MetadataDTO already exists. Blueprint name: pbaszak_ultramapper_tests_assets_metadatadto.'
+    - 'Class Blueprint DateTime added. Blueprint name: datetime.'
+    - 'Class Blueprint DateTime already exists. Blueprint name: datetime.'
+    - 'Class Blueprint DateTime already exists. Blueprint name: datetime.'
+    - 'Class Blueprint PBaszak\UltraMapper\Tests\Assets\ItemDTO already exists. Blueprint name: pbaszak_ultramapper_tests_assets_itemdto.'
+    - 'Class Blueprint PBaszak\UltraMapper\Tests\Assets\ItemDTO already exists. Blueprint name: pbaszak_ultramapper_tests_assets_itemdto.'
+    - 'Class Blueprint PBaszak\UltraMapper\Tests\Assets\EmbeddedDTO already exists. Blueprint name: pbaszak_ultramapper_tests_assets_embeddeddto.'

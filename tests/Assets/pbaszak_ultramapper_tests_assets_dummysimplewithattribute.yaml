@@ -1,106 +1,109 @@
-pbaszak_ultramapper_tests_assets_dummysimplewithattribute:
-    name: PBaszak\UltraMapper\Tests\Assets\DummySimpleWithAttribute
-    shortName: DummySimpleWithAttribute
-    namespace: PBaszak\UltraMapper\Tests\Assets
-    filePath: /app/tests/Assets/DummySimpleWithAttribute.php
-    fileHash: 2aae3896bce24ab360c7a4da7c88787e
-    hash: dde4325ea464b5818255c741615f9a9c
-    type: class
-    docBlock: false
-    attributes: {  }
-    properties:
-        id:
-            originName: id
-            visibility: public
-            type:
-                type: named
-                types:
-                    - string
-                innerTypes: {  }
-                blueprints: {  }
-            isStatic: false
-            isReadOnly: false
-            hasDefaultValue: false
-            defaultValue: null
-            docBlock: false
-            attributes:
-                PBaszak\UltraMapper\Attribute\Callback:
-                    -
-                        class: PBaszak\UltraMapper\Attribute\Callback
-                        arguments:
-                            - test
-                    -
-                        class: PBaszak\UltraMapper\Attribute\Callback
-                        arguments:
-                            - test2
-        name:
-            originName: name
-            visibility: public
-            type:
-                type: named
-                types:
-                    - string
-                innerTypes: {  }
-                blueprints: {  }
-            isStatic: false
-            isReadOnly: false
-            hasDefaultValue: false
-            defaultValue: null
-            docBlock: false
-            attributes: {  }
-        description:
-            originName: description
-            visibility: public
-            type:
-                type: named
-                types:
-                    - string
-                innerTypes: {  }
-                blueprints: {  }
-            isStatic: false
-            isReadOnly: false
-            hasDefaultValue: false
-            defaultValue: null
-            docBlock: false
-            attributes:
-                PBaszak\UltraMapper\Attribute\Ignore:
-                    -
-                        class: PBaszak\UltraMapper\Attribute\Ignore
-                        arguments: {  }
-    methods:
-        __construct:
-            visibility: public
-            isConstructor: true
-            isStatic: false
-            docBlock: false
-            parameters:
-                id:
-                    name: id
-                    type:
-                        type: named
-                        types:
-                            - string
-                        innerTypes: {  }
-                        blueprints: {  }
-                    hasDefaultValue: false
-                    defaultValue: null
-                name:
-                    name: name
-                    type:
-                        type: named
-                        types:
-                            - string
-                        innerTypes: {  }
-                        blueprints: {  }
-                    hasDefaultValue: false
-                    defaultValue: null
-                description:
-                    name: description
-                    type:
-                        type: named
-                        types:
-                            - string
-                        innerTypes: {  }
-                        blueprints: {  }
-                    hasDefaultValue: false
-                    defaultValue: null
+root: pbaszak_ultramapper_tests_assets_dummysimplewithattribute
+blueprints:
+    pbaszak_ultramapper_tests_assets_dummysimplewithattribute:
+        name: PBaszak\UltraMapper\Tests\Assets\DummySimpleWithAttribute
+        shortName: DummySimpleWithAttribute
+        namespace: PBaszak\UltraMapper\Tests\Assets
+        filePath: /app/tests/Assets/DummySimpleWithAttribute.php
+        fileHash: 5de157db33ad5536dfb49fe841a058a3
+        hash: dde4325ea464b5818255c741615f9a9c
+        type: class
+        docBlock: false
+        attributes: {  }
+        properties:
+            id:
+                originName: id
+                visibility: public
+                type:
+                    type: named
+                    types:
+                        - string
+                    innerTypes: {  }
+                    blueprints: {  }
+                isStatic: false
+                isReadOnly: false
+                hasDefaultValue: false
+                defaultValue: null
+                docBlock: false
+                attributes:
+                    PBaszak\UltraMapper\Mapper\Application\Attribute\Callback:
+                        - null
+                        - null
+            name:
+                originName: name
+                visibility: public
+                type:
+                    type: named
+                    types:
+                        - string
+                    innerTypes: {  }
+                    blueprints: {  }
+                isStatic: false
+                isReadOnly: false
+                hasDefaultValue: false
+                defaultValue: null
+                docBlock: false
+                attributes: {  }
+            description:
+                originName: description
+                visibility: public
+                type:
+                    type: named
+                    types:
+                        - string
+                    innerTypes: {  }
+                    blueprints: {  }
+                isStatic: false
+                isReadOnly: false
+                hasDefaultValue: false
+                defaultValue: null
+                docBlock: false
+                attributes:
+                    PBaszak\UltraMapper\Mapper\Application\Attribute\Ignore:
+                        - null
+        methods:
+            __construct:
+                visibility: public
+                isConstructor: true
+                isStatic: false
+                docBlock: false
+                parameters:
+                    id:
+                        name: id
+                        type:
+                            type: named
+                            types:
+                                - string
+                            innerTypes: {  }
+                            blueprints: {  }
+                        hasDefaultValue: false
+                        defaultValue: null
+                    name:
+                        name: name
+                        type:
+                            type: named
+                            types:
+                                - string
+                            innerTypes: {  }
+                            blueprints: {  }
+                        hasDefaultValue: false
+                        defaultValue: null
+                    description:
+                        name: description
+                        type:
+                            type: named
+                            types:
+                                - string
+                            innerTypes: {  }
+                            blueprints: {  }
+                        hasDefaultValue: false
+                        defaultValue: null
+filesHashes:
+    /app/tests/Assets/DummySimpleWithAttribute.php: 5de157db33ad5536dfb49fe841a058a3
+    /app/src/Mapper/Application/Attribute/Callback.php: 53738bf21497add4fe7d727bae07ab97
+    /app/src/Mapper/Application/Attribute/Ignore.php: e8eb38a697a2dad958a6b4c23f6e63ea
+events:
+    - 'Blueprint created. Root class: PBaszak\UltraMapper\Tests\Assets\DummySimpleWithAttribute.'
+    - 'File hash added. File: /app/src/Mapper/Application/Attribute/Callback.php, hash: 53738bf21497add4fe7d727bae07ab97.'
+    - 'File hash added. File: /app/src/Mapper/Application/Attribute/Callback.php, hash: 53738bf21497add4fe7d727bae07ab97.'
+    - 'File hash added. File: /app/src/Mapper/Application/Attribute/Ignore.php, hash: e8eb38a697a2dad958a6b4c23f6e63ea.'

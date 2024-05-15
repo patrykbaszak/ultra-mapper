@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PBaszak\UltraMapper\Blueprint\Domain\Resolver;
 
 use PBaszak\UltraMapper\Blueprint\Application\Enum\TypeDeclaration;
-use PBaszak\UltraMapper\Blueprint\Domain\Exception\ClassNotFoundException;
+use PBaszak\UltraMapper\Blueprint\Application\Exception\ClassNotFoundException;
 use phpDocumentor\Reflection\DocBlock\Tags\InvalidTag;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;

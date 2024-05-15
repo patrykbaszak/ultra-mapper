@@ -11,6 +11,15 @@
             ".php-cs-fixer.dist.php"
         ]
     },
+    "jms/serializer-bundle": {
+        "version": "5.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "4.0",
+            "ref": "cc04e10cf7171525b50c18b36004edf64cb478be"
+        }
+    },
     "phpstan/phpstan": {
         "version": "1.10",
         "recipe": {

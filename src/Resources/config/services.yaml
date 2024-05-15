@@ -8,3 +8,7 @@ services:
         exclude:
             - '%kernel.project_dir%/vendor/PBaszak/ultra-mapper/src/DependencyInjection/'
             - '%kernel.project_dir%/vendor/PBaszak/ultra-mapper/src/Entity/'
+
+    PBaszak\UltraMapper\Blueprint\Application\Service\BlueprintService:
+        arguments:
+            $blueprintDir: '%kernel.project_dir%/var/ultra-mapper/blueprints/'

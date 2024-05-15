@@ -1,93 +1,99 @@
-pbaszak_ultramapper_tests_assets_dummysimple:
-    name: PBaszak\UltraMapper\Tests\Assets\DummySimple
-    shortName: DummySimple
-    namespace: PBaszak\UltraMapper\Tests\Assets
-    filePath: /app/tests/Assets/DummySimple.php
-    fileHash: 7d73b7e45648c5849c8a75d49cbb0dd1
-    hash: 74e72bcff6f7e0e7730ba361022cd298
-    type: class
-    docBlock: false
-    attributes: {  }
-    properties:
-        id:
-            originName: id
-            visibility: public
-            type:
-                type: named
-                types:
-                    - string
-                innerTypes: {  }
-                blueprints: {  }
-            isStatic: false
-            isReadOnly: false
-            hasDefaultValue: false
-            defaultValue: null
-            docBlock: false
-            attributes: {  }
-        name:
-            originName: name
-            visibility: public
-            type:
-                type: named
-                types:
-                    - string
-                innerTypes: {  }
-                blueprints: {  }
-            isStatic: false
-            isReadOnly: false
-            hasDefaultValue: false
-            defaultValue: null
-            docBlock: false
-            attributes: {  }
-        description:
-            originName: description
-            visibility: public
-            type:
-                type: named
-                types:
-                    - string
-                innerTypes: {  }
-                blueprints: {  }
-            isStatic: false
-            isReadOnly: false
-            hasDefaultValue: false
-            defaultValue: null
-            docBlock: false
-            attributes: {  }
-    methods:
-        __construct:
-            visibility: public
-            isConstructor: true
-            isStatic: false
-            docBlock: false
-            parameters:
-                id:
-                    name: id
-                    type:
-                        type: named
-                        types:
-                            - string
-                        innerTypes: {  }
-                        blueprints: {  }
-                    hasDefaultValue: false
-                    defaultValue: null
-                name:
-                    name: name
-                    type:
-                        type: named
-                        types:
-                            - string
-                        innerTypes: {  }
-                        blueprints: {  }
-                    hasDefaultValue: false
-                    defaultValue: null
-                description:
-                    name: description
-                    type:
-                        type: named
-                        types:
-                            - string
-                        innerTypes: {  }
-                        blueprints: {  }
-                    hasDefaultValue: false
-                    defaultValue: null
+root: pbaszak_ultramapper_tests_assets_dummysimple
+blueprints:
+    pbaszak_ultramapper_tests_assets_dummysimple:
+        name: PBaszak\UltraMapper\Tests\Assets\DummySimple
+        shortName: DummySimple
+        namespace: PBaszak\UltraMapper\Tests\Assets
+        filePath: /app/tests/Assets/DummySimple.php
+        fileHash: 7d73b7e45648c5849c8a75d49cbb0dd1
+        hash: 74e72bcff6f7e0e7730ba361022cd298
+        type: class
+        docBlock: false
+        attributes: {  }
+        properties:
+            id:
+                originName: id
+                visibility: public
+                type:
+                    type: named
+                    types:
+                        - string
+                    innerTypes: {  }
+                    blueprints: {  }
+                isStatic: false
+                isReadOnly: false
+                hasDefaultValue: false
+                defaultValue: null
+                docBlock: false
+                attributes: {  }
+            name:
+                originName: name
+                visibility: public
+                type:
+                    type: named
+                    types:
+                        - string
+                    innerTypes: {  }
+                    blueprints: {  }
+                isStatic: false
+                isReadOnly: false
+                hasDefaultValue: false
+                defaultValue: null
+                docBlock: false
+                attributes: {  }
+            description:
+                originName: description
+                visibility: public
+                type:
+                    type: named
+                    types:
+                        - string
+                    innerTypes: {  }
+                    blueprints: {  }
+                isStatic: false
+                isReadOnly: false
+                hasDefaultValue: false
+                defaultValue: null
+                docBlock: false
+                attributes: {  }
+        methods:
+            __construct:
+                visibility: public
+                isConstructor: true
+                isStatic: false
+                docBlock: false
+                parameters:
+                    id:
+                        name: id
+                        type:
+                            type: named
+                            types:
+                                - string
+                            innerTypes: {  }
+                            blueprints: {  }
+                        hasDefaultValue: false
+                        defaultValue: null
+                    name:
+                        name: name
+                        type:
+                            type: named
+                            types:
+                                - string
+                            innerTypes: {  }
+                            blueprints: {  }
+                        hasDefaultValue: false
+                        defaultValue: null
+                    description:
+                        name: description
+                        type:
+                            type: named
+                            types:
+                                - string
+                            innerTypes: {  }
+                            blueprints: {  }
+                        hasDefaultValue: false
+                        defaultValue: null
+filesHashes:
+    /app/tests/Assets/DummySimple.php: 7d73b7e45648c5849c8a75d49cbb0dd1
+events:
+    - 'Blueprint created. Root class: PBaszak\UltraMapper\Tests\Assets\DummySimple.'

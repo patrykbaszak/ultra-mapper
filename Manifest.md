@@ -147,3 +147,28 @@ private function mapAppTestX765(array $source, Meta $meta): Test
 ### Exceptions
 
 The exception code are started from `5920`
+
+### Mapping process
+
+#### Inicjalizacja
+
+ - z zmiennej `$source`
+ - z wartości domyślnej
+ - z wywołania funkcji inicjalizującej
+
+#### Przypisanie
+
+ - do zmiennej `$target`
+ - do zmiennej `$var`
+
+#### Wywołanie funkcji
+
+ - dowolna akcja na zmiennej `$var`
+
+#### Przypisanie
+
+ - przypisanie zmiennej `$var` do zmiennej `$target`
+
+#### Wywołanie funkcji końcowej
+
+ - dowolna akcja kończąca

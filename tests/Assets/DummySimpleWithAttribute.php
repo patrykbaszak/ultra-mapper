@@ -2,8 +2,8 @@
 
 namespace PBaszak\UltraMapper\Tests\Assets;
 
-use PBaszak\UltraMapper\Attribute\Callback;
-use PBaszak\UltraMapper\Attribute\Ignore;
+use PBaszak\UltraMapper\Mapper\Application\Attribute\Callback;
+use PBaszak\UltraMapper\Mapper\Application\Attribute\Ignore;
 
 class DummySimpleWithAttribute
 {
@@ -12,7 +12,7 @@ class DummySimpleWithAttribute
         #[Callback('test2')]
         public string $id,
         public string $name,
-        #[Ignore]
+        #[Ignore()]
         public string $description,
     ) {
     }
