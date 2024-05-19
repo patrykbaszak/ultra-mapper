@@ -86,26 +86,6 @@ parameters:
 			path: ../../src/Mapper/Application/Attribute/TargetProperty.php
 
 		-
-			message: "#^Access to an undefined property object\\:\\:\\$origin\\.$#"
-			count: 1
-			path: ../../src/Mapper/Application/Service/Mapper.php
-
-		-
-			message: "#^Access to an undefined property object\\:\\:\\$source\\.$#"
-			count: 1
-			path: ../../src/Mapper/Application/Service/Mapper.php
-
-		-
-			message: "#^Access to an undefined property object\\:\\:\\$target\\.$#"
-			count: 1
-			path: ../../src/Mapper/Application/Service/Mapper.php
-
-		-
-			message: "#^Method PBaszak\\\\UltraMapper\\\\Build\\\\Application\\\\Contract\\\\BuilderInterface\\:\\:build\\(\\) invoked with 7 parameters, 5 required\\.$#"
-			count: 1
-			path: ../../src/Mapper/Application/Service/Mapper.php
-
-		-
 			message: "#^Method PBaszak\\\\UltraMapper\\\\Mapper\\\\Application\\\\Service\\\\Mapper\\:\\:getMapper\\(\\) should return PBaszak\\\\UltraMapper\\\\Mapper\\\\Domain\\\\Contract\\\\ClassMapperInterface but returns PBaszak\\\\UltraMapper\\\\Mapper\\\\Domain\\\\Contract\\\\ClassMapperInterface\\|null\\.$#"
 			count: 1
 			path: ../../src/Mapper/Application/Service/Mapper.php
@@ -126,11 +106,6 @@ parameters:
 			path: ../../src/Mapper/Application/Service/Mapper.php
 
 		-
-			message: "#^Parameter \\#5 \\$isCollection of method PBaszak\\\\UltraMapper\\\\Build\\\\Application\\\\Contract\\\\BuilderInterface\\:\\:build\\(\\) expects bool, PBaszak\\\\UltraMapper\\\\Mapper\\\\Application\\\\Contract\\\\TypeInterface given\\.$#"
-			count: 1
-			path: ../../src/Mapper/Application/Service/Mapper.php
-
-		-
 			message: "#^Binary operation \"\\-\" between float\\|int and DateTime\\|float\\|int results in an error\\.$#"
 			count: 1
 			path: ../../src/Mapper/Application/Stamp/TimeStamp.php
@@ -139,6 +114,11 @@ parameters:
 			message: "#^Cannot call method getTimestamp\\(\\) on DateTime\\|float\\|int\\.$#"
 			count: 1
 			path: ../../src/Mapper/Application/Stamp/TimeStamp.php
+
+		-
+			message: "#^Dead catch \\- Throwable is never thrown in the try block\\.$#"
+			count: 1
+			path: ../../src/Mapper/Domain/Abstract/AbstractMapper.php
 
 		-
 			message: "#^Method PBaszak\\\\UltraMapper\\\\Mapper\\\\Domain\\\\Resolver\\\\MapperResolver\\:\\:resolve\\(\\) should return PBaszak\\\\UltraMapper\\\\Mapper\\\\Domain\\\\Contract\\\\ClassMapperInterface\\|null but returns object\\.$#"
