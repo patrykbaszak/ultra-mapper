@@ -95,8 +95,9 @@ class Callback implements AttributeInterface
          *          - Stage 4 Arbitrary callback to complete property mapping. Ex. logging
          */
         public int $stage,
-        public bool $useForNormalization = false,
         public bool $useForDenormalization = true,
+        public bool $useForMapping = false,
+        public bool $useForNormalization = false,
         /**
          * @var int $priority               The priority of the callback. The higher the value, the earlier the callback will be executed.
          */

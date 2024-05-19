@@ -97,3 +97,5 @@ filesHashes:
     /app/tests/Assets/DummySimple.php: 7d73b7e45648c5849c8a75d49cbb0dd1
 events:
     - 'Blueprint created. Root class: PBaszak\UltraMapper\Tests\Assets\DummySimple.'
+    - 'Class Blueprint PBaszak\UltraMapper\Tests\Assets\DummySimple added. Blueprint name: pbaszak_ultramapper_tests_assets_dummysimple.'
+    - 'File hash added. File: /app/tests/Assets/DummySimple.php, hash: 7d73b7e45648c5849c8a75d49cbb0dd1.'

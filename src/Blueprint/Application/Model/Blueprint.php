@@ -34,15 +34,19 @@ class Blueprint implements Normalizable
 
         $instance = $blueprint->blueprint ?? new self(
             $blueprint->blueprintName,
-            [$blueprint->blueprintName => $blueprint],
-            /* @phpstan-ignore-next-line types of $instance->filePath and $instance->fileHash are for sure strings */
-            $blueprint->hasDeclarationFile() ? [$blueprint->filePath => $blueprint->fileHash] : [],
+            [],
+            [],
             []
         );
 
         if (!in_array('Blueprint created. Root class: '.$rootClass.'.', $instance->events, true)) {
             $instance->addEvent('Blueprint created. Root class: '.$rootClass.'.');
         }
+
+        if (!array_key_exists($blueprint->blueprintName, $instance->blueprints)) {
+            $instance->addBlueprint($blueprint);
+        }
+
         if ($blueprint->hasDeclarationFile() && !array_key_exists($blueprint->filePath, $instance->filesHashes)) {
             /* @phpstan-ignore-next-line types of $instance->filePath and $instance->fileHash are for sure strings */
             $instance->addFileHash($blueprint->filePath, $blueprint->fileHash);
@@ -90,6 +94,11 @@ class Blueprint implements Normalizable
 
     public function addFileHash(string $filePath, string $fileHash): void
     {
+        if (array_key_exists($filePath, $this->filesHashes)) {
+            $this->addEvent('File hash already exists. File: '.$filePath.', hash: '.$fileHash.'.');
+
+            return;
+        }
         $this->filesHashes[$filePath] = $fileHash;
         $this->addEvent('File hash added. File: '.$filePath.', hash: '.$fileHash.'.');
     }

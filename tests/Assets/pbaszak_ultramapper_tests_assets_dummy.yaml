@@ -1111,12 +1111,14 @@ filesHashes:
     /app/tests/Assets/Dummy.php: 5a2d8a89e94995686a3b963881953a43
 events:
     - 'Blueprint created. Root class: PBaszak\UltraMapper\Tests\Assets\Dummy.'
+    - 'Class Blueprint PBaszak\UltraMapper\Tests\Assets\Dummy added. Blueprint name: pbaszak_ultramapper_tests_assets_dummy.'
+    - 'File hash added. File: /app/tests/Assets/Dummy.php, hash: 5a2d8a89e94995686a3b963881953a43.'
     - 'Class Blueprint PBaszak\UltraMapper\Tests\Assets\EmbeddedDTO added. Blueprint name: pbaszak_ultramapper_tests_assets_embeddeddto.'
-    - 'File hash added. File: /app/tests/Assets/Dummy.php, hash: 5a2d8a89e94995686a3b963881953a43.'
+    - 'File hash already exists. File: /app/tests/Assets/Dummy.php, hash: 5a2d8a89e94995686a3b963881953a43.'
     - 'Class Blueprint PBaszak\UltraMapper\Tests\Assets\ItemDTO added. Blueprint name: pbaszak_ultramapper_tests_assets_itemdto.'
-    - 'File hash added. File: /app/tests/Assets/Dummy.php, hash: 5a2d8a89e94995686a3b963881953a43.'
+    - 'File hash already exists. File: /app/tests/Assets/Dummy.php, hash: 5a2d8a89e94995686a3b963881953a43.'
     - 'Class Blueprint PBaszak\UltraMapper\Tests\Assets\MetadataDTO added. Blueprint name: pbaszak_ultramapper_tests_assets_metadatadto.'
-    - 'File hash added. File: /app/tests/Assets/Dummy.php, hash: 5a2d8a89e94995686a3b963881953a43.'
+    - 'File hash already exists. File: /app/tests/Assets/Dummy.php, hash: 5a2d8a89e94995686a3b963881953a43.'
     - 'Class Blueprint PBaszak\UltraMapper\Tests\Assets\MetadataDTO already exists. Blueprint name: pbaszak_ultramapper_tests_assets_metadatadto.'
     - 'Class Blueprint DateTime added. Blueprint name: datetime.'
     - 'Class Blueprint DateTime already exists. Blueprint name: datetime.'
