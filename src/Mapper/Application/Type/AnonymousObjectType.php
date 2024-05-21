@@ -8,16 +8,16 @@ use PBaszak\UltraMapper\Blueprint\Application\Model\Blueprint;
 use PBaszak\UltraMapper\Mapper\Application\Contract\TypeInterface;
 
 /**
- * ArrayType example:
- * [
+ * AnonymousObjectType example:
+ * (object) [
  *      'key1'      => 'value1',
  *      'key2'      => ['value2'],
- *      'key3'      => [
+ *      'key3'      => (object) [
  *          'key4'  => 'value4',
  *      ]
  * ]
  */
-class ArrayType implements TypeInterface
+class AnonymousObjectType implements TypeInterface
 {
     /**
      * @param class-string|null $overridenBlueprint
@@ -25,8 +25,7 @@ class ArrayType implements TypeInterface
     public function __construct(
         /** @var class-string|null */
         protected ?string $overridenBlueprint = null,
-    ) {
-    }
+    ) {}
 
     public function getOverriddenBlueprintClass(): ?string
     {

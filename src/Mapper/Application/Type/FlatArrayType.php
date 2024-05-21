@@ -8,23 +8,27 @@ use PBaszak\UltraMapper\Blueprint\Application\Model\Blueprint;
 use PBaszak\UltraMapper\Mapper\Application\Contract\TypeInterface;
 
 /**
- * ArrayType example:
+ * FlatArrayType example:
  * [
  *      'key1'      => 'value1',
- *      'key2'      => ['value2'],
- *      'key3'      => [
- *          'key4'  => 'value4',
- *      ]
+ *      'key2'      => ['value2'],      # eachCollectionIsRoot = true
+ *      'key2.0'    => 'value2',        # eachCollectionIsRoot = false
+ *      'key3.key4' => 'value4',        # flatArraySeparator = '.'
+ *      'key3_key4' => 'value4',        # flatArraySeparator = '_'
  * ]
  */
-class ArrayType implements TypeInterface
+class FlatArrayType implements TypeInterface
 {
     /**
      * @param class-string|null $overridenBlueprint
+     * @param string $flatArraySeparator
+     * @param bool $eachCollectionIsRoot
      */
     public function __construct(
         /** @var class-string|null */
         protected ?string $overridenBlueprint = null,
+        protected string $flatArraySeparator = '.',
+        protected bool $eachCollectionIsRoot = false,
     ) {
     }
 

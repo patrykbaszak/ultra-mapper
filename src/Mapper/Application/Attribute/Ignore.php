@@ -16,6 +16,9 @@ class Ignore implements AttributeInterface
      * @param array<string, mixed> $options Options are for modificators of the mapping process. If You need them, You can use them.
      */
     public function __construct(
+        public bool $useForDenormalization = false,
+        public bool $useForMapping = false,
+        public bool $useForNormalization = true,
         public readonly array $options = []
     ) {
     }

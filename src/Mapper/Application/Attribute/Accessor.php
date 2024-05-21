@@ -20,6 +20,9 @@ class Accessor implements AttributeInterface
     public function __construct(
         public readonly ?string $getter = null,
         public readonly ?string $setter = null,
+        public bool $useForDenormalization = true,
+        public bool $useForMapping = false,
+        public bool $useForNormalization = true,
         public readonly array $options = []
     ) {
     }

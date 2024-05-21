@@ -73,7 +73,7 @@ class Mapper implements MapperInterface
         ) {
             $blueprints = $this->createBlueprints($blueprintClass, $from, $to);
 
-            // decorates blueprints
+            // prepare blueprints
 
             // match blueprints
 

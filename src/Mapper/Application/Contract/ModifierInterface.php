@@ -11,7 +11,7 @@ namespace PBaszak\UltraMapper\Mapper\Application\Contract;
  */
 interface ModifierInterface
 {
-    // decorates
+    // prepare
 
-    // modifies
+    // modify
 }

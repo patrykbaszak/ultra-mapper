@@ -26,6 +26,9 @@ class TargetProperty implements AttributeInterface
         public readonly string $name,
         public readonly int $useNameFor = self::MAPPING | self::DENORMALIZATION | self::NORMALIZATION,
         public readonly ?string $path = null,
+        public bool $useForDenormalization = true,
+        public bool $useForMapping = true,
+        public bool $useForNormalization = true,
         public readonly array $options = []
     ) {
     }
