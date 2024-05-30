@@ -13,6 +13,9 @@ use PBaszak\UltraMapper\Shared\Infrastructure\Normalization\Normalizable;
 
 class Blueprint implements Normalizable
 {
+    /** @var array<string, mixed> */
+    public array $options = [];
+
     public function __construct(
         public string $root,
         /** @var array<string, ClassBlueprint> */

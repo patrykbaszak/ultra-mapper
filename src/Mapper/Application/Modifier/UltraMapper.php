@@ -8,5 +8,4 @@ use PBaszak\UltraMapper\Mapper\Application\Contract\ModifierInterface;
 
 class UltraMapper implements ModifierInterface
 {
-    
 }

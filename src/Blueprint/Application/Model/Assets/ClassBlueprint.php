@@ -12,6 +12,9 @@ use PBaszak\UltraMapper\Shared\Infrastructure\Normalization\Normalizable;
 
 class ClassBlueprint implements Normalizable
 {
+    /** @var array<string, mixed> */
+    public array $options = [];
+
     public ?Blueprint $blueprint;
     public ?PropertyBlueprint $parent;
     public string $blueprintName;

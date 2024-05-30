@@ -50,6 +50,7 @@ class AttributeBlueprintTest extends TestCase
         $class = DummySimpleWithAttribute::class;
         $blueprint = ClassBlueprint::create($class, null);
 
+        $this->assertCount(2, $blueprint->properties->assets['id']->attributes->assets[Callback::class]);
         $attr = $blueprint->properties->assets['id']->attributes->assets[Callback::class][1];
         $ref = $attr->getReflection();
 

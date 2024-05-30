@@ -12,6 +12,8 @@ interface MapperInterface
      * The method maps the data from a array or object to another array or object.
      *
      * @param mixed         $data           the data to map
+     * @param mixed         $output         the output of the mapping (not the envelope, the actual mapped data).
+     *                                      Yes it can just update the $output variable.
      * @param string        $blueprintClass The class of the blueprint. Defines properties to map.
      * @param TypeInterface $from           you have to define what type are you passing in the $data
      * @param TypeInterface $to             you have to define what type you want to get
@@ -21,6 +23,7 @@ interface MapperInterface
      */
     public function map(
         mixed $data,
+        mixed &$output,
         string $blueprintClass,
         TypeInterface $from,
         TypeInterface $to,

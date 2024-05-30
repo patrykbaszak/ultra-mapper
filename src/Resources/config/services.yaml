@@ -12,3 +12,8 @@ services:
     PBaszak\UltraMapper\Blueprint\Application\Service\BlueprintService:
         arguments:
             $blueprintDir: '%kernel.project_dir%/var/ultra-mapper/blueprints/'
+
+    PBaszak\UltraMapper\Mapper\Domain\Resolver\MapperResolver:
+        arguments:
+            $mappersDirectory: '%kernel.project_dir%/var/ultra-mapper/mappers/'
+

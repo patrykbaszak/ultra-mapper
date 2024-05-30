@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PBaszak\UltraMapper\Mapper\Application\Type;
 
-use PBaszak\UltraMapper\Blueprint\Application\Model\Blueprint;
 use PBaszak\UltraMapper\Mapper\Application\Contract\TypeInterface;
 
 /**
@@ -21,8 +20,6 @@ class FlatArrayType implements TypeInterface
 {
     /**
      * @param class-string|null $overridenBlueprint
-     * @param string $flatArraySeparator
-     * @param bool $eachCollectionIsRoot
      */
     public function __construct(
         /** @var class-string|null */

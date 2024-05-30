@@ -101,11 +101,11 @@ blueprints:
 filesHashes:
     /app/tests/Assets/DummySimpleWithAttribute.php: 5de157db33ad5536dfb49fe841a058a3
     /app/src/Mapper/Application/Attribute/Callback.php: 7173c11807fd96be7ff308dcf6d71e2d
-    /app/src/Mapper/Application/Attribute/Ignore.php: e8eb38a697a2dad958a6b4c23f6e63ea
+    /app/src/Mapper/Application/Attribute/Ignore.php: 2a2aa02ede24f285404fe3df1dd23940
 events:
     - 'Blueprint created. Root class: PBaszak\UltraMapper\Tests\Assets\DummySimpleWithAttribute.'
     - 'Class Blueprint PBaszak\UltraMapper\Tests\Assets\DummySimpleWithAttribute added. Blueprint name: pbaszak_ultramapper_tests_assets_dummysimplewithattribute.'
     - 'File hash added. File: /app/tests/Assets/DummySimpleWithAttribute.php, hash: 5de157db33ad5536dfb49fe841a058a3.'
     - 'File hash added. File: /app/src/Mapper/Application/Attribute/Callback.php, hash: 7173c11807fd96be7ff308dcf6d71e2d.'
     - 'File hash already exists. File: /app/src/Mapper/Application/Attribute/Callback.php, hash: 7173c11807fd96be7ff308dcf6d71e2d.'
-    - 'File hash added. File: /app/src/Mapper/Application/Attribute/Ignore.php, hash: e8eb38a697a2dad958a6b4c23f6e63ea.'
+    - 'File hash added. File: /app/src/Mapper/Application/Attribute/Ignore.php, hash: 2a2aa02ede24f285404fe3df1dd23940.'

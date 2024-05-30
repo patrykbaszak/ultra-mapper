@@ -14,4 +14,18 @@ class Modificator implements ModificatorInterface
         protected array $modifiers = []
     ) {
     }
+
+    public function prepareBlueprints(): void
+    {
+        foreach ($this->modifiers as $modifier) {
+            // $modifier->prepareBlueprints();
+        }
+    }
+
+    public function modifyBlueprints(): void
+    {
+        foreach ($this->modifiers as $modifier) {
+            // $modifier->modifyBlueprints();
+        }
+    }
 }

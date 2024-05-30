@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PBaszak\UltraMapper\Mapper\Application\Type;
 
-use PBaszak\UltraMapper\Blueprint\Application\Model\Blueprint;
 use PBaszak\UltraMapper\Mapper\Application\Contract\TypeInterface;
 
 /**
@@ -25,7 +24,8 @@ class AnonymousObjectType implements TypeInterface
     public function __construct(
         /** @var class-string|null */
         protected ?string $overridenBlueprint = null,
-    ) {}
+    ) {
+    }
 
     public function getOverriddenBlueprintClass(): ?string
     {
