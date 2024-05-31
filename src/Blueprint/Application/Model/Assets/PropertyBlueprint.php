@@ -12,7 +12,7 @@ class PropertyBlueprint implements Normalizable
 {
     /** @var array<string, mixed> */
     public array $options = [];
-    
+
     public ClassBlueprint $parent;
     public string $originName;
 

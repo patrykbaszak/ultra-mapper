@@ -14,7 +14,7 @@ class ProcessResolver
      * @param TypeInterface $from the type of the source data
      * @param TypeInterface $to   the type of the target data
      *
-     * @return "normalization"|"denormalization"|"mapping"|"transformation"
+     * @return string<"normalization"|"denormalization"|"mapping"|"transformation">
      *
      * @throws \LogicException If the process could not be resolved. - Should never happen.
      */

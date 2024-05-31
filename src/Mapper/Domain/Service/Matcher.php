@@ -18,28 +18,29 @@ class Matcher implements MatcherInterface
     {
         $this->addLinks($origin, $source, $target);
         $rootBlueprints = array_map(
-            fn(Blueprint $blueprint) => $blueprint->blueprints[$blueprint->root],
+            fn (Blueprint $blueprint) => $blueprint->blueprints[$blueprint->root],
             [$origin, $source, $target]
         );
         $this->matchClassBlueprints($processType, ...$rootBlueprints);
     }
 
-    public function matchClassBlueprints(string $processType, ClassBlueprint $originClass, ClassBlueprint $source, ClassBlueprint $target): void
+    protected function matchClassBlueprints(string $processType, ClassBlueprint $originClass, ClassBlueprint $source, ClassBlueprint $target): void
     {
         $this->addLinks($originClass, $source, $target);
 
+        /** @var PropertyBlueprint $property */
         foreach ($originClass->properties->assets as $property) {
             $this->matchProperties($processType, $property, $source, $target);
         }
     }
 
-    public function matchProperties(string $processType, PropertyBlueprint $originProperty, ClassBlueprint $source, ClassBlueprint $target): void
+    protected function matchProperties(string $processType, PropertyBlueprint $originProperty, ClassBlueprint $source, ClassBlueprint $target): void
     {
-
     }
 
     protected function searchForPropertyWithSameName(PropertyBlueprint $originProperty, ClassBlueprint $blueprint): ?PropertyBlueprint
     {
+        /** @var PropertyBlueprint $property */
         foreach ($blueprint->properties->assets as $property) {
             if ($property->originName === $originProperty->originName) {
                 return $property;
@@ -49,7 +50,7 @@ class Matcher implements MatcherInterface
         return null;
     }
 
-    protected function searchForPropertyBasedOnTargetPropertyAttribute(PropertyBlueprint $originProperty, ClassBlueprint $blueprint, ): ?PropertyBlueprint
+    protected function searchForPropertyBasedOnTargetPropertyAttribute(PropertyBlueprint $originProperty, ClassBlueprint $blueprint): ?PropertyBlueprint
     {
         return null;
     }
@@ -59,17 +60,21 @@ class Matcher implements MatcherInterface
         return isset($blueprint->attributes->assets[TargetProperty::class]) && count($blueprint->attributes->assets[TargetProperty::class]) > 0;
     }
 
-    protected function addLinks(object $origin, object $source, object $target): void
-    {
+    protected function addLinks(
+        Blueprint|PropertyBlueprint|ClassBlueprint $origin,
+        Blueprint|PropertyBlueprint|ClassBlueprint $source,
+        Blueprint|PropertyBlueprint|ClassBlueprint $target
+    ): void {
+        $blueprints = [$origin, $source, $target];
         array_walk(
-            [$origin, $source, $target],
+            $blueprints,
             function (object $object) {
                 $object->options[self::OPTION_ID] = Uuid::v4()->toRfc4122();
             }
         );
 
         array_walk(
-            [$origin, $source, $target],
+            $blueprints,
             function (object $object) use ($origin, $source, $target) {
                 $object->options = array_replace_recursive(
                     $object->options,

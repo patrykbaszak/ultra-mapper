@@ -86,12 +86,17 @@ parameters:
 			path: ../../src/Mapper/Application/Attribute/TargetProperty.php
 
 		-
-			message: "#^Method PBaszak\\\\UltraMapper\\\\Mapper\\\\Application\\\\Service\\\\Mapper\\:\\:getMapper\\(\\) should return PBaszak\\\\UltraMapper\\\\Mapper\\\\Domain\\\\Contract\\\\ClassMapperInterface but returns PBaszak\\\\UltraMapper\\\\Mapper\\\\Domain\\\\Contract\\\\ClassMapperInterface\\|null\\.$#"
+			message: "#^PHPDoc tag @param for parameter \\$processType contains unresolvable type\\.$#"
 			count: 1
-			path: ../../src/Mapper/Application/Service/Mapper.php
+			path: ../../src/Mapper/Application/Contract/ModificatorInterface.php
 
 		-
-			message: "#^PHPDoc tag @return has invalid value \\(\\{'origin'\\: BlueprintInterface, 'source'\\: BlueprintInterface, 'target'\\: BlueprintInterface\\}\\)\\: Unexpected token \"\\{\", expected type at offset 66$#"
+			message: "#^PHPDoc tag @param for parameter \\$processUse contains unresolvable type\\.$#"
+			count: 1
+			path: ../../src/Mapper/Application/Contract/ModificatorInterface.php
+
+		-
+			message: "#^Method PBaszak\\\\UltraMapper\\\\Mapper\\\\Application\\\\Service\\\\Mapper\\:\\:getMapper\\(\\) should return PBaszak\\\\UltraMapper\\\\Mapper\\\\Domain\\\\Contract\\\\ClassMapperInterface but returns PBaszak\\\\UltraMapper\\\\Mapper\\\\Domain\\\\Contract\\\\ClassMapperInterface\\|null\\.$#"
 			count: 1
 			path: ../../src/Mapper/Application/Service/Mapper.php
 
@@ -121,6 +126,11 @@ parameters:
 			path: ../../src/Mapper/Domain/Abstract/AbstractMapper.php
 
 		-
+			message: "#^PHPDoc tag @param for parameter \\$processType contains unresolvable type\\.$#"
+			count: 1
+			path: ../../src/Mapper/Domain/Contract/MatcherInterface.php
+
+		-
 			message: "#^Method PBaszak\\\\UltraMapper\\\\Mapper\\\\Domain\\\\Resolver\\\\MapperResolver\\:\\:resolve\\(\\) should return PBaszak\\\\UltraMapper\\\\Mapper\\\\Domain\\\\Contract\\\\ClassMapperInterface\\|null but returns object\\.$#"
 			count: 1
 			path: ../../src/Mapper/Domain/Resolver/MapperResolver.php
@@ -129,3 +139,8 @@ parameters:
 			message: "#^Property PBaszak\\\\UltraMapper\\\\Mapper\\\\Domain\\\\Resolver\\\\MapperResolver\\:\\:\\$mappers \\(array\\<string, PBaszak\\\\UltraMapper\\\\Mapper\\\\Domain\\\\Contract\\\\ClassMapperInterface\\>\\) does not accept array\\<string, object\\>\\.$#"
 			count: 1
 			path: ../../src/Mapper/Domain/Resolver/MapperResolver.php
+
+		-
+			message: "#^PHPDoc tag @return contains unresolvable type\\.$#"
+			count: 1
+			path: ../../src/Mapper/Domain/Resolver/ProcessResolver.php

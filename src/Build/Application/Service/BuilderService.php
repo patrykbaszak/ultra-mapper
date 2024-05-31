@@ -11,10 +11,10 @@ use PBaszak\UltraMapper\Mapper\Application\Contract\TypeInterface;
 
 class BuilderService implements BuilderInterface
 {
-    public function build(string $name, Blueprints $blueprints, TypeInterface $from, TypeInterface $to, bool $isCollection): Build
-    {
-        // match properties into Class_ and Property_ objects
+    // public function build(string $name, Blueprints $blueprints, TypeInterface $from, TypeInterface $to, bool $isCollection): Build
+    // {
+    //     // match properties into Class_ and Property_ objects
 
-        throw new \LogicException('Method not implemented yet.');
-    }
+    //     throw new \LogicException('Method not implemented yet.');
+    // }
 }

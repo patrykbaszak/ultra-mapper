@@ -8,6 +8,10 @@ use PBaszak\UltraMapper\Mapper\Application\Model\Envelope;
 
 interface MapperInterface
 {
+    public const BLUEPRINT_PROCESS_USE = 'origin';
+    public const FROM_PROCESS_USE = 'source';
+    public const TO_PROCESS_USE = 'target';
+
     /**
      * The method maps the data from a array or object to another array or object.
      *

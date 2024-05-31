@@ -11,7 +11,7 @@ use PBaszak\UltraMapper\Mapper\Application\Contract\TypeInterface;
 
 interface BuilderInterface
 {
-    /**
+    /*
      * Method that creates a Build object based on the provided parameters.
      *
      * @param string        $name         The name of the mapper (short name of the class)
@@ -24,11 +24,11 @@ interface BuilderInterface
      *
      * @throws BuilderException
      */
-    public function build(
-        string $name,
-        Blueprints $blueprints,
-        TypeInterface $from,
-        TypeInterface $to,
-        bool $isCollection,
-    ): Build;
+    // public function build(
+    //     string $name,
+    //     Blueprints $blueprints,
+    //     TypeInterface $from,
+    //     TypeInterface $to,
+    //     bool $isCollection,
+    // ): Build;
 }

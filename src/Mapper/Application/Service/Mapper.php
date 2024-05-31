@@ -5,14 +5,16 @@ declare(strict_types=1);
 namespace PBaszak\UltraMapper\Mapper\Application\Service;
 
 use PBaszak\UltraMapper\Blueprint\Application\Contract\BlueprintInterface;
+use PBaszak\UltraMapper\Blueprint\Application\Model\Blueprint;
 use PBaszak\UltraMapper\Build\Application\Contract\BuilderInterface;
-use PBaszak\UltraMapper\Build\Application\Model\Blueprints;
 use PBaszak\UltraMapper\Mapper\Application\Contract\MapperInterface;
 use PBaszak\UltraMapper\Mapper\Application\Contract\ModificatorInterface;
 use PBaszak\UltraMapper\Mapper\Application\Contract\TypeInterface;
 use PBaszak\UltraMapper\Mapper\Application\Model\Envelope;
 use PBaszak\UltraMapper\Mapper\Domain\Contract\ClassMapperInterface;
 use PBaszak\UltraMapper\Mapper\Domain\Resolver\MapperResolver;
+use PBaszak\UltraMapper\Mapper\Domain\Resolver\ProcessResolver;
+use PBaszak\UltraMapper\Mapper\Domain\Service\Matcher;
 
 class Mapper implements MapperInterface
 {
@@ -44,6 +46,7 @@ class Mapper implements MapperInterface
 
     public function map(
         mixed $data,
+        mixed &$output,
         string $blueprintClass,
         TypeInterface $from,
         TypeInterface $to,
@@ -64,7 +67,7 @@ class Mapper implements MapperInterface
         TypeInterface $to,
         bool $isCollection = false
     ): ClassMapperInterface {
-        $shortName = $this->mapperResolver->getMapperShortClassName(...func_get_args());
+        $shortName = $this->mapperResolver->getMapperShortClassName(...func_get_args(), ...$this->modificator->getModifiers());
 
         // if the blueprint files were changed or the mapper does not exist
         if (
@@ -72,22 +75,25 @@ class Mapper implements MapperInterface
             || null === $mapper = $this->mapperResolver->resolve($shortName)
         ) {
             $blueprints = $this->createBlueprints($blueprintClass, $from, $to);
+            $processType = (new ProcessResolver())->resolve($from, $to);
 
-            // prepare blueprints
+            foreach ($blueprints as $processUse => $blueprint) {
+                $this->modificator->prepareBlueprint($blueprint, $processType, $processUse);
+            }
 
-            // match blueprints
+            (new Matcher())->matchBlueprints($processType, ...$blueprints);
 
             // modify blueprints
 
-            $build = $this->build->build(
-                $shortName,
-                $blueprints,
-                $from,
-                $to,
-                $isCollection,
-            );
+            // $build = $this->build->build(
+            //     $shortName,
+            //     $blueprints,
+            //     $from,
+            //     $to,
+            //     $isCollection,
+            // );
 
-            $this->mapperResolver->save($shortName, $build->getMapperFileBody());
+            // $this->mapperResolver->save($shortName, $build->getMapperFileBody());
             $mapper = $this->mapperResolver->resolve($shortName);
         }
 
@@ -97,23 +103,23 @@ class Mapper implements MapperInterface
     /**
      * Create blueprints for the build.
      *
-     * @return {'origin': BlueprintInterface, 'source': BlueprintInterface, 'target': BlueprintInterface}
+     * @return array{'origin': Blueprint, 'source': Blueprint, 'target': Blueprint}
      */
     protected function createBlueprints(
         string $blueprintClass,
         TypeInterface $from,
         TypeInterface $to
-    ): Blueprints {
+    ): array {
         $originBlueprint = $this->blueprint->createBlueprint($blueprintClass);
 
-        return new Blueprints(
-            $originBlueprint,
-            $from->getOverriddenBlueprintClass()
+        return [
+            self::BLUEPRINT_PROCESS_USE => $originBlueprint,
+            self::FROM_PROCESS_USE => $from->getOverriddenBlueprintClass()
                 ? $this->blueprint->createBlueprint($from->getOverriddenBlueprintClass())
                 : clone $originBlueprint,
-            $to->getOverriddenBlueprintClass()
+            self::TO_PROCESS_USE => $to->getOverriddenBlueprintClass()
                 ? $this->blueprint->createBlueprint($to->getOverriddenBlueprintClass())
                 : clone $originBlueprint,
-        );
+        ];
     }
 }
