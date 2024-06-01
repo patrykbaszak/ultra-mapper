@@ -60,6 +60,28 @@ class PropertyBlueprint implements Normalizable
         return new AssetsAggregate($root, $properties);
     }
 
+    public function getName(): string
+    {
+        return $this->options['name'] ?? $this->originName;
+    }
+
+    public function getPath(): string
+    {
+        $path = $this->parent->getPath();
+
+        if (!str_ends_with($path, '[]') && '' !== $path) {
+            $path .= '.';
+        }
+
+        $path .= $this->getName();
+
+        if ($this->type->isCollection()) {
+            $path .= '[]';
+        }
+
+        return $path;
+    }
+
     public function getReflection(): \ReflectionProperty
     {
         return new \ReflectionProperty($this->parent->name, $this->originName);
@@ -69,10 +91,12 @@ class PropertyBlueprint implements Normalizable
     {
         return [
             'originName' => $this->originName,
+            'path' => $this->getPath(),
             'visibility' => $this->visibility->value,
             'type' => $this->type->normalize(),
             'isStatic' => $this->isStatic,
             'isReadOnly' => $this->isReadOnly,
+            'isCollection' => $this->type->isCollection(),
             'hasDefaultValue' => $this->hasDefaultValue,
             'defaultValue' => $this->defaultValue,
             'docBlock' => $this->docBlock,

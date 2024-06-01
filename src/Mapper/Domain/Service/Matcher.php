@@ -5,15 +5,22 @@ declare(strict_types=1);
 namespace PBaszak\UltraMapper\Mapper\Domain\Service;
 
 use PBaszak\UltraMapper\Blueprint\Application\Model\Assets\ClassBlueprint;
-use PBaszak\UltraMapper\Blueprint\Application\Model\Assets\ParameterBlueprint;
 use PBaszak\UltraMapper\Blueprint\Application\Model\Assets\PropertyBlueprint;
 use PBaszak\UltraMapper\Blueprint\Application\Model\Blueprint;
-use PBaszak\UltraMapper\Mapper\Application\Attribute\TargetProperty;
 use PBaszak\UltraMapper\Mapper\Domain\Contract\MatcherInterface;
+use PBaszak\UltraMapper\Mapper\Domain\Exception\PropertyNotMatchedException;
+use PBaszak\UltraMapper\Mapper\Domain\Service\Matcher\SameNameStrategy;
+use PBaszak\UltraMapper\Mapper\Domain\Service\Matcher\TargetPropertyAttributeStrategy;
 use Symfony\Component\Uid\Uuid;
 
 class Matcher implements MatcherInterface
 {
+    /** @var class-string<Matcher\MatchingStrategyInterface>[] */
+    protected const MATCHING_STRATEGIES = [
+        TargetPropertyAttributeStrategy::class,
+        SameNameStrategy::class,
+    ];
+
     public function matchBlueprints(string $processType, Blueprint $origin, Blueprint $source, Blueprint $target): void
     {
         $this->addLinks($origin, $source, $target);
@@ -36,28 +43,20 @@ class Matcher implements MatcherInterface
 
     protected function matchProperties(string $processType, PropertyBlueprint $originProperty, ClassBlueprint $source, ClassBlueprint $target): void
     {
-    }
+        foreach ($source->properties as $sourceProperty) {
+            foreach ($target->properties as $targetProperty) {
+                foreach ($this::MATCHING_STRATEGIES as $strategy) {
+                    $strategyInstance = new $strategy();
+                    if ($strategyInstance->confirmPropertiesMatching($processType, $originProperty, $sourceProperty, $targetProperty)) {
+                        $this->addLinks($originProperty, $sourceProperty, $targetProperty);
 
-    protected function searchForPropertyWithSameName(PropertyBlueprint $originProperty, ClassBlueprint $blueprint): ?PropertyBlueprint
-    {
-        /** @var PropertyBlueprint $property */
-        foreach ($blueprint->properties->assets as $property) {
-            if ($property->originName === $originProperty->originName) {
-                return $property;
+                        return;
+                    }
+                }
             }
         }
 
-        return null;
-    }
-
-    protected function searchForPropertyBasedOnTargetPropertyAttribute(PropertyBlueprint $originProperty, ClassBlueprint $blueprint): ?PropertyBlueprint
-    {
-        return null;
-    }
-
-    protected function hasTargetPropertyAttribute(PropertyBlueprint|ParameterBlueprint $blueprint): bool
-    {
-        return isset($blueprint->attributes->assets[TargetProperty::class]) && count($blueprint->attributes->assets[TargetProperty::class]) > 0;
+        throw new PropertyNotMatchedException($originProperty->getPath(), sprintf('Property "%s" from origin class "%s" could not be matched with any property from source and target classes.', $originProperty->originName, $originProperty->parent->name), sprintf('Check Your classes: origin:"%s", source:"%s" and target:"%s" for properties with the same name or with the same attributes. Use #[TargetProperty] attribute to match properties if the names cannot be same.', $originProperty->parent->name, $source->name, $target->name));
     }
 
     protected function addLinks(

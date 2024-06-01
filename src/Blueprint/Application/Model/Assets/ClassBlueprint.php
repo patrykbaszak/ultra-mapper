@@ -91,6 +91,11 @@ class ClassBlueprint implements Normalizable
         return new \ReflectionClass($this->name);
     }
 
+    public function getPath(): string
+    {
+        return $this->parent?->getPath() ?? '';
+    }
+
     public function hasDeclarationFile(): bool
     {
         return false !== $this->filePath;

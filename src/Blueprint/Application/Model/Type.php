@@ -72,6 +72,11 @@ class Type implements Normalizable
         return $this->parent->getReflection()->getType();
     }
 
+    public function isCollection(): bool
+    {
+        return array_key_exists('int', $this->innerTypes);
+    }
+
     public function normalize(): array
     {
         return [

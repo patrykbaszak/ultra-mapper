@@ -61,6 +61,11 @@ class AttributeBlueprint implements Normalizable
         return $this->parent instanceof ClassBlueprint;
     }
 
+    public function newInstance(): object
+    {
+        return new $this->class(...$this->arguments);
+    }
+
     public function getReflection(): \ReflectionAttribute
     {
         $attr = $this->parent->getReflection()->getAttributes($this->class);

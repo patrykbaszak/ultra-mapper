@@ -13,6 +13,7 @@ blueprints:
         properties:
             id:
                 originName: id
+                path: id
                 visibility: public
                 type:
                     type: named
@@ -22,12 +23,14 @@ blueprints:
                     blueprints: {  }
                 isStatic: false
                 isReadOnly: false
+                isCollection: false
                 hasDefaultValue: false
                 defaultValue: null
                 docBlock: false
                 attributes: {  }
             name:
                 originName: name
+                path: name
                 visibility: public
                 type:
                     type: named
@@ -37,12 +40,14 @@ blueprints:
                     blueprints: {  }
                 isStatic: false
                 isReadOnly: false
+                isCollection: false
                 hasDefaultValue: false
                 defaultValue: null
                 docBlock: false
                 attributes: {  }
             description:
                 originName: description
+                path: description
                 visibility: public
                 type:
                     type: named
@@ -52,12 +57,14 @@ blueprints:
                     blueprints: {  }
                 isStatic: false
                 isReadOnly: false
+                isCollection: false
                 hasDefaultValue: false
                 defaultValue: null
                 docBlock: false
                 attributes: {  }
             _embedded:
                 originName: _embedded
+                path: _embedded
                 visibility: public
                 type:
                     type: named
@@ -68,12 +75,14 @@ blueprints:
                         \PBaszak\UltraMapper\Tests\Assets\EmbeddedDTO: pbaszak_ultramapper_tests_assets_embeddeddto
                 isStatic: false
                 isReadOnly: false
+                isCollection: false
                 hasDefaultValue: false
                 defaultValue: null
                 docBlock: false
                 attributes: {  }
             abstractField:
                 originName: abstractField
+                path: abstractField
                 visibility: public
                 type:
                     type: named
@@ -83,6 +92,7 @@ blueprints:
                     blueprints: {  }
                 isStatic: false
                 isReadOnly: false
+                isCollection: false
                 hasDefaultValue: true
                 defaultValue: abstractField
                 docBlock: false
@@ -147,6 +157,7 @@ blueprints:
         properties:
             page:
                 originName: page
+                path: _embedded.page
                 visibility: public
                 type:
                     type: named
@@ -156,12 +167,14 @@ blueprints:
                     blueprints: {  }
                 isStatic: false
                 isReadOnly: false
+                isCollection: false
                 hasDefaultValue: false
                 defaultValue: null
                 docBlock: false
                 attributes: {  }
             pageSize:
                 originName: pageSize
+                path: _embedded.pageSize
                 visibility: public
                 type:
                     type: named
@@ -171,12 +184,14 @@ blueprints:
                     blueprints: {  }
                 isStatic: false
                 isReadOnly: false
+                isCollection: false
                 hasDefaultValue: false
                 defaultValue: null
                 docBlock: false
                 attributes: {  }
             total:
                 originName: total
+                path: _embedded.total
                 visibility: public
                 type:
                     type: named
@@ -186,12 +201,14 @@ blueprints:
                     blueprints: {  }
                 isStatic: false
                 isReadOnly: false
+                isCollection: false
                 hasDefaultValue: false
                 defaultValue: null
                 docBlock: false
                 attributes: {  }
             items:
                 originName: items
+                path: '_embedded.items[]'
                 visibility: public
                 type:
                     type: named
@@ -206,6 +223,7 @@ blueprints:
                         \PBaszak\UltraMapper\Tests\Assets\ItemDTO: pbaszak_ultramapper_tests_assets_itemdto
                 isStatic: false
                 isReadOnly: false
+                isCollection: true
                 hasDefaultValue: false
                 defaultValue: null
                 docBlock: '/** @var ItemDTO[] */'
@@ -274,6 +292,7 @@ blueprints:
         properties:
             id:
                 originName: id
+                path: '_embedded.items[]id'
                 visibility: public
                 type:
                     type: named
@@ -283,12 +302,14 @@ blueprints:
                     blueprints: {  }
                 isStatic: false
                 isReadOnly: false
+                isCollection: false
                 hasDefaultValue: false
                 defaultValue: null
                 docBlock: false
                 attributes: {  }
             name:
                 originName: name
+                path: '_embedded.items[]name'
                 visibility: public
                 type:
                     type: named
@@ -298,12 +319,14 @@ blueprints:
                     blueprints: {  }
                 isStatic: false
                 isReadOnly: false
+                isCollection: false
                 hasDefaultValue: false
                 defaultValue: null
                 docBlock: false
                 attributes: {  }
             description:
                 originName: description
+                path: '_embedded.items[]description'
                 visibility: public
                 type:
                     type: named
@@ -313,12 +336,14 @@ blueprints:
                     blueprints: {  }
                 isStatic: false
                 isReadOnly: false
+                isCollection: false
                 hasDefaultValue: false
                 defaultValue: null
                 docBlock: false
                 attributes: {  }
             price:
                 originName: price
+                path: '_embedded.items[]price'
                 visibility: public
                 type:
                     type: named
@@ -328,12 +353,14 @@ blueprints:
                     blueprints: {  }
                 isStatic: false
                 isReadOnly: false
+                isCollection: false
                 hasDefaultValue: false
                 defaultValue: null
                 docBlock: false
                 attributes: {  }
             currency:
                 originName: currency
+                path: '_embedded.items[]currency'
                 visibility: public
                 type:
                     type: named
@@ -343,12 +370,14 @@ blueprints:
                     blueprints: {  }
                 isStatic: false
                 isReadOnly: false
+                isCollection: false
                 hasDefaultValue: false
                 defaultValue: null
                 docBlock: false
                 attributes: {  }
             quantity:
                 originName: quantity
+                path: '_embedded.items[]quantity'
                 visibility: public
                 type:
                     type: named
@@ -358,12 +387,14 @@ blueprints:
                     blueprints: {  }
                 isStatic: false
                 isReadOnly: false
+                isCollection: false
                 hasDefaultValue: false
                 defaultValue: null
                 docBlock: false
                 attributes: {  }
             type:
                 originName: type
+                path: '_embedded.items[]type'
                 visibility: public
                 type:
                     type: named
@@ -373,12 +404,14 @@ blueprints:
                     blueprints: {  }
                 isStatic: false
                 isReadOnly: false
+                isCollection: false
                 hasDefaultValue: false
                 defaultValue: null
                 docBlock: false
                 attributes: {  }
             category:
                 originName: category
+                path: '_embedded.items[]category'
                 visibility: public
                 type:
                     type: named
@@ -388,12 +421,14 @@ blueprints:
                     blueprints: {  }
                 isStatic: false
                 isReadOnly: false
+                isCollection: false
                 hasDefaultValue: false
                 defaultValue: null
                 docBlock: false
                 attributes: {  }
             vat:
                 originName: vat
+                path: '_embedded.items[]vat'
                 visibility: public
                 type:
                     type: named
@@ -403,12 +438,14 @@ blueprints:
                     blueprints: {  }
                 isStatic: false
                 isReadOnly: false
+                isCollection: false
                 hasDefaultValue: false
                 defaultValue: null
                 docBlock: false
                 attributes: {  }
             metadata:
                 originName: metadata
+                path: '_embedded.items[]metadata'
                 visibility: public
                 type:
                     type: named
@@ -419,12 +456,14 @@ blueprints:
                         \PBaszak\UltraMapper\Tests\Assets\MetadataDTO: pbaszak_ultramapper_tests_assets_metadatadto
                 isStatic: false
                 isReadOnly: false
+                isCollection: false
                 hasDefaultValue: false
                 defaultValue: null
                 docBlock: false
                 attributes: {  }
             created_at:
                 originName: created_at
+                path: '_embedded.items[]created_at'
                 visibility: public
                 type:
                     type: named
@@ -435,12 +474,14 @@ blueprints:
                         \DateTime: datetime
                 isStatic: false
                 isReadOnly: false
+                isCollection: false
                 hasDefaultValue: false
                 defaultValue: null
                 docBlock: false
                 attributes: {  }
             updated_at:
                 originName: updated_at
+                path: '_embedded.items[]updated_at'
                 visibility: public
                 type:
                     type: named
@@ -451,12 +492,14 @@ blueprints:
                         \DateTime: datetime
                 isStatic: false
                 isReadOnly: false
+                isCollection: false
                 hasDefaultValue: false
                 defaultValue: null
                 docBlock: false
                 attributes: {  }
             availableActions:
                 originName: availableActions
+                path: '_embedded.items[]availableActions[]'
                 visibility: public
                 type:
                     type: named
@@ -470,6 +513,7 @@ blueprints:
                     blueprints: {  }
                 isStatic: false
                 isReadOnly: false
+                isCollection: true
                 hasDefaultValue: false
                 defaultValue: null
                 docBlock: '/** @var array<string> */'
@@ -628,6 +672,7 @@ blueprints:
         properties:
             test:
                 originName: test
+                path: '_embedded.items[]metadata.test'
                 visibility: public
                 type:
                     type: named
@@ -637,12 +682,14 @@ blueprints:
                     blueprints: {  }
                 isStatic: false
                 isReadOnly: false
+                isCollection: false
                 hasDefaultValue: false
                 defaultValue: null
                 docBlock: false
                 attributes: {  }
             test2:
                 originName: test2
+                path: '_embedded.items[]metadata.test2'
                 visibility: public
                 type:
                     type: named
@@ -652,6 +699,7 @@ blueprints:
                     blueprints: {  }
                 isStatic: false
                 isReadOnly: false
+                isCollection: false
                 hasDefaultValue: false
                 defaultValue: null
                 docBlock: false

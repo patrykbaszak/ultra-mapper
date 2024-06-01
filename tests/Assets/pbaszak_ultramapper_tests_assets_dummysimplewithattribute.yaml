@@ -13,6 +13,7 @@ blueprints:
         properties:
             id:
                 originName: id
+                path: id
                 visibility: public
                 type:
                     type: named
@@ -22,6 +23,7 @@ blueprints:
                     blueprints: {  }
                 isStatic: false
                 isReadOnly: false
+                isCollection: false
                 hasDefaultValue: false
                 defaultValue: null
                 docBlock: false
@@ -31,6 +33,7 @@ blueprints:
                         - null
             name:
                 originName: name
+                path: name
                 visibility: public
                 type:
                     type: named
@@ -40,12 +43,14 @@ blueprints:
                     blueprints: {  }
                 isStatic: false
                 isReadOnly: false
+                isCollection: false
                 hasDefaultValue: false
                 defaultValue: null
                 docBlock: false
                 attributes: {  }
             description:
                 originName: description
+                path: description
                 visibility: public
                 type:
                     type: named
@@ -55,6 +60,7 @@ blueprints:
                     blueprints: {  }
                 isStatic: false
                 isReadOnly: false
+                isCollection: false
                 hasDefaultValue: false
                 defaultValue: null
                 docBlock: false

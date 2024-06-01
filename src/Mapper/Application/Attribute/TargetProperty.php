@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PBaszak\UltraMapper\Mapper\Application\Attribute;
 
 use PBaszak\UltraMapper\Mapper\Application\Contract\AttributeInterface;
+use PBaszak\UltraMapper\Mapper\Application\Contract\TypeInterface;
 use PBaszak\UltraMapper\Mapper\Application\Exception\ThrowAttributeValidationExceptionTrait;
 
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
@@ -12,9 +13,17 @@ class TargetProperty implements AttributeInterface
 {
     use ThrowAttributeValidationExceptionTrait;
 
-    public const MAPPING = 0; // 00
-    public const DENORMALIZATION = 1; // 01
-    public const NORMALIZATION = 2; // 10
+    public const DENORMALIZATION = 1; // 0001
+    public const NORMALIZATION = 2; // 0010
+    public const MAPPING = 4; // 0100
+    public const TRANSFORMATION = 8; // 1000
+
+    public const PROCESS_TYPE_MAP = [
+        TypeInterface::DENORMALIZATION_PROCESS => self::DENORMALIZATION,
+        TypeInterface::NORMALIZATION_PROCESS => self::NORMALIZATION,
+        TypeInterface::MAPPING_PROCESS => self::MAPPING,
+        TypeInterface::TRANSFORMATION_PROCESS => self::TRANSFORMATION,
+    ];
 
     /**
      * @param string               $name       the name of the target property
@@ -26,15 +35,14 @@ class TargetProperty implements AttributeInterface
         public readonly string $name,
         public readonly int $useNameFor = self::MAPPING | self::DENORMALIZATION | self::NORMALIZATION,
         public readonly ?string $path = null,
-        public bool $useForDenormalization = true,
-        public bool $useForMapping = true,
-        public bool $useForNormalization = true,
+        public readonly int $usePathFor = self::DENORMALIZATION,
         public readonly array $options = []
     ) {
     }
 
     public function validate(\ReflectionProperty|\ReflectionClass $reflection): void
     {
+        // there cannot be two target properties with the same processType
         // todo implement
     }
 }
