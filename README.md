@@ -2,19 +2,31 @@
 
 // description
 
-## Requirements
-
-### Environments
-
-| name | usage |
-| - | - |
-| `APP_DEBUG` | If `true`, the blueprint will be checked for changes in targeted classes. |
-| `ULTRAMAPPER_BLUEPRINTS_DIR` | Default is `%kernel.project_dir%/var/ultra-mapper/blueprints/` |
-| `ULTRAMAPPER_MAPPERS_DIR` | Default is `%kernel.project_dir%/var/ultra-mapper/mappers/` |
-
 ## Usage
 
 // in progress
+
+## Attributes
+
+### TargetProperty<hr>
+
+The behavior of the `#[TargetProperty()]` attribute depends on the class in which you declare it (*origin*, *source*, *target*). The table below presents the relationship between the declaration place and the active process, and how the attribute changes the name (or path) of the property. Placing an attribute in an origin class has no effect on any process unless the origin class is also a source class, a target class, or both.
+
+##### NAME
+
+| Declaration place | Normalization | Denormalization | Mapping | Transformation |
+|:-:|:-:|:-:|:-:|:-:|
+| **Source** | Source: ✖️<br>Target: ✖️ | Source: ✔️<br>Target: ✖️ | Source: ✖️<br>Target: ✔️ | Source: ✖️<br>Target: ✔️ |
+| **Target** | Source: ✖️<br>Target: ✔️ | Source: ✖️<br>Target: ✖️ | Source: ✔️<br>Target: ✖️ | Source: ✔️<br>Target: ✖️ |
+
+##### PATH
+
+| Declaration place | Normalization | Denormalization | Mapping | Transformation |
+|:-:|:-:|:-:|:-:|:-:|
+| **Source** | Source: ✖️<br>Target: ✖️ | Source: ✔️<br>Target: ✖️ | Source: ✖️<br>Target: ➖ | Source: ✖️<br>Target: ➖ |
+| **Target** | Source: ✖️<br>Target: ➖ | Source: ✖️<br>Target: ✖️ | Source: ➖<br>Target: ✖️ | Source: ✔️<br>Target: ✖️ |
+
+###### legend: ✖️ - *has no effect*, ✔️ - *affects*, ➖ - *not implemented*
 
 ## How it works
 

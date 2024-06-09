@@ -7,6 +7,7 @@ namespace PBaszak\UltraMapper\Mapper\Domain\Service\Matcher;
 use PBaszak\UltraMapper\Blueprint\Application\Model\Assets\ClassBlueprint;
 use PBaszak\UltraMapper\Blueprint\Application\Model\Assets\PropertyBlueprint;
 use PBaszak\UltraMapper\Mapper\Application\Attribute\TargetProperty;
+use PBaszak\UltraMapper\Mapper\Application\Contract\TypeInterface;
 
 class TargetPropertyAttributeStrategy implements MatchingStrategyInterface
 {
@@ -17,36 +18,38 @@ class TargetPropertyAttributeStrategy implements MatchingStrategyInterface
 
     public function confirmPropertiesMatching(string $processType, PropertyBlueprint $origin, PropertyBlueprint $source, PropertyBlueprint $target): bool
     {
-        if ($sourceTargetProperty = $this->getPropertyTargetPropertyAttribute($source, $processType)) {
-            // source has same name as origin, source has target property attribute
-            if ($origin->originName === $source->originName && $target->originName === $sourceTargetProperty->name) {
-                $target->options['name'] ??= $sourceTargetProperty->name;
+        $sourceTargetProperty = $this->getPropertyTargetPropertyAttribute($source, $processType);
+        $hasSourceTargetProperty = null !== $sourceTargetProperty;
+        $targetTargetProperty = $this->getPropertyTargetPropertyAttribute($target, $processType);
+        $hasTargetTargetProperty = null !== $targetTargetProperty;
+
+        // source affects source
+        if ($this->isTargetPropertyAttrHasAffect($processType, 'source', 'source', $hasSourceTargetProperty, $hasTargetTargetProperty)) {
+            if ($origin->originName === $source->originName && $origin->originName === $target->originName) {
+                $source->options['name'] = $sourceTargetProperty->name;
 
                 return true;
             }
         }
 
-        if ($originTargetProperty = $this->getPropertyTargetPropertyAttribute($origin, $processType)) {
-            // source has same name as origin, but the origin has target property attribute
-            if ($origin->originName === $source->originName && $source->originName === $originTargetProperty->name) {
-                $target->options['name'] ??= $originTargetProperty->name;
-
+        // source affects target
+        if ($this->isTargetPropertyAttrHasAffect($processType, 'source', 'target', $hasSourceTargetProperty, $hasTargetTargetProperty)) {
+            if ($origin->originName === $source->originName && $sourceTargetProperty->name === $target->originName) {
                 return true;
             }
         }
 
-        if ($targetTargetProperty = $this->getPropertyTargetPropertyAttribute($target, $processType)) {
-            // target has same name as origin, target has target property attribute
-            if ($origin->originName === $target->originName && $source->originName === $targetTargetProperty->name) {
-                $source->options['name'] ??= $targetTargetProperty->name;
-
+        // target affects source
+        if ($this->isTargetPropertyAttrHasAffect($processType, 'target', 'source', $hasSourceTargetProperty, $hasTargetTargetProperty)) {
+            if ($origin->originName === $target->originName && $targetTargetProperty->name === $source->originName) {
                 return true;
             }
+        }
 
-            // target has same name as source, but the target has target property attribute
-            if ($source->originName === $target->originName && $origin->originName === $targetTargetProperty->name) {
-                // do nothing, source and target are already matched, only origin has different originName but it's match
-                // based on target property attribute with both source and target
+        // target affects target
+        if ($this->isTargetPropertyAttrHasAffect($processType, 'target', 'target', $hasSourceTargetProperty, $hasTargetTargetProperty)) {
+            if ($origin->originName === $target->originName && $origin->originName === $source->originName) {
+                $target->options['name'] = $targetTargetProperty->name;
 
                 return true;
             }
@@ -55,14 +58,60 @@ class TargetPropertyAttributeStrategy implements MatchingStrategyInterface
         return false;
     }
 
+    /**
+     * @param string<"source"|"target"> $declarationPlace
+     * @param string<"source"|"target"> $context          (the resource which is possible affected by target property attribute)
+     * @param bool                      $sourceHas        whether source has target property attribute
+     * @param bool                      $targetHas        whether target has target property attribute
+     */
+    protected function isTargetPropertyAttrHasAffect(string $processType, string $declarationPlace, string $context, bool $sourceHas, bool $targetHas): bool
+    {
+        return match ($processType) {
+            TypeInterface::NORMALIZATION_PROCESS => match ($declarationPlace) {
+                'source' => false,
+                'target' => match ($context) {
+                    'source' => false,
+                    'target' => $targetHas,
+                }
+            },
+            TypeInterface::DENORMALIZATION_PROCESS => match ($declarationPlace) {
+                'source' => match ($context) {
+                    'source' => $sourceHas,
+                    'target' => false,
+                },
+                'target' => false,
+            },
+            TypeInterface::MAPPING_PROCESS => match ($declarationPlace) {
+                'source' => match ($context) {
+                    'source' => false,
+                    'target' => $targetHas,
+                },
+                'target' => match ($context) {
+                    'source' => $sourceHas,
+                    'target' => false,
+                }
+            },
+            TypeInterface::TRANSFORMATION_PROCESS => match ($declarationPlace) {
+                'source' => match ($context) {
+                    'source' => false,
+                    'target' => $targetHas,
+                },
+                'target' => match ($context) {
+                    'source' => $sourceHas,
+                    'target' => false,
+                }
+            },
+        };
+    }
+
     protected function getPropertyTargetPropertyAttribute(PropertyBlueprint $blueprint, string $processType): ?TargetProperty
     {
-        foreach ($blueprint->attributes[TargetProperty::class] as $attribute) {
+        foreach ($blueprint->attributes[TargetProperty::class] ?? [] as $attribute) {
             /** @var TargetProperty $instance */
             $instance = $attribute->newInstance();
 
             $binaryProcessType = $instance::PROCESS_TYPE_MAP[$processType];
-            if ($instance->useNameFor & $binaryProcessType === $binaryProcessType) {
+            if (($instance->useNameFor & $binaryProcessType) === $binaryProcessType) {
                 return $instance;
             }
         }
@@ -81,7 +130,7 @@ class TargetPropertyAttributeStrategy implements MatchingStrategyInterface
             $instance = $attribute->newInstance();
 
             $binaryProcessType = $instance::PROCESS_TYPE_MAP[$processType];
-            if ($instance->usePathFor & $binaryProcessType === $binaryProcessType) {
+            if (($instance->usePathFor & $binaryProcessType) === $binaryProcessType) {
                 return $instance;
             }
         }

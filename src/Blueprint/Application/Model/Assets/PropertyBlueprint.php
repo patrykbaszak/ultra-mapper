@@ -112,6 +112,13 @@ class PropertyBlueprint implements Normalizable
         $this->attributes = clone $this->attributes;
         $this->attributes->root = $this;
         foreach ($this->attributes as $attribute) {
+            if (is_array($attribute)) {
+                foreach ($attribute as $attr) {
+                    $attr->parent = $this;
+                }
+
+                continue;
+            }
             $attribute->parent = $this;
         }
     }

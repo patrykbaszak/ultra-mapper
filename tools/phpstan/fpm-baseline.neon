@@ -144,3 +144,23 @@ parameters:
 			message: "#^PHPDoc tag @return contains unresolvable type\\.$#"
 			count: 1
 			path: ../../src/Mapper/Domain/Resolver/ProcessResolver.php
+
+		-
+			message: "#^Cannot access property \\$name on PBaszak\\\\UltraMapper\\\\Mapper\\\\Application\\\\Attribute\\\\TargetProperty\\|null\\.$#"
+			count: 4
+			path: ../../src/Mapper/Domain/Service/Matcher/TargetPropertyAttributeStrategy.php
+
+		-
+			message: "#^Match expression does not handle remaining value\\: string$#"
+			count: 11
+			path: ../../src/Mapper/Domain/Service/Matcher/TargetPropertyAttributeStrategy.php
+
+		-
+			message: "#^PHPDoc tag @param for parameter \\$context contains unresolvable type\\.$#"
+			count: 1
+			path: ../../src/Mapper/Domain/Service/Matcher/TargetPropertyAttributeStrategy.php
+
+		-
+			message: "#^PHPDoc tag @param for parameter \\$declarationPlace contains unresolvable type\\.$#"
+			count: 1
+			path: ../../src/Mapper/Domain/Service/Matcher/TargetPropertyAttributeStrategy.php

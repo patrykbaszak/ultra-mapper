@@ -30,7 +30,7 @@ class AssetsAggregate implements \ArrayAccess, \IteratorAggregate, Normalizable
             throw new \InvalidArgumentException('Aggregate key must be a string');
         }
 
-        return $this->assets[$offset];
+        return $this->assets[$offset] ?? null;
     }
 
     public function offsetSet(mixed $offset, mixed $value): void
