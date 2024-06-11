@@ -28,9 +28,31 @@ The behavior of the `#[TargetProperty()]` attribute depends on the class in whic
 
 ###### legend: ✖️ - *has no effect*, ✔️ - *affects*, ➖ - *not implemented*
 
+#### Usage
+
+```php
+use PBaszak\UltraMapper\Mapper\Application\Attribute\TargetProperty;
+
+class SourceClass {
+    #[TargetProperty(name: "mappedProperty")]
+    public string $originalProperty;
+}
+
+class TargetClass {
+    public string $mappedProperty;
+}
+```
+
 ## How it works
 
-// in progress
+The Ultra Mapper library operates based on blueprints and attributes to map, normalize, denormalize, and transform data between various formats. Here's a step-by-step overview of each process:
+
+1. **Normalization**: Converts a class object into an anonymous object, associative array, or flat array.
+2. **Denormalization**: Converts an anonymous object, associative array, or flat array back into a class object.
+3. **Mapping**: Maps data from one class object to another, e.g., DTO to entity.
+4. **Transformation**: Converts an anonymous object, associative array, or flat array to another structure of the same type.
+
+The `TargetProperty` attribute is used to specify how properties are mapped or transformed, ensuring that the correct properties are connected even if their names differ.
 
 ## Performance Report
 
