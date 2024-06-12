@@ -7,6 +7,7 @@ namespace PBaszak\UltraMapper\Mapper\Application\Service;
 use PBaszak\UltraMapper\Blueprint\Application\Model\Blueprint;
 use PBaszak\UltraMapper\Mapper\Application\Contract\ModificatorInterface;
 use PBaszak\UltraMapper\Mapper\Application\Contract\ModifierInterface;
+use PBaszak\UltraMapper\Mapper\Domain\Model\Process;
 
 class Modificator implements ModificatorInterface
 {
@@ -21,7 +22,7 @@ class Modificator implements ModificatorInterface
         return $this->modifiers;
     }
 
-    public function prepareBlueprint(Blueprint $blueprint, string $processType, string $processUse): void
+    public function prepareBlueprint(Blueprint $blueprint, Process $processType, string $processUse): void
     {
         foreach ($this->modifiers as $modifier) {
             // $modifier->prepareBlueprints();

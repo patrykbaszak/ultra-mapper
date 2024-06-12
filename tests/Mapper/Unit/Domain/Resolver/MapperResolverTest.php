@@ -71,7 +71,7 @@ use PBaszak\UltraMapper\Mapper\Domain\Contract\ClassMapperInterface;
 
 class $shortClassName implements ClassMapperInterface
 {
-    public function map(mixed \$data): Envelope
+    public function map(mixed \$data, mixed &\$output = null): Envelope
     {
         throw new \LogicException('Not implemented.');
     }

@@ -86,11 +86,6 @@ parameters:
 			path: ../../src/Mapper/Application/Attribute/TargetProperty.php
 
 		-
-			message: "#^PHPDoc tag @param for parameter \\$processType contains unresolvable type\\.$#"
-			count: 1
-			path: ../../src/Mapper/Application/Contract/ModificatorInterface.php
-
-		-
 			message: "#^PHPDoc tag @param for parameter \\$processUse contains unresolvable type\\.$#"
 			count: 1
 			path: ../../src/Mapper/Application/Contract/ModificatorInterface.php
@@ -126,9 +121,9 @@ parameters:
 			path: ../../src/Mapper/Domain/Abstract/AbstractMapper.php
 
 		-
-			message: "#^PHPDoc tag @param for parameter \\$processType contains unresolvable type\\.$#"
+			message: "#^Parameter \\#2 \\$offset of function array_splice expects int, int\\|string\\|false given\\.$#"
 			count: 1
-			path: ../../src/Mapper/Domain/Contract/MatcherInterface.php
+			path: ../../src/Mapper/Domain/Model/Process.php
 
 		-
 			message: "#^Method PBaszak\\\\UltraMapper\\\\Mapper\\\\Domain\\\\Resolver\\\\MapperResolver\\:\\:resolve\\(\\) should return PBaszak\\\\UltraMapper\\\\Mapper\\\\Domain\\\\Contract\\\\ClassMapperInterface\\|null but returns object\\.$#"
@@ -139,11 +134,6 @@ parameters:
 			message: "#^Property PBaszak\\\\UltraMapper\\\\Mapper\\\\Domain\\\\Resolver\\\\MapperResolver\\:\\:\\$mappers \\(array\\<string, PBaszak\\\\UltraMapper\\\\Mapper\\\\Domain\\\\Contract\\\\ClassMapperInterface\\>\\) does not accept array\\<string, object\\>\\.$#"
 			count: 1
 			path: ../../src/Mapper/Domain/Resolver/MapperResolver.php
-
-		-
-			message: "#^PHPDoc tag @return contains unresolvable type\\.$#"
-			count: 1
-			path: ../../src/Mapper/Domain/Resolver/ProcessResolver.php
 
 		-
 			message: "#^Cannot access property \\$name on PBaszak\\\\UltraMapper\\\\Mapper\\\\Application\\\\Attribute\\\\TargetProperty\\|null\\.$#"

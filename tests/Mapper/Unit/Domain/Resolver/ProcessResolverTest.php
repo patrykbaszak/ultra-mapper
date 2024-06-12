@@ -9,7 +9,9 @@ use PBaszak\UltraMapper\Mapper\Application\Type\AnonymousObjectType;
 use PBaszak\UltraMapper\Mapper\Application\Type\ArrayType;
 use PBaszak\UltraMapper\Mapper\Application\Type\ClassObjectType;
 use PBaszak\UltraMapper\Mapper\Application\Type\FlatArrayType;
+use PBaszak\UltraMapper\Mapper\Domain\Model\Process;
 use PBaszak\UltraMapper\Mapper\Domain\Resolver\ProcessResolver;
+use PBaszak\UltraMapper\Tests\Assets\DummySimple;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
@@ -24,97 +26,107 @@ class ProcessResolverTest extends TestCase
             [
                 'from' => new ArrayType(),
                 'to' => new ArrayType(),
-                'expected' => TypeInterface::TRANSFORMATION_PROCESS,
+                'expected' => [Process::TRANSFORMATION_PROCESS],
+            ],
+            [
+                'from' => new ArrayType(),
+                'to' => new ArrayType(DummySimple::class),
+                'expected' => [Process::TRANSFORMATION_PROCESS, Process::MAPPING_PROCESS],
             ],
             [
                 'from' => new ArrayType(),
                 'to' => new AnonymousObjectType(),
-                'expected' => TypeInterface::TRANSFORMATION_PROCESS,
+                'expected' => [Process::TRANSFORMATION_PROCESS],
             ],
             [
                 'from' => new ArrayType(),
                 'to' => new FlatArrayType(),
-                'expected' => TypeInterface::TRANSFORMATION_PROCESS,
+                'expected' => [Process::TRANSFORMATION_PROCESS],
             ],
             [
                 'from' => new ArrayType(),
                 'to' => new ClassObjectType(),
-                'expected' => TypeInterface::DENORMALIZATION_PROCESS,
+                'expected' => [Process::DENORMALIZATION_PROCESS],
             ],
 
             [
                 'from' => new AnonymousObjectType(),
                 'to' => new ArrayType(),
-                'expected' => TypeInterface::TRANSFORMATION_PROCESS,
+                'expected' => [Process::TRANSFORMATION_PROCESS],
+            ],
+            [
+                'from' => new AnonymousObjectType(DummySimple::class),
+                'to' => new AnonymousObjectType(),
+                'expected' => [Process::TRANSFORMATION_PROCESS, Process::MAPPING_PROCESS],
             ],
             [
                 'from' => new AnonymousObjectType(),
                 'to' => new AnonymousObjectType(),
-                'expected' => TypeInterface::TRANSFORMATION_PROCESS,
+                'expected' => [Process::TRANSFORMATION_PROCESS],
             ],
             [
                 'from' => new AnonymousObjectType(),
                 'to' => new FlatArrayType(),
-                'expected' => TypeInterface::TRANSFORMATION_PROCESS,
+                'expected' => [Process::TRANSFORMATION_PROCESS],
             ],
             [
                 'from' => new AnonymousObjectType(),
                 'to' => new ClassObjectType(),
-                'expected' => TypeInterface::DENORMALIZATION_PROCESS,
+                'expected' => [Process::DENORMALIZATION_PROCESS],
             ],
 
             [
                 'from' => new FlatArrayType(),
                 'to' => new ArrayType(),
-                'expected' => TypeInterface::TRANSFORMATION_PROCESS,
+                'expected' => [Process::TRANSFORMATION_PROCESS],
             ],
             [
                 'from' => new FlatArrayType(),
                 'to' => new AnonymousObjectType(),
-                'expected' => TypeInterface::TRANSFORMATION_PROCESS,
+                'expected' => [Process::TRANSFORMATION_PROCESS],
             ],
             [
                 'from' => new FlatArrayType(),
                 'to' => new FlatArrayType(),
-                'expected' => TypeInterface::TRANSFORMATION_PROCESS,
+                'expected' => [Process::TRANSFORMATION_PROCESS],
             ],
             [
                 'from' => new FlatArrayType(),
                 'to' => new ClassObjectType(),
-                'expected' => TypeInterface::DENORMALIZATION_PROCESS,
+                'expected' => [Process::DENORMALIZATION_PROCESS],
             ],
 
             [
                 'from' => new ClassObjectType(),
                 'to' => new ArrayType(),
-                'expected' => TypeInterface::NORMALIZATION_PROCESS,
+                'expected' => [Process::NORMALIZATION_PROCESS],
             ],
             [
                 'from' => new ClassObjectType(),
                 'to' => new AnonymousObjectType(),
-                'expected' => TypeInterface::NORMALIZATION_PROCESS,
+                'expected' => [Process::NORMALIZATION_PROCESS],
             ],
             [
                 'from' => new ClassObjectType(),
                 'to' => new FlatArrayType(),
-                'expected' => TypeInterface::NORMALIZATION_PROCESS,
+                'expected' => [Process::NORMALIZATION_PROCESS],
             ],
             [
                 'from' => new ClassObjectType(),
                 'to' => new ClassObjectType(),
-                'expected' => TypeInterface::MAPPING_PROCESS,
+                'expected' => [Process::MAPPING_PROCESS],
             ],
         ];
     }
 
     #[Test]
     #[DataProvider('getDataSet')]
-    public function testResolve(TypeInterface $from, TypeInterface $to, string $expected): void
+    public function testResolve(TypeInterface $from, TypeInterface $to, array $expected): void
     {
         $resolver = new ProcessResolver();
         $result = $resolver->resolve($from, $to);
 
-        $this->assertEquals($expected, $result);
+        $this->assertEquals($expected, $result->processes);
     }
 
     #[Test]

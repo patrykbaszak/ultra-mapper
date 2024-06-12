@@ -52,16 +52,15 @@ class Mapper implements MapperInterface
         TypeInterface $to,
         bool $isCollection = false
     ): Envelope {
-        $mapper = $this->getMapper($data, $blueprintClass, $from, $to, $isCollection);
+        $mapper = $this->getMapper($blueprintClass, $from, $to, $isCollection);
 
-        return $mapper->map($data);
+        return $mapper->map($data, $output);
     }
 
     /**
      * Get the mapper for the given options.
      */
     protected function getMapper(
-        mixed $data,
         string $blueprintClass,
         TypeInterface $from,
         TypeInterface $to,

@@ -109,7 +109,7 @@ class Callback implements AttributeInterface
     ) {
     }
 
-    public function validate(\ReflectionProperty|\ReflectionClass $reflection): void
+    public function validate(\ReflectionProperty|\ReflectionParameter|\ReflectionClass $reflection): void
     {
         // todo: update the list of available placeholders
         // if (str_replace([

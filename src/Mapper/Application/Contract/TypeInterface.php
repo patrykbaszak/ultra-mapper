@@ -19,30 +19,6 @@ interface TypeInterface
     public const DENORMALIZED_TYPE = 'denormalized';
 
     /**
-     * Mapping denormalized data to normalized data.
-     * Like from class object to array. As example: DTO to array.
-     */
-    public const NORMALIZATION_PROCESS = 'normalization';
-
-    /**
-     * Mapping normalized data to denormalized data.
-     * From array to class object. As example: array to Entity.
-     */
-    public const DENORMALIZATION_PROCESS = 'denormalization';
-
-    /**
-     * Mapping denormalized data to denormalized data.
-     * Like from class object to class object. As example: DTO to Entity.
-     */
-    public const MAPPING_PROCESS = 'mapping';
-
-    /**
-     * Mapping normalized data to normalized data.
-     * From array to array, but You can add callbacks or other modifications.
-     */
-    public const TRANSFORMATION_PROCESS = 'transformation';
-
-    /**
      * In some cases You would like to override the default blueprint class for
      * one of the sides of the mapping process. This method allows you to do that.
      *

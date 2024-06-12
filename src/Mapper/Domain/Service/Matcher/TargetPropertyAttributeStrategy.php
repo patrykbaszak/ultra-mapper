@@ -7,7 +7,7 @@ namespace PBaszak\UltraMapper\Mapper\Domain\Service\Matcher;
 use PBaszak\UltraMapper\Blueprint\Application\Model\Assets\ClassBlueprint;
 use PBaszak\UltraMapper\Blueprint\Application\Model\Assets\PropertyBlueprint;
 use PBaszak\UltraMapper\Mapper\Application\Attribute\TargetProperty;
-use PBaszak\UltraMapper\Mapper\Application\Contract\TypeInterface;
+use PBaszak\UltraMapper\Mapper\Domain\Model\Process;
 
 class TargetPropertyAttributeStrategy implements MatchingStrategyInterface
 {
@@ -67,21 +67,21 @@ class TargetPropertyAttributeStrategy implements MatchingStrategyInterface
     protected function isTargetPropertyAttrHasAffect(string $processType, string $declarationPlace, string $context, bool $sourceHas, bool $targetHas): bool
     {
         return match ($processType) {
-            TypeInterface::NORMALIZATION_PROCESS => match ($declarationPlace) {
+            Process::NORMALIZATION_PROCESS => match ($declarationPlace) {
                 'source' => false,
                 'target' => match ($context) {
                     'source' => false,
                     'target' => $targetHas,
                 }
             },
-            TypeInterface::DENORMALIZATION_PROCESS => match ($declarationPlace) {
+            Process::DENORMALIZATION_PROCESS => match ($declarationPlace) {
                 'source' => match ($context) {
                     'source' => $sourceHas,
                     'target' => false,
                 },
                 'target' => false,
             },
-            TypeInterface::MAPPING_PROCESS => match ($declarationPlace) {
+            Process::MAPPING_PROCESS => match ($declarationPlace) {
                 'source' => match ($context) {
                     'source' => false,
                     'target' => $targetHas,
@@ -91,14 +91,14 @@ class TargetPropertyAttributeStrategy implements MatchingStrategyInterface
                     'target' => false,
                 }
             },
-            TypeInterface::TRANSFORMATION_PROCESS => match ($declarationPlace) {
+            Process::TRANSFORMATION_PROCESS => match ($declarationPlace) {
                 'source' => match ($context) {
-                    'source' => false,
-                    'target' => $targetHas,
-                },
-                'target' => match ($context) {
                     'source' => $sourceHas,
                     'target' => false,
+                },
+                'target' => match ($context) {
+                    'source' => false,
+                    'target' => $targetHas,
                 }
             },
         };

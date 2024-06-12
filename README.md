@@ -14,17 +14,20 @@ The behavior of the `#[TargetProperty()]` attribute depends on the class in whic
 
 ##### NAME
 
-| Declaration place | Normalization | Denormalization | Mapping | Transformation |
-|:-:|:-:|:-:|:-:|:-:|
-| **Source** | Source: ✖️<br>Target: ✖️ | Source: ✔️<br>Target: ✖️ | Source: ✖️<br>Target: ✔️ | Source: ✖️<br>Target: ✔️ |
-| **Target** | Source: ✖️<br>Target: ✔️ | Source: ✖️<br>Target: ✖️ | Source: ✔️<br>Target: ✖️ | Source: ✔️<br>Target: ✖️ |
+Target Property attribute works like `Symfony\SerializedName` for Normalization, Denormalization and Transformation. It changes property name when data are normalized.
 
-##### PATH
+| Declaration place | Normalization | Denormalization | Transformation |
+|:-:|:-:|:-:|:-:|
+| **Source** | Source: ✖️<br>Target: ✖️ | Source: ✔️<br>Target: ✖️ | Source: ✔️<br>Target: ✖️ |
+| **Target** | Source: ✖️<br>Target: ✔️ | Source: ✖️<br>Target: ✖️ | Source: ✖️<br>Target: ✔️ |
 
-| Declaration place | Normalization | Denormalization | Mapping | Transformation |
-|:-:|:-:|:-:|:-:|:-:|
-| **Source** | Source: ✖️<br>Target: ✖️ | Source: ✔️<br>Target: ✖️ | Source: ✖️<br>Target: ➖ | Source: ✖️<br>Target: ➖ |
-| **Target** | Source: ✖️<br>Target: ➖ | Source: ✖️<br>Target: ✖️ | Source: ➖<br>Target: ✖️ | Source: ✔️<br>Target: ✖️ |
+Target Property attribute links properties from different blueprints for Mapping. It works with other processes or alone.
+
+| Declaration place | Mapping |
+|:-:|:-:|
+| **Source** | Source: ✖️<br>Target: ✔️ |
+| **Target** | Source: ✔️<br>Target: ✖️ |
+
 
 ###### legend: ✖️ - *has no effect*, ✔️ - *affects*, ➖ - *not implemented*
 

@@ -22,7 +22,7 @@ class Groups implements AttributeInterface
     ) {
     }
 
-    public function validate(\ReflectionProperty|\ReflectionClass $reflection): void
+    public function validate(\ReflectionProperty|\ReflectionParameter|\ReflectionClass $reflection): void
     {
         // todo implement
     }

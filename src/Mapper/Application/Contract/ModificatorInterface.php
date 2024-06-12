@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PBaszak\UltraMapper\Mapper\Application\Contract;
 
 use PBaszak\UltraMapper\Blueprint\Application\Model\Blueprint;
+use PBaszak\UltraMapper\Mapper\Domain\Model\Process;
 
 /**
  * The interface is used to handle modifiers to be used to create
@@ -25,10 +26,9 @@ interface ModificatorInterface
      * Prepare the blueprint for the mapping class. Called before
      * matching properties.
      *
-     * @param string<"normalization"|"denormalization"|"transformation"|"mapping"> $processType
-     * @param string<"origin"|"source"|"target">                                   $processUse
+     * @param string<"origin"|"source"|"target"> $processUse
      */
-    public function prepareBlueprint(Blueprint $blueprint, string $processType, string $processUse): void;
+    public function prepareBlueprint(Blueprint $blueprint, Process $processType, string $processUse): void;
 
     public function modifyBlueprints(): void;
 }

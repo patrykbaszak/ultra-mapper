@@ -8,5 +8,5 @@ use PBaszak\UltraMapper\Mapper\Application\Model\Envelope;
 
 interface ClassMapperInterface
 {
-    public function map(mixed $data): Envelope;
+    public function map(mixed $data, mixed &$output = null): Envelope;
 }

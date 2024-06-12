@@ -21,7 +21,7 @@ class ApplyToCollectionItem implements AttributeInterface
     }
 
     /** @param \ReflectionProperty $reflection */
-    public function validate(\ReflectionProperty|\ReflectionClass $reflection): void
+    public function validate(\ReflectionProperty|\ReflectionParameter|\ReflectionClass $reflection): void
     {
         // $class = $reflection->getDeclaringClass();
 

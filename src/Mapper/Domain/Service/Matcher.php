@@ -9,6 +9,7 @@ use PBaszak\UltraMapper\Blueprint\Application\Model\Assets\PropertyBlueprint;
 use PBaszak\UltraMapper\Blueprint\Application\Model\Blueprint;
 use PBaszak\UltraMapper\Mapper\Domain\Contract\MatcherInterface;
 use PBaszak\UltraMapper\Mapper\Domain\Exception\PropertyNotMatchedException;
+use PBaszak\UltraMapper\Mapper\Domain\Model\Process;
 use PBaszak\UltraMapper\Mapper\Domain\Service\Matcher\SameNameStrategy;
 use PBaszak\UltraMapper\Mapper\Domain\Service\Matcher\TargetPropertyAttributeStrategy;
 use Symfony\Component\Uid\Uuid;
@@ -21,7 +22,7 @@ class Matcher implements MatcherInterface
         SameNameStrategy::class,
     ];
 
-    public function matchBlueprints(string $processType, Blueprint $origin, Blueprint $source, Blueprint $target): void
+    public function matchBlueprints(Process $processType, Blueprint $origin, Blueprint $source, Blueprint $target): void
     {
         $this->addLinks($origin, $source, $target);
         $rootBlueprints = array_map(
@@ -31,7 +32,7 @@ class Matcher implements MatcherInterface
         $this->matchClassBlueprints($processType, ...$rootBlueprints);
     }
 
-    protected function matchClassBlueprints(string $processType, ClassBlueprint $originClass, ClassBlueprint $source, ClassBlueprint $target): void
+    protected function matchClassBlueprints(Process $processType, ClassBlueprint $originClass, ClassBlueprint $source, ClassBlueprint $target): void
     {
         $this->addLinks($originClass, $source, $target);
 
@@ -41,16 +42,27 @@ class Matcher implements MatcherInterface
         }
     }
 
-    protected function matchProperties(string $processType, PropertyBlueprint $originProperty, ClassBlueprint $source, ClassBlueprint $target): void
+    protected function matchProperties(Process $processType, PropertyBlueprint $originProperty, ClassBlueprint $source, ClassBlueprint $target): void
     {
         foreach ($source->properties as $sourceProperty) {
             foreach ($target->properties as $targetProperty) {
                 foreach ($this::MATCHING_STRATEGIES as $strategy) {
                     $strategyInstance = new $strategy();
-                    if ($strategyInstance->confirmPropertiesMatching($processType, $originProperty, $sourceProperty, $targetProperty)) {
+                    if (1 === $processType->count() && $strategyInstance->confirmPropertiesMatching($processType->processes[0], $originProperty, $sourceProperty, $targetProperty)) {
                         $this->addLinks($originProperty, $sourceProperty, $targetProperty);
 
                         return;
+                    }
+                    if (2 === $processType->count()) {
+                        $result = [];
+                        foreach ($processType->getProcesses() as $process) {
+                            $result[] = $strategyInstance->confirmPropertiesMatching($process, $originProperty, $sourceProperty, $targetProperty);
+                        }
+                        if ($result[0] && $result[1]) {
+                            $this->addLinks($originProperty, $sourceProperty, $targetProperty);
+
+                            return;
+                        }
                     }
                 }
             }

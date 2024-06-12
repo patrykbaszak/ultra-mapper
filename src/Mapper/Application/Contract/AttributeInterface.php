@@ -6,5 +6,5 @@ namespace PBaszak\UltraMapper\Mapper\Application\Contract;
 
 interface AttributeInterface
 {
-    public function validate(\ReflectionProperty|\ReflectionClass $reflection): void;
+    public function validate(\ReflectionProperty|\ReflectionParameter|\ReflectionClass $reflection): void;
 }
