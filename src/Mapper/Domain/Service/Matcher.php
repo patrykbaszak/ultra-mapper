@@ -7,6 +7,7 @@ namespace PBaszak\UltraMapper\Mapper\Domain\Service;
 use PBaszak\UltraMapper\Blueprint\Application\Model\Assets\ClassBlueprint;
 use PBaszak\UltraMapper\Blueprint\Application\Model\Assets\PropertyBlueprint;
 use PBaszak\UltraMapper\Blueprint\Application\Model\Blueprint;
+use PBaszak\UltraMapper\Mapper\Application\Model\Context;
 use PBaszak\UltraMapper\Mapper\Domain\Contract\MatcherInterface;
 use PBaszak\UltraMapper\Mapper\Domain\Exception\PropertyNotMatchedException;
 use PBaszak\UltraMapper\Mapper\Domain\Model\Process;
@@ -22,7 +23,7 @@ class Matcher implements MatcherInterface
         SameNameStrategy::class,
     ];
 
-    public function matchBlueprints(Process $processType, Blueprint $origin, Blueprint $source, Blueprint $target): void
+    public function matchBlueprints(Context $context, Process $processType, Blueprint $origin, Blueprint $source, Blueprint $target): void
     {
         $this->addLinks($origin, $source, $target);
         $rootBlueprints = array_map(

@@ -10,6 +10,7 @@ use PBaszak\UltraMapper\Build\Application\Contract\BuilderInterface;
 use PBaszak\UltraMapper\Mapper\Application\Contract\MapperInterface;
 use PBaszak\UltraMapper\Mapper\Application\Contract\ModificatorInterface;
 use PBaszak\UltraMapper\Mapper\Application\Contract\TypeInterface;
+use PBaszak\UltraMapper\Mapper\Application\Model\Context;
 use PBaszak\UltraMapper\Mapper\Application\Model\Envelope;
 use PBaszak\UltraMapper\Mapper\Domain\Contract\ClassMapperInterface;
 use PBaszak\UltraMapper\Mapper\Domain\Resolver\MapperResolver;
@@ -50,9 +51,9 @@ class Mapper implements MapperInterface
         string $blueprintClass,
         TypeInterface $from,
         TypeInterface $to,
-        bool $isCollection = false
+        Context $context = new Context(),
     ): Envelope {
-        $mapper = $this->getMapper($blueprintClass, $from, $to, $isCollection);
+        $mapper = $this->getMapper($blueprintClass, $from, $to, $context);
 
         return $mapper->map($data, $output);
     }
@@ -64,7 +65,7 @@ class Mapper implements MapperInterface
         string $blueprintClass,
         TypeInterface $from,
         TypeInterface $to,
-        bool $isCollection = false
+        Context $context,
     ): ClassMapperInterface {
         $shortName = $this->mapperResolver->getMapperShortClassName(...func_get_args(), ...$this->modificator->getModifiers());
 
@@ -80,7 +81,7 @@ class Mapper implements MapperInterface
                 $this->modificator->prepareBlueprint($blueprint, $processType, $processUse);
             }
 
-            (new Matcher())->matchBlueprints($processType, ...$blueprints);
+            (new Matcher())->matchBlueprints($context, $processType, ...$blueprints);
 
             // modify blueprints
 
