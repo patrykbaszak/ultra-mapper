@@ -415,6 +415,10 @@ class TypeResolver
             $this->addType('null');
         }
 
+        if ('self' === $type || 'static' === $type) {
+            $type = $this->changeSelfStaticTypeToClass($type);
+        }
+
         if (!in_array($type, $this->types)) {
             $this->types[] = $type;
         }
@@ -423,6 +427,9 @@ class TypeResolver
     private function addInnerType(string $type, string $keyType): void
     {
         $key = explode('|', $keyType);
+        if ('self' === $type || 'static' === $type) {
+            $type = $this->changeSelfStaticTypeToClass($type);
+        }
 
         foreach ($key as $keyType) {
             if (!isset($this->innerTypes[$keyType])) {
@@ -442,5 +449,18 @@ class TypeResolver
                 $this->innerTypes[$keyType] = array_values($this->innerTypes[$keyType]);
             }
         }
+    }
+
+    private function changeSelfStaticTypeToClass(string $type): string
+    {
+        $classReflection = $this->reflection->getDeclaringClass();
+
+        if (null === $classReflection) {
+            throw new \LogicException('It never should happen.');
+        }
+
+        $type = $classReflection->getName();
+
+        return $type;
     }
 }

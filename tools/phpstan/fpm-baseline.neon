@@ -136,6 +136,11 @@ parameters:
 			path: ../../src/Mapper/Domain/Resolver/MapperResolver.php
 
 		-
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
+			count: 1
+			path: ../../src/Mapper/Domain/Service/LoopDetector.php
+
+		-
 			message: "#^Cannot access property \\$name on PBaszak\\\\UltraMapper\\\\Mapper\\\\Application\\\\Attribute\\\\TargetProperty\\|null\\.$#"
 			count: 4
 			path: ../../src/Mapper/Domain/Service/Matcher/TargetPropertyAttributeStrategy.php
