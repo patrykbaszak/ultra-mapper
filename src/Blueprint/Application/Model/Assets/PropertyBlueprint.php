@@ -10,6 +10,9 @@ use PBaszak\UltraMapper\Shared\Infrastructure\Normalization\Normalizable;
 
 class PropertyBlueprint implements Normalizable
 {
+    public const OPTIONS_NAME = 'name';
+    public const OPTIONS_PATH = 'path';
+
     /** @var array<string, mixed> */
     public array $options = [];
 
@@ -62,11 +65,15 @@ class PropertyBlueprint implements Normalizable
 
     public function getName(): string
     {
-        return $this->options['name'] ?? $this->originName;
+        return $this->options[self::OPTIONS_NAME] ?? $this->originName;
     }
 
     public function getPath(): string
     {
+        if (isset($this->options[self::OPTIONS_PATH])) {
+            return $this->options[self::OPTIONS_PATH];
+        }
+
         $path = $this->parent->getPath();
 
         if (!str_ends_with($path, '[]') && '' !== $path) {
