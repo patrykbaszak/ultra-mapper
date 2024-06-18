@@ -29,8 +29,14 @@ blueprints:
                 docBlock: false
                 attributes:
                     PBaszak\UltraMapper\Mapper\Application\Attribute\Callback:
-                        - null
-                        - null
+                        -
+                            class: PBaszak\UltraMapper\Mapper\Application\Attribute\Callback
+                            arguments:
+                                - test
+                        -
+                            class: PBaszak\UltraMapper\Mapper\Application\Attribute\Callback
+                            arguments:
+                                - test2
             name:
                 originName: name
                 path: name
@@ -66,7 +72,9 @@ blueprints:
                 docBlock: false
                 attributes:
                     PBaszak\UltraMapper\Mapper\Application\Attribute\Ignore:
-                        - null
+                        -
+                            class: PBaszak\UltraMapper\Mapper\Application\Attribute\Ignore
+                            arguments: {  }
         methods:
             __construct:
                 visibility: public

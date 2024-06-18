@@ -59,7 +59,18 @@ class AssetsAggregate implements \ArrayAccess, \IteratorAggregate, Normalizable
     public function normalize(): array
     {
         return array_map(
-            fn (mixed $asset) => $asset instanceof Normalizable ? $asset->normalize() : $asset,
+            fn (mixed $asset) => $asset instanceof Normalizable
+                ? $asset->normalize()
+                : (
+                    is_iterable($asset)
+                    ? array_map(
+                        fn (mixed $item) => $item instanceof Normalizable
+                            ? $item->normalize()
+                            : $item,
+                        (array) $asset
+                    )
+                    : $asset
+                ),
             $this->assets
         );
     }
