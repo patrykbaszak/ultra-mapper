@@ -20,7 +20,7 @@ class Type implements Normalizable
     public array $types = [];
     /** @var array<string, string[]> */
     public array $innerTypes = [];
-    /** @var array<class-string, string> */
+    /** @var array<class-string, ClassBlueprint> */
     public array $blueprints = [];
 
     public static function create(PropertyBlueprint|ParameterBlueprint $parent): self
@@ -44,7 +44,7 @@ class Type implements Normalizable
 
             foreach ($classTypes as $class) {
                 $blueprint = ClassBlueprint::create($class, $parent, $aggregate);
-                $instance->blueprints[$class] = $blueprint->blueprintName;
+                $instance->blueprints[$class] = $blueprint;
                 $aggregate->addBlueprint($blueprint);
             }
         }
@@ -83,7 +83,7 @@ class Type implements Normalizable
             'type' => $this->type->value,
             'types' => $this->types,
             'innerTypes' => $this->innerTypes,
-            'blueprints' => $this->blueprints,
+            'blueprints' => array_map(fn (ClassBlueprint $b) => $b->blueprintName, $this->blueprints),
         ];
     }
 }
