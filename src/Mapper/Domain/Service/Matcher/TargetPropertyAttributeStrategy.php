@@ -118,23 +118,4 @@ class TargetPropertyAttributeStrategy implements MatchingStrategyInterface
 
         return null;
     }
-
-    protected function getClassTargetPropertyAttribute(ClassBlueprint $blueprint, string $processType): ?TargetProperty
-    {
-        if (!$blueprint->parent) {
-            return null;
-        }
-
-        foreach ($blueprint->parent->attributes[TargetProperty::class] as $attribute) {
-            /** @var TargetProperty $instance */
-            $instance = $attribute->newInstance();
-
-            $binaryProcessType = $instance::PROCESS_TYPE_MAP[$processType];
-            if (($instance->usePathFor & $binaryProcessType) === $binaryProcessType) {
-                return $instance;
-            }
-        }
-
-        return null;
-    }
 }

@@ -69,7 +69,7 @@ class Matcher implements MatcherInterface
             }
         }
 
-        throw new PropertyNotMatchedException($originProperty->getPath(), sprintf('Property "%s" from origin class "%s" could not be matched with any property from source and target classes.', $originProperty->originName, $originProperty->parent->name), sprintf('Check Your classes: origin:"%s", source:"%s" and target:"%s" for properties with the same name or with the same attributes. Use #[TargetProperty] attribute to match properties if the names cannot be same.', $originProperty->parent->name, $source->name, $target->name));
+        throw new PropertyNotMatchedException($originProperty->getPath(), sprintf('Property "%s" from origin class "%s" could not be matched with any property from source and target classes.', $originProperty->originName, $originProperty->class->name), sprintf('Check Your classes: origin:"%s", source:"%s" and target:"%s" for properties with the same name or with the same attributes. Use #[TargetProperty] attribute to match properties if the names cannot be same.', $originProperty->class->name, $source->name, $target->name));
     }
 
     protected function addLinks(

@@ -6,6 +6,11 @@ parameters:
 			path: ../../src/Blueprint/Application/Model/Assets/MethodBlueprint.php
 
 		-
+			message: "#^Access to an undefined property PBaszak\\\\UltraMapper\\\\Blueprint\\\\Application\\\\Model\\\\Assets\\\\AttributeBlueprint\\|PBaszak\\\\UltraMapper\\\\Blueprint\\\\Application\\\\Model\\\\Assets\\\\ClassBlueprint\\|PBaszak\\\\UltraMapper\\\\Blueprint\\\\Application\\\\Model\\\\Assets\\\\MethodBlueprint\\|PBaszak\\\\UltraMapper\\\\Blueprint\\\\Application\\\\Model\\\\Assets\\\\ParameterBlueprint\\|PBaszak\\\\UltraMapper\\\\Blueprint\\\\Application\\\\Model\\\\Assets\\\\PropertyBlueprint\\:\\:\\$parent\\.$#"
+			count: 2
+			path: ../../src/Blueprint/Application/Model/Blueprint.php
+
+		-
 			message: "#^Parameter \\#1 \\$asset of static method PBaszak\\\\UltraMapper\\\\Blueprint\\\\Application\\\\Model\\\\Blueprint\\:\\:getBlueprint\\(\\) expects PBaszak\\\\UltraMapper\\\\Blueprint\\\\Application\\\\Model\\\\Assets\\\\AttributeBlueprint\\|PBaszak\\\\UltraMapper\\\\Blueprint\\\\Application\\\\Model\\\\Assets\\\\ClassBlueprint\\|PBaszak\\\\UltraMapper\\\\Blueprint\\\\Application\\\\Model\\\\Assets\\\\MethodBlueprint\\|PBaszak\\\\UltraMapper\\\\Blueprint\\\\Application\\\\Model\\\\Assets\\\\ParameterBlueprint\\|PBaszak\\\\UltraMapper\\\\Blueprint\\\\Application\\\\Model\\\\Assets\\\\PropertyBlueprint, PBaszak\\\\UltraMapper\\\\Blueprint\\\\Application\\\\Model\\\\Assets\\\\ClassBlueprint\\|PBaszak\\\\UltraMapper\\\\Blueprint\\\\Application\\\\Model\\\\Assets\\\\MethodBlueprint\\|PBaszak\\\\UltraMapper\\\\Blueprint\\\\Application\\\\Model\\\\Assets\\\\PropertyBlueprint\\|null given\\.$#"
 			count: 1
 			path: ../../src/Blueprint/Application/Model/Blueprint.php

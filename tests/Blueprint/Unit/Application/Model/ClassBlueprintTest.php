@@ -89,7 +89,6 @@ class ClassBlueprintTest extends TestCase
     {
         $blueprint = ClassBlueprint::create(Dummy::class, null);
 
-        $this->assertNull($blueprint->parent);
         $this->assertTrue(false === $blueprint->docBlock || is_string($blueprint->docBlock));
         $this->assertEquals(ClassType::STANDARD, $blueprint->type);
     }

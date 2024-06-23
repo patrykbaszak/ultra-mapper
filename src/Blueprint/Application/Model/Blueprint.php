@@ -65,6 +65,7 @@ class Blueprint implements Normalizable
     ): ?self {
         return match (get_class($asset)) {
             ClassBlueprint::class => $asset->blueprint,
+            PropertyBlueprint::class => $asset->class->blueprint,
             default => self::getBlueprint($asset->parent)
         };
     }
@@ -74,6 +75,7 @@ class Blueprint implements Normalizable
     ): ClassBlueprint {
         return match (get_class($asset)) {
             ClassBlueprint::class => $asset,
+            PropertyBlueprint::class => $asset->class,
             default => self::getClassBlueprint($asset->parent)
         };
     }

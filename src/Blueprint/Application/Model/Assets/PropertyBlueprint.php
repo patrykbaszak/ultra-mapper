@@ -16,7 +16,8 @@ class PropertyBlueprint implements Normalizable
     /** @var array<string, mixed> */
     public array $options = [];
 
-    public ClassBlueprint $parent;
+    public ?PropertyBlueprint $parent;
+    public ClassBlueprint $class;
     public string $originName;
 
     public Visibility $visibility;
@@ -29,10 +30,11 @@ class PropertyBlueprint implements Normalizable
 
     public AssetsAggregate $attributes;
 
-    public static function create(\ReflectionProperty $property, ClassBlueprint $parent): self
+    public static function create(\ReflectionProperty $property, ClassBlueprint $class, ?PropertyBlueprint $parent): self
     {
         $instance = new self();
         $instance->parent = $parent;
+        $instance->class = $class;
         $instance->originName = $property->getName();
         $instance->visibility = match (true) {
             $property->isPrivate() => Visibility::PRIVATE,
@@ -51,13 +53,13 @@ class PropertyBlueprint implements Normalizable
         return $instance;
     }
 
-    public static function createCollection(ClassBlueprint $root): AssetsAggregate
+    public static function createCollection(ClassBlueprint $root, ?PropertyBlueprint $parent): AssetsAggregate
     {
         $ref = $root->getReflection();
 
         $properties = [];
         foreach ($ref->getProperties() as $property) {
-            $properties[$property->getName()] = static::create($property, $root);
+            $properties[$property->getName()] = static::create($property, $root, $parent);
         }
 
         return new AssetsAggregate($root, $properties);
@@ -74,7 +76,7 @@ class PropertyBlueprint implements Normalizable
             return $this->options[self::OPTIONS_PATH];
         }
 
-        $path = $this->parent->getPath();
+        $path = $this->parent?->getPath() ?? '';
 
         if (!str_ends_with($path, '[]') && '' !== $path) {
             $path .= '.';
@@ -91,7 +93,7 @@ class PropertyBlueprint implements Normalizable
 
     public function getReflection(): \ReflectionProperty
     {
-        return new \ReflectionProperty($this->parent->name, $this->originName);
+        return new \ReflectionProperty($this->class->name, $this->originName);
     }
 
     public function normalize(): array

@@ -16,7 +16,6 @@ class ClassBlueprint implements Normalizable
     public array $options = [];
 
     public ?Blueprint $blueprint;
-    public ?PropertyBlueprint $parent;
     public string $blueprintName;
 
     /** @var class-string */
@@ -56,7 +55,6 @@ class ClassBlueprint implements Normalizable
         }
 
         $instance->blueprint = $blueprint;
-        $instance->parent = $parent;
         $instance->name = $reflection->getName();
         $instance->shortName = $reflection->getShortName();
         $instance->namespace = $reflection->getNamespaceName();
@@ -80,7 +78,7 @@ class ClassBlueprint implements Normalizable
         }
 
         $instance->attributes = AttributeBlueprint::createCollection($instance);
-        $instance->properties = PropertyBlueprint::createCollection($instance);
+        $instance->properties = PropertyBlueprint::createCollection($instance, $parent);
         $instance->methods = MethodBlueprint::createCollection($instance);
 
         return $instance;
@@ -89,11 +87,6 @@ class ClassBlueprint implements Normalizable
     public function getReflection(): \ReflectionClass
     {
         return new \ReflectionClass($this->name);
-    }
-
-    public function getPath(): string
-    {
-        return $this->parent?->getPath() ?? '';
     }
 
     public function hasDeclarationFile(): bool
