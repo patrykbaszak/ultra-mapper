@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace PBaszak\UltraMapper\Mapper\Domain\Exception;
 
-class PropertyNotMatchedException extends \RuntimeException
+use PBaszak\UltraMapper\Shared\Application\Exception\UltraMapperException;
+
+class PropertyNotMatchedException extends UltraMapperException
 {
     public function __construct(
         string $originPropertyPath,
@@ -14,11 +16,11 @@ class PropertyNotMatchedException extends \RuntimeException
     ) {
         parent::__construct(
             sprintf(
-                'Property "%s" not matched. %s %s',
+                'Property "%s" not matched. %s',
                 $originPropertyPath,
                 $message,
-                $advice,
             ),
+            $advice,
             $code,
         );
     }

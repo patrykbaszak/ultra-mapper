@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace PBaszak\UltraMapper\Blueprint\Application\Exception;
 
-class ClassNotFoundException extends \LogicException
+use PBaszak\UltraMapper\Shared\Application\Exception\UltraMapperException;
+
+class ClassNotFoundException extends UltraMapperException
 {
     public function __construct(
         string $message,
+        string $advice,
         int $code,
         ?\Throwable $previous = null
     ) {
-        parent::__construct($message, $code, $previous);
+        parent::__construct($message, $advice, $code, $previous);
     }
 }

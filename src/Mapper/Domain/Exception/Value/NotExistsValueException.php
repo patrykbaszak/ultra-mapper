@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace PBaszak\UltraMapper\Mapper\Domain\Exception\Value;
 
-class NotExistsValueException extends \RuntimeException
+use PBaszak\UltraMapper\Shared\Application\Exception\UltraMapperException;
+
+class NotExistsValueException extends UltraMapperException
 {
     public function __construct(
         string $sourcePropertyPath,
@@ -15,12 +17,12 @@ class NotExistsValueException extends \RuntimeException
     ) {
         parent::__construct(
             sprintf(
-                'Not exists value for property "%s". Property source: "%s". %s %s',
+                'Not exists value for property "%s". Property source: "%s". %s',
                 $sourcePropertyPath,
                 $targetPropertyPath,
                 $message,
-                $advice,
             ),
+            $advice,
             $code,
         );
     }

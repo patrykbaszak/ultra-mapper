@@ -54,7 +54,7 @@ class ParameterBlueprint implements Normalizable
             }
         }
 
-        throw new BlueprintException('Parameter not found in the reflection method.', 5923);
+        throw new BlueprintException('Parameter not found in the reflection method.', 'This should not happen. Please report this issue.', 5923);
     }
 
     public function normalize(): array

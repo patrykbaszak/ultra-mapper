@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace PBaszak\UltraMapper\Mapper\Domain\Exception\Value;
 
-class InvalidValueException extends \RuntimeException
+use PBaszak\UltraMapper\Shared\Application\Exception\UltraMapperException;
+
+class InvalidValueException extends UltraMapperException
 {
     public function __construct(
         string $sourcePropertyPath,
@@ -16,13 +18,13 @@ class InvalidValueException extends \RuntimeException
     ) {
         parent::__construct(
             sprintf(
-                'Invalid value for property "%s". Property source: "%s". Value: `%s`. %s %s',
+                'Invalid value for property "%s". Property source: "%s". Value: `%s`. %s',
                 $targetPropertyPath,
                 $sourcePropertyPath,
                 var_export($value, true),
                 $message,
-                $advice,
             ),
+            $advice,
             $code,
         );
     }

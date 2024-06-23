@@ -64,7 +64,7 @@ class TypeResolver
         $this->processReflectionType($this->reflection->getType());
         $this->processPhpDocumentorReflectionType(
             $docBlockTypeRef,
-            $this->reflection->getDeclaringClass() ?? throw new ClassNotFoundException('Class not found for '.$this->reflection->getName().' property.', 5932)
+            $this->reflection->getDeclaringClass() ?? throw new ClassNotFoundException('Class not found for '.$this->reflection->getName().' property.', 'It shouldn\'t happen. Possible reason: '.$this->reflection instanceof \ReflectionParameter ? 'ReflectionParameter without ReflectionClass. Method: '.$this->reflection->getDeclaringFunction()->getName() : 'I\'s impossible :).', 5932)
         );
 
         $this->setTypeFromPHPReflection($this->reflection);
@@ -274,7 +274,7 @@ class TypeResolver
                 }
 
                 if (null === $class) {
-                    throw new ClassNotFoundException('Class not found for '.(string) $reflection.'.', 5933);
+                    throw new ClassNotFoundException('Class not found for '.(string) $reflection.'.', 'The type is recognized as `Collection` but the class is not found. File: '.$classReflection->getFileName().'. '.$this->reflection instanceof \ReflectionProperty ? 'Property: ' : 'Parameter: '.$this->reflection->getName().'.', 5933);
                 }
 
                 $this->addType($class);
@@ -355,7 +355,7 @@ class TypeResolver
             }
 
             if (null === $class) {
-                throw new ClassNotFoundException('Class not found for '.(string) $itemType.'.', 5934);
+                throw new ClassNotFoundException('Class not found for '.(string) $itemType.'.', $itemType->getFqsen()?->__toString() ? 'Private method `'.__CLASS__.'::getCorrectClassName()` returned `null` for value: '.var_export($itemType->getFqsen()->__toString(), true).'.' : 'Possible required fix in the library. Please report this issue.', 5934);
             }
 
             $this->addInnerType($class, $keyType);

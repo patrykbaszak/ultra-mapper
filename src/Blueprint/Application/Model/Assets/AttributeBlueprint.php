@@ -70,7 +70,7 @@ class AttributeBlueprint implements Normalizable
     {
         $attr = $this->parent->getReflection()->getAttributes($this->class);
         if (0 === count($attr)) {
-            throw new BlueprintException(sprintf('Attribute %s not found on %s.', $this->class, $this->parent->getReflection()->getName()), 5921);
+            throw new BlueprintException(sprintf('Attribute %s not found on %s.', $this->class, $this->parent->getReflection()->getName()), 'This should not happen. Please report this issue.', 5921);
         }
         if (1 === count($attr)) {
             return $attr[0];
@@ -81,7 +81,7 @@ class AttributeBlueprint implements Normalizable
             }
         }
 
-        throw new BlueprintException(sprintf('Attribute %s not found on %s.', $this->class, $this->parent->getReflection()->getName()), 5924);
+        throw new BlueprintException(sprintf('Attribute %s not found on %s.', $this->class, $this->parent->getReflection()->getName()), 'This should not happen. Please report this issue.', 5924);
     }
 
     public function hasDeclarationFile(): bool

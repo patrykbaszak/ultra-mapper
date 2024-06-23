@@ -39,14 +39,14 @@ class ClassBlueprint implements Normalizable
     public static function create(string $class, ?PropertyBlueprint $parent, ?Blueprint $blueprint = null): self
     {
         if (__CLASS__ === $class) {
-            throw new BlueprintException('Unable to create a Blueprint for the ClassBlueprint class. This would create an infinite loop.', 5922);
+            throw new BlueprintException('Unable to create a Blueprint for the ClassBlueprint class. This would create an infinite loop.', 'Please do not use the ClassBlueprint class as a parameter for the create method.', 5922);
         }
 
         try {
             $reflection = new \ReflectionClass($class);
             /* @phpstan-ignore-next-line */
         } catch (\ReflectionException $e) {
-            throw new ClassNotFoundException(sprintf('Class %s not found. %s', $class, $e->getMessage()), 5931, $e);
+            throw new ClassNotFoundException(sprintf('Class %s not found. %s', $class, $e->getMessage()), 'Check if the class exists, has correct namespace and filename, and is properly autoloaded.', 5931, $e);
         }
         $instance = new self();
         $instance->blueprintName = $reflection->isAnonymous() ? md5($reflection->getName()) : strtolower(str_replace('\\', '_', $reflection->getName()));
