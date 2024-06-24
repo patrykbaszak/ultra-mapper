@@ -18,6 +18,7 @@ class Groups implements AttributeInterface
      */
     public function __construct(
         public readonly string|array $groups,
+        public int $processType = self::DENORMALIZATION | self::NORMALIZATION | self::TRANSFORMATION | self::MAPPING,
         public readonly array $options = []
     ) {
     }
@@ -25,5 +26,10 @@ class Groups implements AttributeInterface
     public function validate(\ReflectionProperty|\ReflectionParameter|\ReflectionClass $reflection): void
     {
         // todo implement
+    }
+    
+    public function getProcessType(): int
+    {
+        return $this->processType;
     }
 }

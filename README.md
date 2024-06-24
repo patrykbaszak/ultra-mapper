@@ -8,16 +8,36 @@
 
 ## Attributes
 
+### Groups & Ignore<hr>
+
+`#[Ignore()]` is like `#[Groups()]` with empty array of groups. If You do not define the groups for property, then `Default` will be assignment as a property group. Only `Origin` can decide about group assignment in the process.
+
+| Declaration place | Normalization | Denormalization | Transformation |
+|:-:|:-:|:-:|:-:|
+| **Origin** | Source: ✔️<br>Target: ✔️ | Source: ✔️<br>Target: ✔️ | Source: ✔️<br>Target: ✔️ |
+| **Source** | Source: ✖️<br>Target: ✖️ | Source: ✖️<br>Target: ✖️ | Source: ✖️<br>Target: ✖️ |
+| **Target** | Source: ✖️<br>Target: ✖️ | Source: ✖️<br>Target: ✖️ | Source: ✖️<br>Target: ✖️ |
+
+| Declaration place | Mapping |
+|:-:|:-:|
+| **Origin** | Source: ✔️<br>Target: ✔️ |
+| **Source** | Source: ✖️<br>Target: ✖️ |
+| **Target** | Source: ✖️<br>Target: ✖️ |
+
+###### legend: ✖️ - *has no effect*, ✔️ - *affects*, ➖ - *not implemented*
+
+> **INFO**<br>
+> The table is implemented by `PBaszak\UltraMapper\Mapper\Domain\Matcher\Matcher::matchClassBlueprints()`.
+
 ### TargetProperty<hr>
 
 The behavior of the `#[TargetProperty()]` attribute depends on the class in which you declare it (*origin*, *source*, *target*). The table below presents the relationship between the declaration place and the active process, and how the attribute changes the name (or path) of the property. Placing an attribute in an origin class has no effect on any process unless the origin class is also a source class, a target class, or both.
-
-##### NAME
 
 Target Property attribute works like `Symfony\SerializedName` for Normalization, Denormalization and Transformation. It changes property name when data are normalized.
 
 | Declaration place | Normalization | Denormalization | Transformation |
 |:-:|:-:|:-:|:-:|
+| **Origin** | Source: ✖️<br>Target: ✖️ | Source: ✖️<br>Target: ✖️ | Source: ✖️<br>Target: ✖️ |
 | **Source** | Source: ✖️<br>Target: ✖️ | Source: ✔️<br>Target: ✖️ | Source: ✔️<br>Target: ✖️ |
 | **Target** | Source: ✖️<br>Target: ✔️ | Source: ✖️<br>Target: ✖️ | Source: ✖️<br>Target: ✔️ |
 
@@ -25,6 +45,7 @@ Target Property attribute links properties from different blueprints for Mapping
 
 | Declaration place | Mapping |
 |:-:|:-:|
+| **Origin** | Source: ✖️<br>Target: ✖️ |
 | **Source** | Source: ✖️<br>Target: ✔️ |
 | **Target** | Source: ✔️<br>Target: ✖️ |
 

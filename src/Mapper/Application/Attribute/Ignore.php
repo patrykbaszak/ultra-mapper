@@ -13,18 +13,6 @@ class Ignore implements AttributeInterface
 {
     use ThrowAttributeValidationExceptionTrait;
 
-    public const DENORMALIZATION = 1; // 0001
-    public const NORMALIZATION = 2; // 0010
-    public const MAPPING = 4; // 0100
-    public const TRANSFORMATION = 8; // 1000
-
-    public const PROCESS_TYPE_MAP = [
-        Process::DENORMALIZATION_PROCESS => self::DENORMALIZATION,
-        Process::NORMALIZATION_PROCESS => self::NORMALIZATION,
-        Process::MAPPING_PROCESS => self::MAPPING,
-        Process::TRANSFORMATION_PROCESS => self::TRANSFORMATION,
-    ];
-
     /**
      * @param array<string, mixed> $options Options are for modificators of the mapping process. If You need them, You can use them.
      */
@@ -37,5 +25,10 @@ class Ignore implements AttributeInterface
     public function validate(\ReflectionProperty|\ReflectionParameter|\ReflectionClass $reflection): void
     {
         // todo implement
+    }
+
+    public function getProcessType(): int
+    {
+        return $this->processType;
     }
 }

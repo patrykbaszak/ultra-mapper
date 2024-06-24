@@ -38,7 +38,7 @@ class Matcher implements MatcherInterface
         $this->addLinks($originClass, $source, $target);
 
         /** @var PropertyBlueprint $property */
-        foreach ($originClass->properties->assets as $property) {
+        foreach ($originClass->properties as $property) {
             $this->matchProperties($processType, $property, $source, $target);
         }
     }

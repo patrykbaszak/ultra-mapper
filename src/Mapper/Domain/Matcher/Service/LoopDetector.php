@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PBaszak\UltraMapper\Mapper\Domain\Service;
+namespace PBaszak\UltraMapper\Mapper\Domain\Matcher\Service;
 
 use PBaszak\UltraMapper\Blueprint\Application\Model\Assets\ClassBlueprint;
 use PBaszak\UltraMapper\Blueprint\Application\Model\Assets\PropertyBlueprint;
@@ -30,6 +30,7 @@ class LoopDetector
         }
     }
 
+    // todo Groups() attribute
     protected function checkClassBlueprint(ClassBlueprint $blueprint, string $actualCheckedClass, string $processType): void
     {
         /** @var PropertyBlueprint $property */

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PBaszak\UltraMapper\Mapper\Domain\Model;
 
+use PBaszak\UltraMapper\Mapper\Application\Contract\AttributeInterface;
+
 class Process
 {
     /**
@@ -80,5 +82,17 @@ class Process
         }
 
         return $processes;
+    }
+
+    public function isAttributeMatchWithProcess(AttributeInterface $attribute): bool
+    {
+        foreach ($this->processes as $process) {
+            $binaryProcessType = $attribute::PROCESS_TYPE_MAP[$process];
+            if ($attribute->getProcessType() & $binaryProcessType === $binaryProcessType) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

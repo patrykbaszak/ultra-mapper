@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PBaszak\UltraMapper\Mapper\Domain\Contract;
+namespace PBaszak\UltraMapper\Mapper\Domain\Matcher\Contract;
 
 use PBaszak\UltraMapper\Blueprint\Application\Model\Blueprint;
 use PBaszak\UltraMapper\Mapper\Application\Contract\MapperInterface;
@@ -16,9 +16,12 @@ interface MatcherInterface
     public const OPTION_SOURCE = MapperInterface::FROM_PROCESS_USE;
     public const OPTION_TARGET = MapperInterface::TO_PROCESS_USE;
 
+    /**
+     * Main method of the matcher. It matches blueprints and their all assets.
+     */
     public function matchBlueprints(
         Context $context,
-        Process $processType,
+        Process $process,
         Blueprint $origin,
         Blueprint $source,
         Blueprint $target
