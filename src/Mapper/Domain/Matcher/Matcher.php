@@ -13,6 +13,7 @@ use PBaszak\UltraMapper\Mapper\Application\Model\Context;
 use PBaszak\UltraMapper\Mapper\Domain\Matcher\Contract\ClassMatchingStrategy;
 use PBaszak\UltraMapper\Mapper\Domain\Matcher\Contract\MatcherInterface;
 use PBaszak\UltraMapper\Mapper\Domain\Matcher\Contract\PropertyMatchingStrategy;
+use PBaszak\UltraMapper\Mapper\Domain\Matcher\Service\DiscriminatorService;
 use PBaszak\UltraMapper\Mapper\Domain\Matcher\Service\LoopDetector;
 use PBaszak\UltraMapper\Mapper\Domain\Model\Process;
 use Symfony\Component\Uid\Uuid;
@@ -52,6 +53,7 @@ class Matcher implements MatcherInterface
         Blueprint $target
     ): void {
         $blueprints = [$origin, $source, $target];
+
         $this->checkForLoop($context, $process, $blueprints);
         $this->addLinks(...$blueprints);
         array_walk($blueprints, fn (Blueprint $blueprint): ClassBlueprint => $blueprint->blueprints[$blueprint->root]);
@@ -219,6 +221,14 @@ class Matcher implements MatcherInterface
         }
 
         return false;
+    }
+
+    /**
+     * @param Blueprint[] $blueprints
+     */
+    protected function checkForMultipleClasses(Context $context, Process $process, array $blueprints): void
+    {
+        array_walk($blueprints, fn (Blueprint $blueprint) => (new DiscriminatorService())->checkBlueprint($blueprint, $process));
     }
 
     /**
