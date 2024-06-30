@@ -20,13 +20,13 @@ use Symfony\Component\Uid\Uuid;
 
 /**
  * Class Matcher contains methods required by interface for external access,
- * but also contains methods useful for matching strategies. 
+ * but also contains methods useful for matching strategies.
  */
 class Matcher implements MatcherInterface
 {
     /**
      * @param PropertyMatchingStrategy[]|class-string<PropertyMatchingStrategy>[] $propertyMatchingStrategies
-     * @param ClassMatchingStrategy[]|class-string<ClassMatchingStrategy>[] $classMatchingStrategies
+     * @param ClassMatchingStrategy[]|class-string<ClassMatchingStrategy>[]       $classMatchingStrategies
      */
     public function __construct(
         /** @var PropertyMatchingStrategy[] */
@@ -76,10 +76,10 @@ class Matcher implements MatcherInterface
                 foreach ($this->propertyMatchingStrategies as $strategy) {
                     if ($strategy->isStrategyConditionsMet($context, $process, $origin, $sourceProperty, $targetProperty)) {
                         $strategy->matchProperties($context, $process, $origin, $sourceProperty, $targetProperty);
-                        $requiredMatches--;
+                        --$requiredMatches;
                     }
 
-                    if ($requiredMatches === 0) {
+                    if (0 === $requiredMatches) {
                         return true;
                     }
                 }
@@ -100,13 +100,13 @@ class Matcher implements MatcherInterface
         PropertyBlueprint $target
     ): void {
         $originClasses = $origin->type->getAllClassTypes();
-        /** @var ClassBlueprint[] $originClasses */
+        /* @var ClassBlueprint[] $originClasses */
         array_walk($originClasses, fn (string $originClass): ClassBlueprint => Blueprint::getBlueprint($origin)->blueprints[$originClass]);
         $sourceClasses = $source->type->getAllClassTypes();
-        /** @var ClassBlueprint[] $sourceClasses */
+        /* @var ClassBlueprint[] $sourceClasses */
         array_walk($sourceClasses, fn (string $sourceClass): ClassBlueprint => Blueprint::getBlueprint($origin)->blueprints[$sourceClass]);
         $targetClasses = $target->type->getAllClassTypes();
-        /** @var ClassBlueprint[] $targetClasses */
+        /* @var ClassBlueprint[] $targetClasses */
         array_walk($targetClasses, fn (string $targetClass): ClassBlueprint => Blueprint::getBlueprint($origin)->blueprints[$targetClass]);
 
         foreach ($originClasses as $originClass) {
@@ -136,13 +136,13 @@ class Matcher implements MatcherInterface
         $matchedProperties = 0;
         foreach ($origin->properties as $index => $property) {
             if ($this->isPropertyIgnored($context, $process, $property)) {
-                $totalProperties--;
+                --$totalProperties;
                 unset($origin->properties[$index]);
                 continue;
             }
 
             if ($this->matchProperties($context, $process, $property, $source, $target)) {
-                $matchedProperties++;
+                ++$matchedProperties;
             }
         }
 
@@ -183,8 +183,8 @@ class Matcher implements MatcherInterface
     /**
      * Method checks if the property should be ignored.
      * Only origin property should be checked.
-     * 
-     * @return bool Success if the property should be ignored.
+     *
+     * @return bool success if the property should be ignored
      */
     protected function isPropertyIgnored(Context $context, Process $process, PropertyBlueprint $origin): bool
     {

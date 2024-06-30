@@ -18,8 +18,8 @@ class Context
 
     /**
      * @param string[] $groups
-     * 
-     * @return bool Success if the group is matching.
+     *
+     * @return bool success if the group is matching
      */
     public function isGroupMatching(array $groups): bool
     {

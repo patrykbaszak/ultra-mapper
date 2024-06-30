@@ -8,10 +8,13 @@ use PBaszak\UltraMapper\Blueprint\Application\Enum\ClassType;
 use PBaszak\UltraMapper\Blueprint\Application\Exception\BlueprintException;
 use PBaszak\UltraMapper\Blueprint\Application\Exception\ClassNotFoundException;
 use PBaszak\UltraMapper\Blueprint\Application\Model\Blueprint;
+use PBaszak\UltraMapper\Blueprint\Application\Trait\GetAttributes;
 use PBaszak\UltraMapper\Shared\Infrastructure\Normalization\Normalizable;
 
 class ClassBlueprint implements Normalizable
 {
+    use GetAttributes;
+
     /** @var array<string, mixed> */
     public array $options = [];
 

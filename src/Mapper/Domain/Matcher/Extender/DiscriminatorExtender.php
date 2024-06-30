@@ -29,7 +29,6 @@ class DiscriminatorExtender implements BlueprintExtenderInterface
     {
         /** @var PropertyBlueprint $property */
         foreach ($blueprint->properties as $property) {
-            
         }
     }
 }

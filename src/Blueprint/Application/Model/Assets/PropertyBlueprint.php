@@ -6,11 +6,13 @@ namespace PBaszak\UltraMapper\Blueprint\Application\Model\Assets;
 
 use PBaszak\UltraMapper\Blueprint\Application\Enum\Visibility;
 use PBaszak\UltraMapper\Blueprint\Application\Model\Type;
-use PBaszak\UltraMapper\Mapper\Application\Attribute\Groups;
+use PBaszak\UltraMapper\Blueprint\Application\Trait\GetAttributes;
 use PBaszak\UltraMapper\Shared\Infrastructure\Normalization\Normalizable;
 
 class PropertyBlueprint implements Normalizable
 {
+    use GetAttributes;
+
     public const OPTIONS_NAME = 'name';
     public const OPTIONS_PATH = 'path';
 
@@ -95,20 +97,6 @@ class PropertyBlueprint implements Normalizable
     public function getReflection(): \ReflectionProperty
     {
         return new \ReflectionProperty($this->class->name, $this->originName);
-    }
-
-    /** 
-     * @return object[]
-     */
-    public function getAttributes(string $class): array
-    {
-        /** @var array<AttributeBlueprint> $attrs */
-        $attrs = $this->attributes[$class];
-
-        /** @var object[] $attrs */
-        array_walk($attrs, fn (AttributeBlueprint $attr): object => $attr->newInstance());
-
-        return $attrs;
     }
 
     public function normalize(): array

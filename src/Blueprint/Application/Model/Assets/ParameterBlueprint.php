@@ -18,6 +18,8 @@ class ParameterBlueprint implements Normalizable
     public bool $hasDefaultValue;
     public mixed $defaultValue;
 
+    public AssetsAggregate $attributes;
+
     public static function create(\ReflectionParameter $parameter, MethodBlueprint $parent): self
     {
         $instance = new self();
@@ -29,6 +31,8 @@ class ParameterBlueprint implements Normalizable
         } else {
             $instance->defaultValue = null;
         }
+
+        $instance->attributes = AttributeBlueprint::createCollection($instance);
 
         return $instance;
     }

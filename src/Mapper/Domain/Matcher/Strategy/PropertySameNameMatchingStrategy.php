@@ -18,7 +18,6 @@ class PropertySameNameMatchingStrategy implements PropertyMatchingStrategy
         PropertyBlueprint $source,
         PropertyBlueprint $target
     ): bool {
-        
     }
 
     public function matchProperties(
@@ -28,6 +27,5 @@ class PropertySameNameMatchingStrategy implements PropertyMatchingStrategy
         PropertyBlueprint $source,
         PropertyBlueprint $target
     ): void {
-
     }
 }

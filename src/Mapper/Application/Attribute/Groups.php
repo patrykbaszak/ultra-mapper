@@ -12,22 +12,25 @@ class Groups implements AttributeInterface
 {
     use ThrowAttributeValidationExceptionTrait;
 
+    public array $groups;
+
     /**
      * @param string|array         $groups  the groups that the property should be included in
      * @param array<string, mixed> $options Options are for modificators of the mapping process. If You need them, You can use them.
      */
     public function __construct(
-        public readonly string|array $groups,
+        string|array $groups,
         public int $processType = self::DENORMALIZATION | self::NORMALIZATION | self::TRANSFORMATION | self::MAPPING,
-        public readonly array $options = []
+        public array $options = []
     ) {
+        $this->groups = is_array($groups) ? $groups : [$groups];
     }
 
     public function validate(\ReflectionProperty|\ReflectionParameter|\ReflectionClass $reflection): void
     {
         // todo implement
     }
-    
+
     public function getProcessType(): int
     {
         return $this->processType;

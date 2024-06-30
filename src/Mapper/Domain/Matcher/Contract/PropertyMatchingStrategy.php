@@ -12,8 +12,8 @@ interface PropertyMatchingStrategy
 {
     /**
      * Method checks if the strategy conditions are met.
-     * 
-     * @return bool Success if the conditions are met.
+     *
+     * @return bool success if the conditions are met
      */
     public function isStrategyConditionsMet(
         Context $context,
@@ -25,8 +25,6 @@ interface PropertyMatchingStrategy
 
     /**
      * Method matches properties in the way defined by the strategy.
-     * 
-     * @return void
      */
     public function matchProperties(
         Context $context,

@@ -39,7 +39,7 @@ class AttributeBlueprint implements Normalizable
         return $instance;
     }
 
-    public static function createCollection(ClassBlueprint|PropertyBlueprint $parent): AssetsAggregate
+    public static function createCollection(ClassBlueprint|ParameterBlueprint|PropertyBlueprint $parent): AssetsAggregate
     {
         $ref = $parent->getReflection();
 

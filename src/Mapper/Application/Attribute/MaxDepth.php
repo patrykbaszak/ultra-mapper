@@ -42,4 +42,9 @@ class MaxDepth implements AttributeInterface
     {
         // todo implement
     }
+
+    public function getProcessType(): int
+    {
+        return $this->processType;
+    }
 }
