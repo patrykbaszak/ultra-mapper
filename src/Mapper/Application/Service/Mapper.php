@@ -8,14 +8,13 @@ use PBaszak\UltraMapper\Blueprint\Application\Contract\BlueprintInterface;
 use PBaszak\UltraMapper\Blueprint\Application\Model\Blueprint;
 use PBaszak\UltraMapper\Build\Application\Contract\BuilderInterface;
 use PBaszak\UltraMapper\Mapper\Application\Contract\MapperInterface;
-use PBaszak\UltraMapper\Mapper\Application\Contract\ModificatorInterface;
 use PBaszak\UltraMapper\Mapper\Application\Contract\TypeInterface;
 use PBaszak\UltraMapper\Mapper\Application\Model\Context;
 use PBaszak\UltraMapper\Mapper\Application\Model\Envelope;
 use PBaszak\UltraMapper\Mapper\Domain\Contract\ClassMapperInterface;
+use PBaszak\UltraMapper\Mapper\Domain\Modules;
 use PBaszak\UltraMapper\Mapper\Domain\Resolver\MapperResolver;
 use PBaszak\UltraMapper\Mapper\Domain\Resolver\ProcessResolver;
-use PBaszak\UltraMapper\Mapper\Domain\Service\Matcher;
 
 class Mapper implements MapperInterface
 {
@@ -38,10 +37,16 @@ class Mapper implements MapperInterface
     public bool $throwExceptionWhenMappingError = false;
 
     public function __construct(
-        protected BlueprintInterface $blueprint,
-        protected BuilderInterface $build,
         protected MapperResolver $mapperResolver,
-        protected ModificatorInterface $modificator,
+        protected BlueprintInterface $blueprint,
+
+        // Build module - required for the mapper creation
+        protected BuilderInterface $builder,
+        // blueprint preparation modules - required for the mapper creation
+        protected Modules\Checker\Contract\CheckerInterface $checker,
+        protected Modules\Extender\Contract\ExtenderInterface $extender,
+        protected Modules\Matcher\Contract\MatcherInterface $matcher,
+        protected Modules\Modificator\Contract\ModificatorInterface $modificator,
     ) {
     }
 
@@ -78,13 +83,17 @@ class Mapper implements MapperInterface
             $processType = (new ProcessResolver())->resolve($from, $to);
 
             foreach ($blueprints as $processUse => $blueprint) {
-                $this->modificator->prepareBlueprint($blueprint, $processType, $processUse);
+                do {
+                    $hasExtended = $this->extender->extend($blueprint, $processType, $context);
+                    $hasModified = $this->modificator->modify($blueprint, $processType, $context, $processUse);
+                } while ($hasExtended || $hasModified);
+
+                $this->checker->check($blueprint, $processType, $context);
             }
 
-            (new Matcher())->matchBlueprints($context, $processType, ...$blueprints);
+            $this->matcher->matchBlueprints($context, $processType, ...$blueprints);
 
-            // modify blueprints
-
+            // not implemented yet
             // $build = $this->build->build(
             //     $shortName,
             //     $blueprints,

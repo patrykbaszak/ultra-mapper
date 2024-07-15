@@ -10,7 +10,7 @@ use PBaszak\UltraMapper\Shared\Infrastructure\Normalization\Normalizable;
 
 class AttributeBlueprint implements Normalizable
 {
-    public ClassBlueprint|PropertyBlueprint $parent;
+    public ClassBlueprint|ParameterBlueprint|PropertyBlueprint $parent;
 
     /** @var class-string */
     public string $class;
@@ -20,7 +20,7 @@ class AttributeBlueprint implements Normalizable
     public false|string $filePath;
     public false|string $fileHash;
 
-    public static function create(\ReflectionAttribute $attribute, ClassBlueprint|PropertyBlueprint $parent): self
+    public static function create(\ReflectionAttribute $attribute, ClassBlueprint|ParameterBlueprint|PropertyBlueprint $parent): self
     {
         $instance = new self();
         $instance->parent = $parent;

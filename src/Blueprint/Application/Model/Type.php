@@ -57,7 +57,7 @@ class Type implements Normalizable
     {
         $classTypes = [];
         $function = function ($type) use (&$classTypes) {
-            if (class_exists($type)) {
+            if (class_exists($type, false) || interface_exists($type, false)) {
                 $classTypes[] = $type;
             }
         };

@@ -30,9 +30,11 @@ class ClassObjectType implements TypeInterface
      * @param bool              $canUseDirectProperty    Requires public properties. If the property is not public, it will be ignored.
      * @param bool              $canUseConstructor       Requires the parameters with the same name as the properties. You can use
      *                                                   #[TargetProperty] attribute on parameters to map them to the properties.
+     *                                                   Recommended for the creation of the objects from the incoming data.
      * @param bool              $canUseGettersAndSetters #[Accessor] attribute ignores this flag. If `true`, then
      *                                                   UltraMapper will search for the getter and setter methods.
      * @param bool              $canUseReflectionClass   Probably the slowest option but the most universal. Still is fast enough.
+     *                                                   Recommended for recreation of the objects from persistence.
      */
     public function __construct(
         /** @var class-string|null */
