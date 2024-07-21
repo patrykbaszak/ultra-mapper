@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PBaszak\UltraMapper\Tests\Mapper\Unit\Domain\Service;
+namespace PBaszak\UltraMapper\Tests\Mapper\Unit\Domain\Modules\Checker;
 
 use PBaszak\UltraMapper\Blueprint\Application\Model\Blueprint;
 use PBaszak\UltraMapper\Mapper\Application\Attribute\Groups;
