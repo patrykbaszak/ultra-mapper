@@ -9,9 +9,9 @@ use PBaszak\UltraMapper\Mapper\Application\Attribute\Groups;
 use PBaszak\UltraMapper\Mapper\Application\Attribute\Ignore;
 use PBaszak\UltraMapper\Mapper\Application\Attribute\MaxDepth;
 use PBaszak\UltraMapper\Mapper\Application\Model\Context;
-use PBaszak\UltraMapper\Mapper\Domain\Matcher\Checker\RecursiveLoopChecker;
-use PBaszak\UltraMapper\Mapper\Domain\Matcher\Exception\BlueprintCheckerException;
 use PBaszak\UltraMapper\Mapper\Domain\Model\Process;
+use PBaszak\UltraMapper\Mapper\Domain\Modules\Checker\Exception\CheckerException;
+use PBaszak\UltraMapper\Mapper\Domain\Modules\Checker\Strategy\RecursiveLoopChecker;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -26,7 +26,7 @@ class RecursiveLoopCheckerTest extends TestCase
             public self $property;
         };
 
-        $this->expectException(BlueprintCheckerException::class);
+        $this->expectException(CheckerException::class);
         (new RecursiveLoopChecker())->check(
             Blueprint::create(get_class($class)),
             new Process([Process::DENORMALIZATION_PROCESS]),
@@ -42,7 +42,7 @@ class RecursiveLoopCheckerTest extends TestCase
             public self $property;
         };
 
-        $this->expectException(BlueprintCheckerException::class);
+        $this->expectException(CheckerException::class);
         (new RecursiveLoopChecker())->check(
             Blueprint::create(get_class($class)),
             new Process([Process::DENORMALIZATION_PROCESS]),

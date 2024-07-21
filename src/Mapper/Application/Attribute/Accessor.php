@@ -20,9 +20,7 @@ class Accessor implements AttributeInterface
     public function __construct(
         public readonly ?string $getter = null,
         public readonly ?string $setter = null,
-        public bool $useForDenormalization = true,
-        public bool $useForMapping = false,
-        public bool $useForNormalization = true,
+        public readonly int $processType = self::DENORMALIZATION | self::NORMALIZATION | self::TRANSFORMATION | self::MAPPING,
         public readonly array $options = []
     ) {
     }
@@ -30,5 +28,10 @@ class Accessor implements AttributeInterface
     public function validate(\ReflectionProperty|\ReflectionParameter|\ReflectionClass $reflection): void
     {
         // todo implement
+    }
+
+    public function getProcessType(): int
+    {
+        return $this->processType;
     }
 }

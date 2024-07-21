@@ -95,9 +95,7 @@ class Callback implements AttributeInterface
          *          - Stage 4 Arbitrary callback to complete property mapping. Ex. logging
          */
         public int $stage,
-        public bool $useForDenormalization = true,
-        public bool $useForMapping = false,
-        public bool $useForNormalization = false,
+        public int $processType,
         /**
          * @var int $priority               The priority of the callback. The higher the value, the earlier the callback will be executed.
          */
@@ -138,5 +136,10 @@ class Callback implements AttributeInterface
         // if (self::STAGE_2_ASSIGNMENT === $this->stage && $this->callback === str_replace(['{{var.name}}', '{{source.getter}}'], '', $this->callback)) {
         //     $this->throwException('You have to use {{var.name}} and {{source.getter}} placeholders in your callback string.', 5956, $reflection);
         // }
+    }
+
+    public function getProcessType(): int
+    {
+        return $this->processType;
     }
 }

@@ -6,8 +6,8 @@ namespace PBaszak\UltraMapper\Mapper\Domain\Modules\Checker\Contract;
 
 use PBaszak\UltraMapper\Blueprint\Application\Model\Blueprint;
 use PBaszak\UltraMapper\Mapper\Application\Model\Context;
-use PBaszak\UltraMapper\Mapper\Domain\Checker\Exception\CheckerException;
 use PBaszak\UltraMapper\Mapper\Domain\Model\Process;
+use PBaszak\UltraMapper\Mapper\Domain\Modules\Checker\Exception\CheckerException;
 
 /**
  * Interface CheckerInterface is used to check if the blueprint

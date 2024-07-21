@@ -50,4 +50,9 @@ class ApplyToCollectionItem implements AttributeInterface
         //     }
         // }
     }
+
+    public function getProcessType(): int
+    {
+        return self::MAPPING | self::DENORMALIZATION | self::NORMALIZATION | self::TRANSFORMATION;
+    }
 }

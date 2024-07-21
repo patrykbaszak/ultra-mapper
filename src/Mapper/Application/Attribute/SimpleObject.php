@@ -34,4 +34,9 @@ class SimpleObject implements AttributeInterface
     {
         // todo implement
     }
+
+    public function getProcessType(): int
+    {
+        return self::MAPPING | self::DENORMALIZATION | self::NORMALIZATION | self::TRANSFORMATION;
+    }
 }

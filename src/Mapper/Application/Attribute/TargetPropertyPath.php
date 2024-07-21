@@ -7,28 +7,25 @@ namespace PBaszak\UltraMapper\Mapper\Application\Attribute;
 use PBaszak\UltraMapper\Mapper\Application\Contract\AttributeInterface;
 use PBaszak\UltraMapper\Mapper\Application\Exception\ThrowAttributeValidationExceptionTrait;
 
-#[\Attribute(\Attribute::TARGET_PROPERTY)]
-class Groups implements AttributeInterface
+#[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::IS_REPEATABLE)]
+class TargetPropertyPath implements AttributeInterface
 {
     use ThrowAttributeValidationExceptionTrait;
 
-    /** @var string[] */
-    public array $groups;
-
     /**
-     * @param string|array<string> $groups  the groups that the property should be included in
+     * @param ?string              $path    The path to the target property. If null, the name of the target property is used.
      * @param array<string, mixed> $options Options are for modificators of the mapping process. If You need them, You can use them.
      */
     public function __construct(
-        string|array $groups,
-        public int $processType = self::DENORMALIZATION | self::NORMALIZATION | self::TRANSFORMATION | self::MAPPING,
-        public array $options = []
+        public readonly ?string $path = null,
+        public readonly int $processType = self::DENORMALIZATION | self::NORMALIZATION | self::TRANSFORMATION | self::MAPPING,
+        public readonly array $options = []
     ) {
-        $this->groups = is_array($groups) ? $groups : [$groups];
     }
 
     public function validate(\ReflectionProperty|\ReflectionParameter|\ReflectionClass $reflection): void
     {
+        // there cannot be two target properties with the same processType
         // todo implement
     }
 
