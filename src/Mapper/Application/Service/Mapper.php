@@ -93,16 +93,15 @@ class Mapper implements MapperInterface
 
             $this->matcher->matchBlueprints($context, $processType, ...$blueprints);
 
-            // not implemented yet
-            // $build = $this->build->build(
-            //     $shortName,
-            //     $blueprints,
-            //     $from,
-            //     $to,
-            //     $isCollection,
-            // );
+            $build = $this->builder->build(
+                $shortName,
+                $blueprints['origin'],
+                $from,
+                $to,
+                $context->isCollection,
+            );
 
-            // $this->mapperResolver->save($shortName, $build->getMapperFileBody());
+            $this->mapperResolver->save($shortName, $build->getMapperFileBody());
             $mapper = $this->mapperResolver->resolve($shortName);
         }
 
