@@ -113,6 +113,11 @@ class Blueprint implements Normalizable
         $this->events[] = $event;
     }
 
+    public function getRoot(): ClassBlueprint
+    {
+        return $this->blueprints[$this->root];
+    }
+
     public function normalize(): array
     {
         return [
