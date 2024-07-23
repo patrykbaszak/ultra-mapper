@@ -20,7 +20,7 @@ interface AttributeInterface
         Process::TRANSFORMATION_PROCESS => self::TRANSFORMATION,
     ];
 
-    public function validate(\ReflectionProperty|\ReflectionParameter|\ReflectionClass $reflection): void;
+    public function validate(\Reflector $reflector): void;
 
     public function getProcessType(): int;
 }
