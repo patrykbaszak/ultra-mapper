@@ -10,6 +10,6 @@ use PBaszak\UltraMapper\Build\Application\Model\Enum\AccessType;
 class PropertyBuildContext
 {
     public ?AccessType $accessType = null;
-    /** @var array<AccessOption, mixed> */
+    /** @var array<string, mixed> where the key is from AccessOption */
     public array $accessOptions = [];
 }

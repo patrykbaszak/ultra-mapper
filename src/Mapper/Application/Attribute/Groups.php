@@ -27,7 +27,7 @@ class Groups implements AttributeInterface
         $this->groups = is_array($groups) ? $groups : [$groups];
     }
 
-    public function validate(\ReflectionProperty|\ReflectionParameter|\ReflectionClass $reflection): void
+    public function validate(\Reflector $reflector): void
     {
         // todo implement
     }

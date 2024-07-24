@@ -20,8 +20,8 @@ class ApplyToCollectionItem implements AttributeInterface
     ) {
     }
 
-    /** @param \ReflectionProperty $reflection */
-    public function validate(\ReflectionProperty|\ReflectionParameter|\ReflectionClass $reflection): void
+    /** @param \ReflectionProperty $reflector */
+    public function validate(\Reflector $reflector): void
     {
         // $class = $reflection->getDeclaringClass();
 

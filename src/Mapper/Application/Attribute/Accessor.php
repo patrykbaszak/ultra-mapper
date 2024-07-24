@@ -25,7 +25,7 @@ class Accessor implements AttributeInterface
     ) {
     }
 
-    public function validate(\ReflectionProperty|\ReflectionParameter|\ReflectionClass $reflection): void
+    public function validate(\Reflector $reflector): void
     {
         // todo implement
     }
