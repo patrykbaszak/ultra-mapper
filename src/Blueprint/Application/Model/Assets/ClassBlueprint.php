@@ -15,6 +15,8 @@ class ClassBlueprint implements Normalizable
 {
     use GetAttributes;
 
+    public const OPTIONS_BUILD_CONTEXT = 'buildContext';
+
     /** @var array<string, mixed> */
     public array $options = [];
 
