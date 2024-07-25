@@ -23,7 +23,7 @@ class TargetPropertyPath implements AttributeInterface
     ) {
     }
 
-    public function validate(\ReflectionProperty|\ReflectionParameter|\ReflectionClass $reflection): void
+    public function validate(\Reflector $reflector): void
     {
         // there cannot be two target properties with the same processType
         // todo implement

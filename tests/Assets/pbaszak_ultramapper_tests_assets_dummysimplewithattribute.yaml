@@ -114,15 +114,15 @@ blueprints:
                         defaultValue: null
 filesHashes:
     /app/tests/Assets/DummySimpleWithAttribute.php: 5de157db33ad5536dfb49fe841a058a3
-    /app/src/Mapper/Application/Attribute/Callback.php: 7ba81d4a5d36143504c6bcc2909e6a1c
-    /app/src/Mapper/Application/Attribute/Ignore.php: 3ff46e0eb1d09e4a9d5b7c97302034de
+    /app/src/Mapper/Application/Attribute/Callback.php: a8b352f51ce806632b4d7754b7bf5e91
+    /app/src/Mapper/Application/Attribute/Ignore.php: d8e23944de7bbbf374804f401dbf8b9f
 events:
     - 'Blueprint created. Root class: PBaszak\UltraMapper\Tests\Assets\DummySimpleWithAttribute.'
     - 'Class Blueprint PBaszak\UltraMapper\Tests\Assets\DummySimpleWithAttribute added. Blueprint name: pbaszak_ultramapper_tests_assets_dummysimplewithattribute.'
     - 'File hash added. File: /app/tests/Assets/DummySimpleWithAttribute.php, hash: 5de157db33ad5536dfb49fe841a058a3.'
-    - 'File hash added. File: /app/src/Mapper/Application/Attribute/Callback.php, hash: 7ba81d4a5d36143504c6bcc2909e6a1c.'
-    - 'File hash already exists. File: /app/src/Mapper/Application/Attribute/Callback.php, hash: 7ba81d4a5d36143504c6bcc2909e6a1c.'
-    - 'File hash added. File: /app/src/Mapper/Application/Attribute/Ignore.php, hash: 3ff46e0eb1d09e4a9d5b7c97302034de.'
-    - 'File hash already exists. File: /app/src/Mapper/Application/Attribute/Callback.php, hash: 7ba81d4a5d36143504c6bcc2909e6a1c.'
-    - 'File hash already exists. File: /app/src/Mapper/Application/Attribute/Callback.php, hash: 7ba81d4a5d36143504c6bcc2909e6a1c.'
-    - 'File hash already exists. File: /app/src/Mapper/Application/Attribute/Ignore.php, hash: 3ff46e0eb1d09e4a9d5b7c97302034de.'
+    - 'File hash added. File: /app/src/Mapper/Application/Attribute/Callback.php, hash: a8b352f51ce806632b4d7754b7bf5e91.'
+    - 'File hash already exists. File: /app/src/Mapper/Application/Attribute/Callback.php, hash: a8b352f51ce806632b4d7754b7bf5e91.'
+    - 'File hash added. File: /app/src/Mapper/Application/Attribute/Ignore.php, hash: d8e23944de7bbbf374804f401dbf8b9f.'
+    - 'File hash already exists. File: /app/src/Mapper/Application/Attribute/Callback.php, hash: a8b352f51ce806632b4d7754b7bf5e91.'
+    - 'File hash already exists. File: /app/src/Mapper/Application/Attribute/Callback.php, hash: a8b352f51ce806632b4d7754b7bf5e91.'
+    - 'File hash already exists. File: /app/src/Mapper/Application/Attribute/Ignore.php, hash: d8e23944de7bbbf374804f401dbf8b9f.'

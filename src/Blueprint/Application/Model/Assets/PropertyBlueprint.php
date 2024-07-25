@@ -15,6 +15,7 @@ class PropertyBlueprint implements Normalizable
 
     public const OPTIONS_NAME = 'name';
     public const OPTIONS_PATH = 'path';
+    public const OPTIONS_BUILD_CONTEXT = 'buildContext';
 
     /** @var array<string, mixed> */
     public array $options = [];
