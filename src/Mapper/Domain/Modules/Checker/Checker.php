@@ -18,10 +18,10 @@ class Checker implements Contract\CheckerInterface
     ) {
     }
 
-    public function check(Blueprint $blueprint, Process $process, Context $context): void
+    public function check(Blueprint $blueprint, Process $process, Context $context, string $processUse): void
     {
         foreach ($this->strategies as $strategy) {
-            $strategy->check($blueprint, $process, $context);
+            $strategy->check($blueprint, $process, $context, $processUse);
         }
     }
 }

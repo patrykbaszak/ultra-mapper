@@ -25,5 +25,5 @@ interface ExtenderInterface
      *
      * @throws ExtenderException if there was any problem with extending the blueprint
      */
-    public function extend(Blueprint $blueprint, Process $process, Context $context): bool;
+    public function extend(Blueprint $blueprint, Process $process, Context $context, string $processUse): bool;
 }

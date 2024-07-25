@@ -22,5 +22,5 @@ interface CheckerInterface
      *
      * @throws CheckerException if the blueprint is invalid
      */
-    public function check(Blueprint $blueprint, Process $process, Context $context): void;
+    public function check(Blueprint $blueprint, Process $process, Context $context, string $processUse): void;
 }

@@ -84,11 +84,11 @@ class Mapper implements MapperInterface
 
             foreach ($blueprints as $processUse => $blueprint) {
                 do {
-                    $hasExtended = $this->extender->extend($blueprint, $processType, $context);
+                    $hasExtended = $this->extender->extend($blueprint, $processType, $context, $processUse);
                     $hasModified = $this->modificator->modify($blueprint, $processType, $context, $processUse);
                 } while ($hasExtended || $hasModified);
 
-                $this->checker->check($blueprint, $processType, $context);
+                $this->checker->check($blueprint, $processType, $context, $processUse);
             }
 
             $this->matcher->matchBlueprints($context, $processType, ...$blueprints);

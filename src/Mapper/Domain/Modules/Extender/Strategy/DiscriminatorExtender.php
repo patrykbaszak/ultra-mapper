@@ -16,7 +16,7 @@ class DiscriminatorExtender implements ExtenderStrategyInterface
     private Blueprint $blueprint;
     private bool $extended;
 
-    public function extend(Blueprint $blueprint, Process $process, Context $context): bool
+    public function extend(Blueprint $blueprint, Process $process, Context $context, string $processUse): bool
     {
         $this->extended = false;
         $this->blueprint = $blueprint;

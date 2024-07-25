@@ -22,17 +22,17 @@ class Extender implements Contract\ExtenderInterface
         $this->recursionLevel = 0;
     }
 
-    public function extend(Blueprint $blueprint, Process $process, Context $context): bool
+    public function extend(Blueprint $blueprint, Process $process, Context $context, string $processUse): bool
     {
         $extended = false;
 
         foreach ($this->strategies as $strategy) {
-            $extended = $strategy->extend($blueprint, $process, $context) || $extended;
+            $extended = $strategy->extend($blueprint, $process, $context, $processUse) || $extended;
         }
 
         if ($extended) {
             ++$this->recursionLevel;
-            $this->extend($blueprint, $process, $context);
+            $this->extend($blueprint, $process, $context, $processUse);
 
             if ($this->recursionLevel > $this->maxRecursionLevel) {
                 throw new Exception\ExtenderException(sprintf('Max recursion level of %d reached', $this->maxRecursionLevel), 'Extender recursion level can be increased by setting the maxRecursionLevel property in the constructor of the Extender class. The default value is 100. If you are sure that the recursion level is not a problem, you can increase the value. If you are not sure, you should check the blueprint and the strategies to see if there is a problem with the blueprint or the strategies.');

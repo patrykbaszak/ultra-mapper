@@ -16,5 +16,5 @@ interface ExtenderStrategyInterface
      *
      * @return bool `true` if the blueprint was extended, `false` otherwise
      */
-    public function extend(Blueprint $blueprint, Process $process, Context $context): bool;
+    public function extend(Blueprint $blueprint, Process $process, Context $context, string $processUse): bool;
 }

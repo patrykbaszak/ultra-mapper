@@ -19,7 +19,7 @@ class RecursiveLoopChecker implements CheckerStrategyInterface
 {
     private Blueprint $blueprint;
 
-    public function check(Blueprint $blueprint, Process $process, Context $context): void
+    public function check(Blueprint $blueprint, Process $process, Context $context, string $processUse): void
     {
         $this->blueprint = $blueprint;
         foreach ($blueprint->blueprints as $index => $classBlueprint) {

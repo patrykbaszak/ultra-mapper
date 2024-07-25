@@ -30,7 +30,8 @@ class RecursiveLoopCheckerTest extends TestCase
         (new RecursiveLoopChecker())->check(
             Blueprint::create(get_class($class)),
             new Process([Process::DENORMALIZATION_PROCESS]),
-            new Context()
+            new Context(),
+            'origin'
         );
     }
 
@@ -46,7 +47,8 @@ class RecursiveLoopCheckerTest extends TestCase
         (new RecursiveLoopChecker())->check(
             Blueprint::create(get_class($class)),
             new Process([Process::DENORMALIZATION_PROCESS]),
-            new Context(['test'])
+            new Context(['test']),
+            'origin'
         );
     }
 
@@ -61,7 +63,8 @@ class RecursiveLoopCheckerTest extends TestCase
         (new RecursiveLoopChecker())->check(
             Blueprint::create(get_class($class)),
             new Process([Process::DENORMALIZATION_PROCESS]),
-            new Context()
+            new Context(),
+            'origin'
         );
 
         $this->expectNotToPerformAssertions();
@@ -78,7 +81,8 @@ class RecursiveLoopCheckerTest extends TestCase
         (new RecursiveLoopChecker())->check(
             Blueprint::create(get_class($class)),
             new Process([Process::DENORMALIZATION_PROCESS]),
-            new Context()
+            new Context(),
+            'origin'
         );
 
         $this->expectNotToPerformAssertions();
