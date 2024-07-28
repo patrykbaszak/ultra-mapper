@@ -12,4 +12,11 @@ interface Normalizable
      * @return array<string, mixed>
      */
     public function normalize(): array;
+
+    /**
+     * Denormalize the object from an array.
+     *
+     * @param array<string, mixed> $data
+     */
+    public static function denormalize(array $data): static;
 }
