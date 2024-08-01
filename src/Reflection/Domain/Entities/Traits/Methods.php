@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PBaszak\UltraMapper\Reflection\Domain\Entities\traits;
+namespace PBaszak\UltraMapper\Reflection\Domain\Entities\Traits;
 
 use PBaszak\UltraMapper\Reflection\Domain\Entities\MethodReflection;
 use PBaszak\UltraMapper\Reflection\Domain\Events\ReflectionAdded;
@@ -16,11 +16,9 @@ trait Methods
     private array $methods = [];
 
     /**
-     * @param null|string $name
-     * 
      * @return array<string, MethodReflection>|MethodReflection
      */
-    public function methods(null|string $name = null): array|MethodReflection
+    public function methods(?string $name = null): array|MethodReflection
     {
         if ($name) {
             if (!array_key_exists($name, $this->methods)) {

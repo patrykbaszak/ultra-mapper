@@ -18,7 +18,6 @@ final class Blueprint extends AggregateRoot
     }
 
     /**
-     * @param BlueprintId $id
      * @param array<class-string, ClassBlueprint> $classBlueprints
      */
     public static function create(BlueprintId $id, array $classBlueprints): static
@@ -33,7 +32,6 @@ final class Blueprint extends AggregateRoot
     }
 
     /**
-     * @param BlueprintId $id
      * @param array<class-string, ClassBlueprint> $classBlueprints
      */
     public static function recreate(BlueprintId $id, array $classBlueprints): static

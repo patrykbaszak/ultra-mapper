@@ -33,11 +33,7 @@ final readonly class ReflectionAdded extends Event
         public readonly string $eventName,
     ) {
         if (!in_array($eventName, self::REFLECTIONS)) {
-            throw new ReflectionException(
-                'Invalid event name.',
-                'Event name must be one of the following: ' . implode(', ', self::REFLECTIONS) . '.',
-                3
-            );
+            throw new ReflectionException('Invalid event name.', 'Event name must be one of the following: '.implode(', ', self::REFLECTIONS).'.', 3);
         }
 
         parent::__construct($id, $eventName, self::EVENT_VERSION);

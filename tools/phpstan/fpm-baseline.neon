@@ -1,2 +1,311 @@
 parameters:
 	ignoreErrors:
+		-
+			message: "#^Method PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\Blueprint\\:\\:classBlueprints\\(\\) has invalid return type PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\ClassBlueprint\\.$#"
+			count: 1
+			path: ../../src/Blueprint/Domain/Blueprint.php
+
+		-
+			message: "#^Parameter \\$classBlueprints of method PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\Blueprint\\:\\:__construct\\(\\) has invalid type PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\ClassBlueprint\\.$#"
+			count: 1
+			path: ../../src/Blueprint/Domain/Blueprint.php
+
+		-
+			message: "#^Parameter \\$classBlueprints of method PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\Blueprint\\:\\:create\\(\\) has invalid type PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\ClassBlueprint\\.$#"
+			count: 1
+			path: ../../src/Blueprint/Domain/Blueprint.php
+
+		-
+			message: "#^Parameter \\$classBlueprints of method PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\Blueprint\\:\\:recreate\\(\\) has invalid type PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\ClassBlueprint\\.$#"
+			count: 1
+			path: ../../src/Blueprint/Domain/Blueprint.php
+
+		-
+			message: "#^Property PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\Blueprint\\:\\:\\$classBlueprints has unknown class PBaszak\\\\UltraMapper\\\\Blueprint\\\\Domain\\\\ClassBlueprint as its type\\.$#"
+			count: 1
+			path: ../../src/Blueprint/Domain/Blueprint.php
+
+		-
+			message: "#^Parameter \\$name of class PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\AttributeReflection constructor expects class\\-string, string given\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/AttributeReflection.php
+
+		-
+			message: "#^Argument of an invalid type array\\<PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\AttributeReflection\\>\\|PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\AttributeReflection supplied for foreach, only iterables are supported\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/ClassReflection.php
+
+		-
+			message: "#^Argument of an invalid type array\\<string, PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\MethodReflection\\>\\|PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\MethodReflection supplied for foreach, only iterables are supported\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/ClassReflection.php
+
+		-
+			message: "#^Argument of an invalid type array\\<string, PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\PropertyReflection\\>\\|PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\PropertyReflection supplied for foreach, only iterables are supported\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/ClassReflection.php
+
+		-
+			message: "#^Cannot call method id\\(\\) on array\\<string, PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\MethodReflection\\>\\|PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\MethodReflection\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/ClassReflection.php
+
+		-
+			message: "#^Cannot call method id\\(\\) on array\\<string, PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\PropertyReflection\\>\\|PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\PropertyReflection\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/ClassReflection.php
+
+		-
+			message: "#^Method PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\ClassReflection\\:\\:__construct\\(\\) has parameter \\$attributes with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/ClassReflection.php
+
+		-
+			message: "#^Method PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\ClassReflection\\:\\:__construct\\(\\) has parameter \\$methods with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/ClassReflection.php
+
+		-
+			message: "#^Method PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\ClassReflection\\:\\:__construct\\(\\) has parameter \\$properties with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/ClassReflection.php
+
+		-
+			message: "#^Method PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\ClassReflection\\:\\:denormalizeAttributes\\(\\) has parameter \\$attributes with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/ClassReflection.php
+
+		-
+			message: "#^Method PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\ClassReflection\\:\\:denormalizeAttributes\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/ClassReflection.php
+
+		-
+			message: "#^Method PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\ClassReflection\\:\\:denormalizeMethods\\(\\) has parameter \\$methods with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/ClassReflection.php
+
+		-
+			message: "#^Method PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\ClassReflection\\:\\:denormalizeMethods\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/ClassReflection.php
+
+		-
+			message: "#^Method PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\ClassReflection\\:\\:denormalizeProperties\\(\\) has parameter \\$properties with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/ClassReflection.php
+
+		-
+			message: "#^Method PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\ClassReflection\\:\\:denormalizeProperties\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/ClassReflection.php
+
+		-
+			message: "#^Method PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\ClassReflection\\:\\:normalizeAttributes\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/ClassReflection.php
+
+		-
+			message: "#^Method PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\ClassReflection\\:\\:normalizeMethods\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/ClassReflection.php
+
+		-
+			message: "#^Method PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\ClassReflection\\:\\:normalizeProperties\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/ClassReflection.php
+
+		-
+			message: "#^Parameter \\#1 \\$objectOrClass of class ReflectionClass constructor expects class\\-string\\<T of object\\>\\|T of object, string given\\.$#"
+			count: 2
+			path: ../../src/Reflection/Domain/Entities/ClassReflection.php
+
+		-
+			message: "#^Parameter \\#3 \\$parentProperty of static method PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\PropertyReflection\\:\\:create\\(\\) expects ReflectionProperty\\|null, PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\PropertyReflection\\|null given\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/ClassReflection.php
+
+		-
+			message: "#^Part \\$id \\(PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Identity\\\\ReflectionId\\) of encapsed string cannot be cast to string\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/ClassReflection.php
+
+		-
+			message: "#^Property PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\ClassReflection\\:\\:\\$attributes \\(array\\<class\\-string, array\\<PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\AttributeReflection\\>\\>\\) does not accept array\\<string, array\\<PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\AttributeReflection\\>\\>\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/ClassReflection.php
+
+		-
+			message: "#^Access to an undefined property PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\MethodReflection\\:\\:\\$shortName\\.$#"
+			count: 4
+			path: ../../src/Reflection/Domain/Entities/MethodReflection.php
+
+		-
+			message: "#^Argument of an invalid type array\\<PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\AttributeReflection\\>\\|PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\AttributeReflection supplied for foreach, only iterables are supported\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/MethodReflection.php
+
+		-
+			message: "#^Argument of an invalid type array\\<string, PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\ParameterReflection\\>\\|PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\ParameterReflection supplied for foreach, only iterables are supported\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/MethodReflection.php
+
+		-
+			message: "#^Cannot call method id\\(\\) on array\\<string, PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\ParameterReflection\\>\\|PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\ParameterReflection\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/MethodReflection.php
+
+		-
+			message: "#^Method PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\MethodReflection\\:\\:__construct\\(\\) has parameter \\$attributes with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/MethodReflection.php
+
+		-
+			message: "#^Method PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\MethodReflection\\:\\:__construct\\(\\) has parameter \\$parameters with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/MethodReflection.php
+
+		-
+			message: "#^Method PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\MethodReflection\\:\\:denormalizeAttributes\\(\\) has parameter \\$attributes with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/MethodReflection.php
+
+		-
+			message: "#^Method PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\MethodReflection\\:\\:denormalizeAttributes\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/MethodReflection.php
+
+		-
+			message: "#^Method PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\MethodReflection\\:\\:denormalizeParameters\\(\\) has parameter \\$parameters with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/MethodReflection.php
+
+		-
+			message: "#^Method PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\MethodReflection\\:\\:denormalizeParameters\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/MethodReflection.php
+
+		-
+			message: "#^Method PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\MethodReflection\\:\\:normalizeAttributes\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/MethodReflection.php
+
+		-
+			message: "#^Method PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\MethodReflection\\:\\:normalizeParameters\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/MethodReflection.php
+
+		-
+			message: "#^Part \\$id \\(PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Identity\\\\ReflectionId\\) of encapsed string cannot be cast to string\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/MethodReflection.php
+
+		-
+			message: "#^Property PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\MethodReflection\\:\\:\\$attributes \\(array\\<class\\-string, array\\<PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\AttributeReflection\\>\\>\\) does not accept array\\<string, array\\<PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\AttributeReflection\\>\\>\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/MethodReflection.php
+
+		-
+			message: "#^Access to an undefined property PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\ParameterReflection\\:\\:\\$shortName\\.$#"
+			count: 2
+			path: ../../src/Reflection/Domain/Entities/ParameterReflection.php
+
+		-
+			message: "#^Argument of an invalid type array\\<PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\AttributeReflection\\>\\|PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\AttributeReflection supplied for foreach, only iterables are supported\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/ParameterReflection.php
+
+		-
+			message: "#^Method PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\ParameterReflection\\:\\:__construct\\(\\) has parameter \\$attributes with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/ParameterReflection.php
+
+		-
+			message: "#^Method PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\ParameterReflection\\:\\:denormalizeAttributes\\(\\) has parameter \\$attributes with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/ParameterReflection.php
+
+		-
+			message: "#^Method PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\ParameterReflection\\:\\:denormalizeAttributes\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/ParameterReflection.php
+
+		-
+			message: "#^Method PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\ParameterReflection\\:\\:normalizeAttributes\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/ParameterReflection.php
+
+		-
+			message: "#^Part \\$id \\(PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Identity\\\\ReflectionId\\) of encapsed string cannot be cast to string\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/ParameterReflection.php
+
+		-
+			message: "#^Property PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\ParameterReflection\\:\\:\\$attributes \\(array\\<class\\-string, array\\<PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\AttributeReflection\\>\\>\\) does not accept array\\<string, array\\<PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\AttributeReflection\\>\\>\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/ParameterReflection.php
+
+		-
+			message: "#^Access to an undefined property PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\PropertyReflection\\:\\:\\$shortName\\.$#"
+			count: 2
+			path: ../../src/Reflection/Domain/Entities/PropertyReflection.php
+
+		-
+			message: "#^Argument of an invalid type array\\<PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\AttributeReflection\\>\\|PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\AttributeReflection supplied for foreach, only iterables are supported\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/PropertyReflection.php
+
+		-
+			message: "#^Method PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\PropertyReflection\\:\\:__construct\\(\\) has parameter \\$attributes with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/PropertyReflection.php
+
+		-
+			message: "#^Method PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\PropertyReflection\\:\\:denormalizeAttributes\\(\\) has parameter \\$attributes with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/PropertyReflection.php
+
+		-
+			message: "#^Method PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\PropertyReflection\\:\\:denormalizeAttributes\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/PropertyReflection.php
+
+		-
+			message: "#^Method PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\PropertyReflection\\:\\:normalizeAttributes\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/PropertyReflection.php
+
+		-
+			message: "#^Part \\$id \\(PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Identity\\\\ReflectionId\\) of encapsed string cannot be cast to string\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/PropertyReflection.php
+
+		-
+			message: "#^Property PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\PropertyReflection\\:\\:\\$attributes \\(array\\<class\\-string, array\\<PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\AttributeReflection\\>\\>\\) does not accept array\\<string, array\\<PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\AttributeReflection\\>\\>\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/PropertyReflection.php
+
+		-
+			message: "#^Property PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\PropertyReflection\\:\\:\\$parentProperty \\(PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\PropertyReflection\\) does not accept ReflectionProperty\\|null\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/PropertyReflection.php
+
+		-
+			message: "#^Parameter \\#1 \\$objectOrClass of class ReflectionClass constructor expects class\\-string\\<T of object\\>\\|T of object, string given\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/Type/NamedTypeReflection.php
+
+		-
+			message: "#^Argument of an invalid type array\\<string, PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\ClassReflection\\>\\|PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\ClassReflection supplied for foreach, only iterables are supported\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Reflection.php
+
+		-
+			message: "#^Cannot call method id\\(\\) on array\\<string, PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\ClassReflection\\>\\|PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\ClassReflection\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Reflection.php
+
+		-
+			message: "#^Parameter \\#2 \\$array of function array_map expects array, array\\<string, PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\ClassReflection\\>\\|PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\ClassReflection given\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Reflection.php

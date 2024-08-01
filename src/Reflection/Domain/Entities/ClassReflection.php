@@ -6,21 +6,21 @@ namespace PBaszak\UltraMapper\Reflection\Domain\Entities;
 
 use PBaszak\UltraMapper\Reflection\Domain\Entities\Interfaces\AttributesSupport;
 use PBaszak\UltraMapper\Reflection\Domain\Entities\Interfaces\ReflectionInterface;
-use PBaszak\UltraMapper\Reflection\Domain\Entities\traits\Attributes;
-use PBaszak\UltraMapper\Reflection\Domain\Entities\traits\Methods;
-use PBaszak\UltraMapper\Reflection\Domain\Entities\traits\Properties;
-use PBaszak\UltraMapper\Reflection\Domain\Events\ReflectionAdded;
+use PBaszak\UltraMapper\Reflection\Domain\Entities\Traits\Attributes;
+use PBaszak\UltraMapper\Reflection\Domain\Entities\Traits\Methods;
+use PBaszak\UltraMapper\Reflection\Domain\Entities\Traits\Properties;
 use PBaszak\UltraMapper\Reflection\Domain\Events\ReflectionCreated;
-use PBaszak\UltraMapper\Reflection\Domain\Events\ReflectionRemoved;
 use PBaszak\UltraMapper\Reflection\Domain\Exception\ReflectionException;
 use PBaszak\UltraMapper\Reflection\Domain\Identity\ReflectionId;
 use PBaszak\UltraMapper\Reflection\Domain\Reflection;
-use PBaszak\UltraMapper\Shared\Domain\ObjectTypes\AggregateRoot;
+use PBaszak\UltraMapper\Shared\Domain\ObjectTypes\Entity;
 use PBaszak\UltraMapper\Shared\Infrastructure\Normalization\Normalizable;
 
-final class ClassReflection extends AggregateRoot implements Normalizable, AttributesSupport, ReflectionInterface
+final class ClassReflection extends Entity implements Normalizable, AttributesSupport, ReflectionInterface
 {
-    use Attributes, Methods, Properties;
+    use Attributes;
+    use Methods;
+    use Properties;
 
     private Reflection $root;
 
@@ -33,7 +33,6 @@ final class ClassReflection extends AggregateRoot implements Normalizable, Attri
         private string $hash,
         private false|string $fileName,
         private false|string $fileHash,
-        private false|string $docBlock,
         array $attributes = [],
         array $properties = [],
         array $methods = [],
@@ -45,10 +44,6 @@ final class ClassReflection extends AggregateRoot implements Normalizable, Attri
 
     /**
      * @param string|class-string $name
-     * @param Reflection $root
-     * @param null|PropertyReflection $parentProperty
-     * 
-     * @return static
      */
     public static function create(
         string $name,
@@ -56,22 +51,14 @@ final class ClassReflection extends AggregateRoot implements Normalizable, Attri
         ?PropertyReflection $parentProperty = null,
     ): static {
         if (__CLASS__ === $name) {
-            throw new ReflectionException(
-                "Cannot create instance of $name class.",
-                "Please do not use `ClassReflection::create` method to create instance of $name class.",
-                1
-            );
+            throw new ReflectionException("Cannot create instance of $name class.", "Please do not use `ClassReflection::create` method to create instance of $name class.", 1);
         }
 
         try {
             $reflection = new \ReflectionClass($name);
         } catch (\ReflectionException $e) {
             $message = $e->getMessage();
-            throw new ReflectionException(
-                "Class `$name` not found. $message",
-                "Check if the class exists, has correct namespace and filename, and is properly autoloaded.",
-                2
-            );
+            throw new ReflectionException("Class `$name` not found. $message", 'Check if the class exists, has correct namespace and filename, and is properly autoloaded.', 2);
         }
 
         $instance = new static(
@@ -82,7 +69,6 @@ final class ClassReflection extends AggregateRoot implements Normalizable, Attri
             hash: md5($reflection->__toString()),
             fileName: $reflection->getFileName(),
             fileHash: $reflection->getFileName() ? md5_file($reflection->getFileName()) : false,
-            docBlock: $reflection->getDocComment(),
         );
 
         $instance->root = $root;
@@ -110,19 +96,10 @@ final class ClassReflection extends AggregateRoot implements Normalizable, Attri
     }
 
     /**
-     * @param ReflectionId $id
-     * @param string|class-string $name
-     * @param string $shortName
-     * @param string $namespace
-     * @param string $hash
-     * @param false|string $fileName
-     * @param false|string $fileHash
-     * @param false|string $docBlock
+     * @param string|class-string                        $name
      * @param array<class-string, AttributeReflection[]> $attributes
-     * @param array<string, PropertyReflection> $properties
-     * @param array<string, MethodReflection> $methods
-     * 
-     * @return static
+     * @param array<string, PropertyReflection>          $properties
+     * @param array<string, MethodReflection>            $methods
      */
     public static function recreate(
         ReflectionId $id,
@@ -132,7 +109,6 @@ final class ClassReflection extends AggregateRoot implements Normalizable, Attri
         string $hash,
         false|string $fileName,
         false|string $fileHash,
-        false|string $docBlock,
         array $attributes,
         array $properties,
         array $methods
@@ -145,7 +121,6 @@ final class ClassReflection extends AggregateRoot implements Normalizable, Attri
             $hash,
             $fileName,
             $fileHash,
-            $docBlock,
             $attributes,
             $properties,
             $methods
@@ -164,7 +139,7 @@ final class ClassReflection extends AggregateRoot implements Normalizable, Attri
             return $this->root;
         }
 
-        throw new \InvalidArgumentException("Cannot set root property. Root property is read-only.");
+        throw new \InvalidArgumentException('Cannot set root property. Root property is read-only.');
     }
 
     public function id(): ReflectionId
@@ -202,11 +177,6 @@ final class ClassReflection extends AggregateRoot implements Normalizable, Attri
         return $this->fileHash;
     }
 
-    public function docBlock(): false|string
-    {
-        return $this->docBlock;
-    }
-
     public function reflection(): \Reflector
     {
         return new \ReflectionClass($this->name);
@@ -222,7 +192,6 @@ final class ClassReflection extends AggregateRoot implements Normalizable, Attri
             'hash' => $this->hash,
             'fileName' => $this->fileName,
             'fileHash' => $this->fileHash,
-            'docBlock' => $this->docBlock,
             'attributes' => $this->normalizeAttributes(),
             'properties' => $this->normalizeProperties(),
             'methods' => $this->normalizeMethods(),
@@ -239,7 +208,6 @@ final class ClassReflection extends AggregateRoot implements Normalizable, Attri
             $data['hash'],
             $data['fileName'],
             $data['fileHash'],
-            $data['docBlock'],
             static::denormalizeAttributes($data['attributes']),
             static::denormalizeProperties($data['properties']),
             static::denormalizeMethods($data['methods']),

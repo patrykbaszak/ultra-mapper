@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PBaszak\UltraMapper\Reflection\Domain\Entities\traits;
+namespace PBaszak\UltraMapper\Reflection\Domain\Entities\Traits;
 
 use PBaszak\UltraMapper\Reflection\Domain\Entities\PropertyReflection;
 use PBaszak\UltraMapper\Reflection\Domain\Events\ReflectionAdded;
@@ -16,11 +16,9 @@ trait Properties
     private array $properties = [];
 
     /**
-     * @param null|string $name
-     * 
      * @return array<string, PropertyReflection>|PropertyReflection
      */
-    public function properties(null|string $name = null): array|PropertyReflection
+    public function properties(?string $name = null): array|PropertyReflection
     {
         if ($name) {
             if (!array_key_exists($name, $this->properties)) {

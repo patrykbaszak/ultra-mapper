@@ -24,8 +24,8 @@ final class Reflection extends AggregateRoot implements Normalizable
     }
 
     /**
-     * @param class-string|string $rootClass    The class that is being reflected
-     * @param string $idSuffix                  It's used to create unique id for reflection
+     * @param class-string|string $rootClass The class that is being reflected
+     * @param string              $idSuffix  It's used to create unique id for reflection
      */
     public static function create(string $rootClass, string $idSuffix = ''): static
     {
@@ -34,7 +34,7 @@ final class Reflection extends AggregateRoot implements Normalizable
         }
 
         $reflection = new static(
-            ReflectionId::create(md5($rootClass) . $idSuffix),
+            ReflectionId::create(md5($rootClass).$idSuffix),
             $rootClass,
         );
 
@@ -48,8 +48,7 @@ final class Reflection extends AggregateRoot implements Normalizable
     }
 
     /**
-     * @param ReflectionId $id
-     * @param class-string|string $rootClass
+     * @param class-string|string                         $rootClass
      * @param array<class-string|string, ClassReflection> $classReflections
      */
     public static function recreate(
@@ -71,10 +70,10 @@ final class Reflection extends AggregateRoot implements Normalizable
         return $this->rootClass;
     }
 
-    /** 
-     * @param null|class-string|string $filter
-     * 
-     * @return array<class-string|string, ClassReflection> | ClassReflection
+    /**
+     * @param class-string|string|null $filter
+     *
+     * @return array<class-string|string, ClassReflection>|ClassReflection
      */
     public function classReflections(?string $filter = null): array|ClassReflection
     {
@@ -90,14 +89,14 @@ final class Reflection extends AggregateRoot implements Normalizable
     }
 
     /**
-     * @param ClassReflection $classReflection
-     * 
      * @return true|ClassReflection If the class reflection already exists in the collection, it returns the existing one.
      *                              Otherwise, it returns true to indicate that the class reflection was successfully added.
      */
     public function addClassReflection(ClassReflection $classReflection): true|ClassReflection
     {
-        foreach ($this->classReflections() as $existingClassReflection) {
+        /** @var array<class-string, ClassReflection> */
+        $classReflections = $this->classReflections();
+        foreach ($classReflections as $existingClassReflection) {
             if ($existingClassReflection->id() === $classReflection->id()) {
                 return $existingClassReflection;
             }
@@ -111,7 +110,7 @@ final class Reflection extends AggregateRoot implements Normalizable
     public function removeClassReflection(string $classReflectionName): void
     {
         if ($this->rootClass === $classReflectionName) {
-            throw new \InvalidArgumentException("Cannot remove the root class reflection.");
+            throw new \InvalidArgumentException('Cannot remove the root class reflection.');
         }
 
         $id = $this->classReflections($classReflectionName)->id();
@@ -143,7 +142,7 @@ final class Reflection extends AggregateRoot implements Normalizable
             fn (array $classReflectionData) => ClassReflection::denormalize($classReflectionData),
             $data['classReflections']
         );
-        
+
         $instance = static::recreate(
             ReflectionId::recreate($data['id']),
             $data['rootClass'],

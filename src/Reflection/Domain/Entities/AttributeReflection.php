@@ -9,10 +9,10 @@ use PBaszak\UltraMapper\Reflection\Domain\Entities\Interfaces\ReflectionInterfac
 use PBaszak\UltraMapper\Reflection\Domain\Events\ReflectionCreated;
 use PBaszak\UltraMapper\Reflection\Domain\Exception\ReflectionException;
 use PBaszak\UltraMapper\Reflection\Domain\Identity\ReflectionId;
-use PBaszak\UltraMapper\Shared\Domain\ObjectTypes\AggregateRoot;
+use PBaszak\UltraMapper\Shared\Domain\ObjectTypes\Entity;
 use PBaszak\UltraMapper\Shared\Infrastructure\Normalization\Normalizable;
 
-final class AttributeReflection extends AggregateRoot implements Normalizable, ReflectionInterface
+final class AttributeReflection extends Entity implements Normalizable, ReflectionInterface
 {
     private ReflectionInterface&AttributesSupport $parent;
 
@@ -26,7 +26,6 @@ final class AttributeReflection extends AggregateRoot implements Normalizable, R
         private array $arguments,
         private false|string $fileName,
         private false|string $fileHash,
-        private false|string $docBlock,
     ) {
     }
 
@@ -44,7 +43,6 @@ final class AttributeReflection extends AggregateRoot implements Normalizable, R
             arguments: $reflectionAttribute->getArguments(),
             fileName: $reflectionClass->getFileName(),
             fileHash: $reflectionClass->getFileName() ? md5_file($reflectionClass->getFileName()) : false,
-            docBlock: $reflectionClass->getDocComment(),
         );
 
         $instance->parent = $parent;
@@ -58,14 +56,7 @@ final class AttributeReflection extends AggregateRoot implements Normalizable, R
     }
 
     /**
-     * @param ReflectionId $id
-     * @param string $name
-     * @param string $shortName
-     * @param string $namespace
      * @param array<string|int, mixed> $arguments
-     * @param false|string $fileName
-     * @param false|string $fileHash
-     * @param false|string $docBlock
      */
     public static function recreate(
         ReflectionId $id,
@@ -75,7 +66,6 @@ final class AttributeReflection extends AggregateRoot implements Normalizable, R
         array $arguments,
         false|string $fileName,
         false|string $fileHash,
-        false|string $docBlock,
     ): static {
         return new static(
             id: $id,
@@ -85,11 +75,10 @@ final class AttributeReflection extends AggregateRoot implements Normalizable, R
             arguments: $arguments,
             fileName: $fileName,
             fileHash: $fileHash,
-            docBlock: $docBlock,
         );
     }
 
-    public function parent(null|(ReflectionInterface&AttributesSupport) $parent = null): ReflectionInterface&AttributesSupport
+    public function parent((ReflectionInterface&AttributesSupport)|null $parent = null): ReflectionInterface&AttributesSupport
     {
         if (!$parent) {
             return $this->parent;
@@ -101,7 +90,7 @@ final class AttributeReflection extends AggregateRoot implements Normalizable, R
             return $this->parent;
         }
 
-        throw new \InvalidArgumentException("Cannot set parent property. Parent property is read-only.");
+        throw new \InvalidArgumentException('Cannot set parent property. Parent property is read-only.');
     }
 
     public function id(): ReflectionId
@@ -140,11 +129,6 @@ final class AttributeReflection extends AggregateRoot implements Normalizable, R
         return $this->fileHash;
     }
 
-    public function docBlock(): false|string
-    {
-        return $this->docBlock;
-    }
-
     public function instance(): object
     {
         return new $this->name(...$this->arguments);
@@ -154,8 +138,8 @@ final class AttributeReflection extends AggregateRoot implements Normalizable, R
     {
         if (method_exists($parentReflection = $this->parent->reflection(), 'getAttributes')) {
             /**
-             * @var \ReflectionClass|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter $parentReflection 
-             * @var \ReflectionAttribute[] $attrs 
+             * @var \ReflectionClass|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter $parentReflection
+             * @var \ReflectionAttribute[]                                                      $attrs
              */
             $attrs = $parentReflection->getAttributes($this->name);
             foreach ($attrs as $attr) {
@@ -165,11 +149,7 @@ final class AttributeReflection extends AggregateRoot implements Normalizable, R
             }
         }
 
-        throw new ReflectionException(
-            "ReflectionAttribute for `{$this->name}` in `{$parentReflection->__toString()}` class not found.",
-            "Check if the attribute is still present in the class and if the arguments match.",
-            5
-        );
+        throw new ReflectionException("ReflectionAttribute for `{$this->name}` in `{$parentReflection->__toString()}` class not found.", 'Check if the attribute is still present in the class and if the arguments match.', 5);
     }
 
     public function normalize(): array
@@ -182,7 +162,6 @@ final class AttributeReflection extends AggregateRoot implements Normalizable, R
             'arguments' => $this->arguments,
             'fileName' => $this->fileName,
             'fileHash' => $this->fileHash,
-            'docBlock' => $this->docBlock,
         ];
     }
 
@@ -196,7 +175,6 @@ final class AttributeReflection extends AggregateRoot implements Normalizable, R
             $data['arguments'],
             $data['fileName'],
             $data['fileHash'],
-            $data['docBlock'],
         );
     }
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PBaszak\UltraMapper\Reflection\Domain\Entities\traits;
+namespace PBaszak\UltraMapper\Reflection\Domain\Entities\Traits;
 
 use PBaszak\UltraMapper\Reflection\Domain\Entities\AttributeReflection;
 use PBaszak\UltraMapper\Reflection\Domain\Events\ReflectionAdded;
@@ -16,11 +16,11 @@ trait Attributes
     private array $attributes = [];
 
     /**
-     * @param null|class-string $filter
-     * 
+     * @param class-string|null $filter
+     *
      * @return array<class-string, AttributeReflection[]>|AttributeReflection[]
      */
-    public function attributes(null|string $filter = null): array
+    public function attributes(?string $filter = null): array
     {
         if ($filter) {
             return $this->attributes[$filter] ?? [];

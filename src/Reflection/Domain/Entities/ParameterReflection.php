@@ -6,13 +6,15 @@ namespace PBaszak\UltraMapper\Reflection\Domain\Entities;
 
 use PBaszak\UltraMapper\Reflection\Domain\Entities\Interfaces\AttributesSupport;
 use PBaszak\UltraMapper\Reflection\Domain\Entities\Interfaces\ReflectionInterface;
-use PBaszak\UltraMapper\Reflection\Domain\Entities\traits\Attributes;
+use PBaszak\UltraMapper\Reflection\Domain\Entities\Traits\Attributes;
+use PBaszak\UltraMapper\Reflection\Domain\Entities\Type\TypeReflection;
 use PBaszak\UltraMapper\Reflection\Domain\Events\ReflectionCreated;
+use PBaszak\UltraMapper\Reflection\Domain\Factories\TypeReflectionFactory;
 use PBaszak\UltraMapper\Reflection\Domain\Identity\ReflectionId;
-use PBaszak\UltraMapper\Shared\Domain\ObjectTypes\AggregateRoot;
+use PBaszak\UltraMapper\Shared\Domain\ObjectTypes\Entity;
 use PBaszak\UltraMapper\Shared\Infrastructure\Normalization\Normalizable;
 
-final class ParameterReflection extends AggregateRoot implements Normalizable, AttributesSupport, ReflectionInterface
+final class ParameterReflection extends Entity implements Normalizable, AttributesSupport, ReflectionInterface
 {
     use Attributes;
 
@@ -22,18 +24,17 @@ final class ParameterReflection extends AggregateRoot implements Normalizable, A
         private ReflectionId $id,
         private string $name,
         private TypeReflection $type,
-        array $attributes,
+        array $attributes = [],
     ) {
         $this->attributes = $attributes;
     }
 
-    public static function create(\ReflectionParameter $reflectionMethod, MethodReflection $parent): static
+    public static function create(\ReflectionParameter $reflectionParameter, MethodReflection $parent): static
     {
         $instance = new static(
             id: ReflectionId::uuid(),
-            name: $reflectionMethod->getName(),
-            attributes: [],
-            parameters: [],
+            name: $reflectionParameter->getName(),
+            type: (new TypeReflectionFactory())->createForParameter($reflectionParameter),
         );
 
         $instance->parent = $parent;
@@ -41,15 +42,31 @@ final class ParameterReflection extends AggregateRoot implements Normalizable, A
             new ReflectionCreated($instance->id)
         );
 
+        foreach ($reflectionParameter->getAttributes() as $attribute) {
+            $instance->addAttribute(AttributeReflection::create($attribute, $instance));
+        }
+
         return $instance;
     }
 
-    public static function recreate(ReflectionId $id): static
-    {
-        return new static($id);
+    /**
+     * @param array<class-string, AttributeReflection[]> $attributes
+     */
+    public static function recreate(
+        ReflectionId $id,
+        string $name,
+        TypeReflection $type,
+        array $attributes,
+    ): static {
+        return new static(
+            $id,
+            $name,
+            $type,
+            $attributes,
+        );
     }
-    
-    public function parent(null|MethodReflection $parent = null): MethodReflection
+
+    public function parent(?MethodReflection $parent = null): MethodReflection
     {
         if (!$parent) {
             return $this->parent;
@@ -61,7 +78,15 @@ final class ParameterReflection extends AggregateRoot implements Normalizable, A
             return $this->parent;
         }
 
-        throw new \InvalidArgumentException("Cannot set parent property. Parent property is read-only.");
+        throw new \InvalidArgumentException('Cannot set parent property. Parent property is read-only.');
+    }
+
+    public function reflection(): \Reflector
+    {
+        /** @var \ReflectionMethod $ref */
+        $ref = $this->parent()->reflection();
+
+        return $ref->getParameters()[$this->name];
     }
 
     public function id(): ReflectionId
@@ -72,5 +97,38 @@ final class ParameterReflection extends AggregateRoot implements Normalizable, A
     public function name(): string
     {
         return $this->name;
+    }
+
+    public function type(): TypeReflection
+    {
+        return $this->type;
+    }
+
+    public function normalize(): array
+    {
+        return [
+            'id' => $this->id->value,
+            'name' => $this->name,
+            'type' => $this->type->normalize(),
+            'attributes' => $this->normalizeAttributes(),
+        ];
+    }
+
+    public static function denormalize(array $data): static
+    {
+        $instance = new static(
+            ReflectionId::recreate($data['id']),
+            $data['name'],
+            $data['type']['type']::denormalize($data['type']),
+            static::denormalizeAttributes($data['attributes']),
+        );
+
+        foreach ($instance->attributes() as $attrs) {
+            foreach ($attrs as $attr) {
+                $attr->parent($instance);
+            }
+        }
+
+        return $instance;
     }
 }
