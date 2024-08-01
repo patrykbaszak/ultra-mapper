@@ -6,16 +6,6 @@ namespace PBaszak\UltraMapper\Reflection\Domain\Factories;
 
 use PBaszak\UltraMapper\Reflection\Domain\Entities\Type\TypeReflection;
 
-/**
- * Type is returned in the array of TypeReflection where the key is the
- * deepness of the type in the reflection hierarchy.
- *
- * Like: array<int, string>
- * [
- *    0 => array,
- *    1 => int
- * ]
- */
 class TypeReflectionFactory
 {
     public function createForParameter(\ReflectionParameter $reflectionParameter): TypeReflection
