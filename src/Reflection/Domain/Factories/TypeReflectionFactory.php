@@ -40,7 +40,21 @@ class TypeReflectionFactory
 
     public function create(?\ReflectionType $ref, ?PhpDocumentorReflectionType $docCommentRef): TypeReflection
     {
-        return NamedTypeReflection::create('mixed', NamedTypeReflection::IS_BUILD_IN);
+        // collection
+        // compound
+        // intersection
+        // named
+
+        return NamedTypeReflection::create('mixed', NamedTypeReflection::IS_BUILT_IN);
+    }
+
+    private function createNamedTypeReflection(?\ReflectionType $ref, ?PhpDocumentorReflectionType $docCommentRef): NamedTypeReflection
+    {
+        if ($ref && !$ref instanceof \ReflectionNamedType) {
+            // todo
+        }
+
+        throw new \LogicException('Not implemented');
     }
 
     private function getDocBlockReflectionTypeFromVarTag(\ReflectionProperty $ref): ?PhpDocumentorReflectionType
