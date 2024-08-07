@@ -30,6 +30,17 @@ final class UnionTypeReflection extends TypeReflection
         return new static($types);
     }
 
+    public function allowsNull(): bool
+    {
+        foreach ($this->types as $type) {
+            if ($type->allowsNull()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function normalize(): array
     {
         return [

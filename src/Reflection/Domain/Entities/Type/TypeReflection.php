@@ -8,4 +8,5 @@ use PBaszak\UltraMapper\Shared\Infrastructure\Normalization\Normalizable;
 
 abstract class TypeReflection implements Normalizable
 {
+    abstract public function allowsNull(): bool;
 }

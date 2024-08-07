@@ -30,6 +30,11 @@ final class IntersectionTypeReflection extends TypeReflection
         return new static($types);
     }
 
+    public function allowsNull(): bool
+    {
+        return false;
+    }
+
     public function normalize(): array
     {
         return [

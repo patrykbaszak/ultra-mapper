@@ -6,11 +6,11 @@ namespace PBaszak\UltraMapper\Reflection\Domain\Entities\Type;
 
 final class NamedTypeReflection extends TypeReflection
 {
-    public const IS_BUILT_IN = 0;
-    public const IS_CLASS = 1;
-    public const IS_INTERFACE = 2;
-    public const IS_ABSTRACT = 4;
-    public const IS_ENUM = 8;
+    public const IS_BUILT_IN = 1;
+    public const IS_CLASS = 2;
+    public const IS_INTERFACE = 4;
+    public const IS_ABSTRACT = 8;
+    public const IS_ENUM = 16;
 
     private function __construct(
         /** @var string|class-string */
@@ -92,6 +92,11 @@ final class NamedTypeReflection extends TypeReflection
     public function isEnum(): bool
     {
         return ($this->flags & self::IS_ENUM) == self::IS_ENUM;
+    }
+
+    public function allowsNull(): bool
+    {
+        return 'null' === $this->name || 'mixed' === $this->name;
     }
 
     public function normalize(): array

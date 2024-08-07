@@ -29,6 +29,11 @@ final class CollectionTypeReflection extends TypeReflection
         return new static($collectionType, $keyType, $valueType);
     }
 
+    public function allowsNull(): bool
+    {
+        return false;
+    }
+
     public function normalize(): array
     {
         return [

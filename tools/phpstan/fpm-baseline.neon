@@ -296,6 +296,16 @@ parameters:
 			path: ../../src/Reflection/Domain/Entities/Type/NamedTypeReflection.php
 
 		-
+			message: "#^Left side of && is always true\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Factories/TypeReflectionFactory.php
+
+		-
+			message: "#^Variable \\$class might not be defined\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Factories/TypeReflectionFactory.php
+
+		-
 			message: "#^Argument of an invalid type array\\<string, PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\ClassReflection\\>\\|PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\ClassReflection supplied for foreach, only iterables are supported\\.$#"
 			count: 1
 			path: ../../src/Reflection/Domain/Reflection.php
