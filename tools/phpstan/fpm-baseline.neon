@@ -296,7 +296,32 @@ parameters:
 			path: ../../src/Reflection/Domain/Entities/Type/NamedTypeReflection.php
 
 		-
+			message: "#^Call to an undefined method phpDocumentor\\\\Reflection\\\\Type\\:\\:getKeyType\\(\\)\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Factories/TypeReflectionFactory.php
+
+		-
+			message: "#^Call to an undefined method phpDocumentor\\\\Reflection\\\\Type\\:\\:getValueType\\(\\)\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Factories/TypeReflectionFactory.php
+
+		-
 			message: "#^Left side of && is always true\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Factories/TypeReflectionFactory.php
+
+		-
+			message: "#^Match expression does not handle remaining value\\: class\\-string\\<phpDocumentor\\\\Reflection\\\\Type\\>$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Factories/TypeReflectionFactory.php
+
+		-
+			message: "#^Method PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Factories\\\\TypeReflectionFactory\\:\\:createTypeReflectionBasedOnPhpDocumentatorReflectionType\\(\\) is unused\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Factories/TypeReflectionFactory.php
+
+		-
+			message: "#^Parameter \\#1 \\$objectOrClass of class ReflectionClass constructor expects class\\-string\\<T of object\\>\\|T of object, string given\\.$#"
 			count: 1
 			path: ../../src/Reflection/Domain/Factories/TypeReflectionFactory.php
 
