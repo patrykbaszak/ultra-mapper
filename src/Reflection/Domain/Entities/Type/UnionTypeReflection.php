@@ -18,6 +18,10 @@ final class UnionTypeReflection extends TypeReflection
     public static function create(
         array $types,
     ): static {
+        if (count($types) < 2) {
+            throw new \InvalidArgumentException('Union type must have at least two types.');
+        }
+
         return new static($types);
     }
 

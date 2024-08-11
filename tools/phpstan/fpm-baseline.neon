@@ -316,18 +316,8 @@ parameters:
 			path: ../../src/Reflection/Domain/Factories/TypeReflectionFactory.php
 
 		-
-			message: "#^Method PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Factories\\\\TypeReflectionFactory\\:\\:createTypeReflectionBasedOnPhpDocumentatorReflectionType\\(\\) is unused\\.$#"
-			count: 1
-			path: ../../src/Reflection/Domain/Factories/TypeReflectionFactory.php
-
-		-
-			message: "#^Parameter \\#1 \\$objectOrClass of class ReflectionClass constructor expects class\\-string\\<T of object\\>\\|T of object, string given\\.$#"
-			count: 1
-			path: ../../src/Reflection/Domain/Factories/TypeReflectionFactory.php
-
-		-
 			message: "#^Variable \\$class might not be defined\\.$#"
-			count: 1
+			count: 2
 			path: ../../src/Reflection/Domain/Factories/TypeReflectionFactory.php
 
 		-

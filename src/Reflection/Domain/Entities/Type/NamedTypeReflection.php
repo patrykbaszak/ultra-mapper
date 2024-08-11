@@ -7,9 +7,9 @@ namespace PBaszak\UltraMapper\Reflection\Domain\Entities\Type;
 final class NamedTypeReflection extends TypeReflection
 {
     public const IS_BUILT_IN = 1;
-    public const IS_CLASS = 2;
-    public const IS_INTERFACE = 4;
-    public const IS_ABSTRACT = 8;
+    public const IS_INTERFACE = 2;
+    public const IS_ABSTRACT = 4;
+    public const IS_CLASS = 8;
     public const IS_ENUM = 16;
 
     private function __construct(

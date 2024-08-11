@@ -1,6 +1,6 @@
 <?php
 
-namespace PBaszak\UltraMapper\Tests\Assets;
+namespace PBaszak\UltraMapper\Tests\Support\Assets\DTO;
 
 class Dummy extends AbstractDummy
 {

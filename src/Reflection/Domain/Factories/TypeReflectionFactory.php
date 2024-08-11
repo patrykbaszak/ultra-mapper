@@ -38,7 +38,8 @@ class TypeReflectionFactory
     {
         return $this->create(
             $reflectionParameter->getType(),
-            $this->getDocBlockReflectionTypeFromParamTag($reflectionParameter)
+            $this->getDocBlockReflectionTypeFromParamTag($reflectionParameter),
+            $reflectionParameter->getDeclaringClass()
         );
     }
 
@@ -46,7 +47,8 @@ class TypeReflectionFactory
     {
         return $this->create(
             $reflectionProperty->getType(),
-            $this->getDocBlockReflectionTypeFromVarTag($reflectionProperty)
+            $this->getDocBlockReflectionTypeFromVarTag($reflectionProperty),
+            $reflectionProperty->getDeclaringClass()
         );
     }
 
@@ -54,18 +56,66 @@ class TypeReflectionFactory
     {
         return $this->create(
             $reflectionMethod->getReturnType(),
-            $this->getDocBlockReflectionTypeFromReturnTag($reflectionMethod)
+            $this->getDocBlockReflectionTypeFromReturnTag($reflectionMethod),
+            $reflectionMethod->getDeclaringClass()
         );
     }
 
-    public function create(?\ReflectionType $ref, ?PhpDocumentorReflectionType $docCommentRef): TypeReflection
+    public function create(?\ReflectionType $ref, ?PhpDocumentorReflectionType $docCommentRef, ?\ReflectionClass $declarationClass): TypeReflection
     {
-        // collection
-        // compound
-        // intersection
-        // named
+        $reflectionType = $this->createTypeReflectionBasedOnReflectionType($ref);
+        if ($declarationClass) {
+            $phpDocumentatorType = $this->createTypeReflectionBasedOnPhpDocumentatorReflectionType($docCommentRef, $declarationClass);
+        }
 
-        return $this->createTypeReflectionBasedOnReflectionType($ref);
+        if (!isset($phpDocumentatorType) || $reflectionType === $phpDocumentatorType) {
+            return $reflectionType;
+        }
+
+        if ($reflectionType instanceof NamedTypeReflection && $phpDocumentatorType instanceof NamedTypeReflection) {
+            return $this->mergeNamedTypeReflections($reflectionType, $phpDocumentatorType);
+        }
+
+        // todo
+        return $reflectionType;
+    }
+
+    private function mergeNamedTypeReflections(?NamedTypeReflection $reflectionType, ?NamedTypeReflection $phpDocumentatorType): NamedTypeReflection
+    {
+        // if there is no reflection type and no phpDocumentator type
+        if (null === $reflectionType && null === $phpDocumentatorType) {
+            return NamedTypeReflection::create('mixed', NamedTypeReflection::IS_BUILT_IN);
+
+        // if there is no reflection type or no phpDocumentator type
+        } elseif (null === $reflectionType || null === $phpDocumentatorType) {
+            return $reflectionType ?? $phpDocumentatorType;
+
+        // if the reflection type and phpDocumentator type are the same
+        } elseif ($reflectionType->name() === $phpDocumentatorType->name()) {
+            return $reflectionType;
+
+        // if the php documentator reflection type is mixed then it does not matter what is the reflection type
+        } elseif ('mixed' === $phpDocumentatorType->name()) {
+            return $reflectionType;
+
+        // if the reflection type is mixed then it does not matter what is the php documentator reflection type
+        } elseif ('mixed' === $reflectionType->name()) {
+            return $phpDocumentatorType;
+
+        // if the php documentator reflection type is advanced object and the reflection type is not at least object or mixed
+        } elseif ($phpDocumentatorType->flags() > 1 && 1 == $reflectionType->flags() && !in_array($reflectionType->name(), ['mixed', 'object'])) {
+            throw new \LogicException('\ReflectionType and phpDocumentator reflection type are not compatible.', 16);
+        }
+
+        /* Class should be more important thant abstract class */
+        [$updatedReflectionType, $updatedPhpDocumentatorType] = array_map(
+            fn (NamedTypeReflection $type) => $type->isClass() && !$type->isAbstractClass() ? NamedTypeReflection::recreate($type->name(), $type->flags() | 32) : $type,
+            [$reflectionType, $phpDocumentatorType]
+        );
+
+        return $updatedReflectionType->flags() >= $updatedPhpDocumentatorType->flags()
+            ? $reflectionType
+            : $phpDocumentatorType;
     }
 
     private function createTypeReflectionBasedOnReflectionType(?\ReflectionType $ref): TypeReflection
@@ -203,11 +253,17 @@ class TypeReflectionFactory
 
         // if the reflection is a collection
         if ($ref instanceof AbstractList || in_array(get_class($ref), [Array_::class, Iterable_::class])) {
+            $flags = 0;
+            if (method_exists($ref, 'getFqsen') && null !== $ref->getFqsen()) {
+                $class = $this->resolveReflectionClass($ref->getFqsen()->__toString(), $declarationClass);
+                $flags = $this->setFlagsForClass($class);
+            }
+
             return CollectionTypeReflection::create(
                 match (get_class($ref)) {
                     Array_::class => NamedTypeReflection::create('array', NamedTypeReflection::IS_BUILT_IN),
                     Iterable_::class => NamedTypeReflection::create('iterable', NamedTypeReflection::IS_BUILT_IN),
-                    Collection::class => NamedTypeReflection::create($ref->getFqsen()?->__toString() ?? 'object', NamedTypeReflection::IS_CLASS),
+                    Collection::class => NamedTypeReflection::create(@$class->getName() ?? $ref->getFqsen()?->__toString() ?? 'object', $flags),
                 },
                 $this->createTypeReflectionBasedOnPhpDocumentatorReflectionType($ref->getKeyType(), $declarationClass),
                 $this->createTypeReflectionBasedOnPhpDocumentatorReflectionType($ref->getValueType(), $declarationClass)
@@ -226,23 +282,10 @@ class TypeReflectionFactory
         $flags = 0;
         // if the reflection is class, interface or enum
         if ($ref instanceof Object_ && null !== $ref->getFqsen()) {
-            $class = (new \ReflectionClass($ref->getFqsen()->__toString()));
-            $isClass = true;
+            $class = $this->resolveReflectionClass($ref->getFqsen()->__toString(), $declarationClass);
+
             $isCollection = $class->implementsInterface(\Traversable::class) || $class->implementsInterface(\ArrayAccess::class);
-            if ($class->isAbstract()) {
-                $flags |= NamedTypeReflection::IS_ABSTRACT;
-            }
-            if ($class->isInterface()) {
-                $flags |= NamedTypeReflection::IS_INTERFACE;
-                $isClass = false;
-            }
-            if ($class->isEnum()) {
-                $flags |= NamedTypeReflection::IS_ENUM;
-                $isClass = false;
-            }
-            if ($isClass) {
-                $flags |= NamedTypeReflection::IS_CLASS;
-            }
+            $flags = $this->setFlagsForClass($class);
 
             return $isCollection
                 ? CollectionTypeReflection::create(
@@ -266,10 +309,106 @@ class TypeReflectionFactory
             ]);
         }
 
+        // if the reflection is not recognized intersection or compound
+        if (str_contains($ref->__toString(), '|') || str_contains($ref->__toString(), '&')) {
+            $docBlock = '/** @var '.$ref->__toString().' */';
+            $factory = DocBlockFactory::createInstance();
+            $context = (new ContextFactory())->createFromReflector($declarationClass);
+            $docBlock = $factory->create($docBlock, $context);
+
+            /** @var Var_[] $tags */
+            $tags = $docBlock->getTagsByName('var');
+
+            $type = $tags[0]->getType();
+
+            return $this->createTypeReflectionBasedOnPhpDocumentatorReflectionType($type, $declarationClass);
+        }
+
         // if the reflection is built-in
         $flags |= NamedTypeReflection::IS_BUILT_IN;
 
         return NamedTypeReflection::create($ref->__toString(), $flags);
+    }
+
+    private function resolveReflectionClass(string $fqsen, \ReflectionClass $declarationClass): \ReflectionClass
+    {
+        $returnIfExists = function (string $fqsen): ?\ReflectionClass {
+            if (class_exists($fqsen, false)) {
+                return new \ReflectionClass($fqsen);
+            }
+
+            if (interface_exists($fqsen, false)) {
+                return new \ReflectionClass($fqsen);
+            }
+
+            if (enum_exists($fqsen, false)) {
+                return new \ReflectionEnum($fqsen);
+            }
+
+            return null;
+        };
+
+        $possibleClasses = array_filter([
+            $fqsen,
+            '\\'.ltrim($fqsen, '\\'),
+            '\\'.ltrim($declarationClass->getNamespaceName(), '\\').'\\'.$fqsen,
+            '\\'.ltrim($declarationClass->getNamespaceName(), '\\').'\\'.ltrim($fqsen, '\\'),
+            $this->findMatchingImport($declarationClass->getFileName(), $fqsen),
+            $this->findMatchingImport($declarationClass->getFileName(), $fqsen) ? '\\'.ltrim($this->findMatchingImport($declarationClass->getFileName(), $fqsen), '\\') : null,
+        ]);
+
+        foreach ($possibleClasses as $possibleClass) {
+            if (null !== $possibleClass && null !== $returnIfExists($possibleClass)) {
+                return $returnIfExists($possibleClass);
+            }
+        }
+
+        throw new \LogicException("Class, interface or enum $fqsen (should be full name with namespace) not found. ".'Maybe the package require an update. On this stage the Object_ has to be a class, interface or enum.');
+    }
+
+    private function findMatchingImport(false|string $fileName, string $fqsen): ?string
+    {
+        if (false === $fileName) {
+            throw new \LogicException('The file name is not valid.');
+        }
+
+        /** @var string[] $fileLines */
+        $fileLines = file($fileName);
+
+        $useStatements = array_filter($fileLines, function ($line) {
+            return 0 === strpos(trim($line), 'use ');
+        });
+
+        $useStatements = array_map(function ($line) {
+            return trim(str_replace(['use ', ';'], '', $line));
+        }, $useStatements);
+
+        $matchingUses = array_filter($useStatements, function ($useStatement) use ($fqsen) {
+            return false !== strpos($useStatement, ltrim($fqsen, '\\'));
+        });
+
+        $matchingUses = array_map(function ($useStatement) {
+            return explode(' as ', $useStatement);
+        }, $matchingUses);
+
+        return $matchingUses ? array_values($matchingUses)[0][0] : null;
+    }
+
+    private function setFlagsForClass(\ReflectionClass $ref): int
+    {
+        $flags = 0;
+
+        if ($ref->isInterface()) {
+            $flags |= NamedTypeReflection::IS_INTERFACE;
+        } elseif ($ref->isAbstract()) {
+            $flags |= NamedTypeReflection::IS_ABSTRACT | NamedTypeReflection::IS_CLASS;
+        } elseif ($ref->isEnum()) {
+            $flags |= NamedTypeReflection::IS_ENUM;
+        } else {
+            $flags |= NamedTypeReflection::IS_CLASS;
+        }
+
+        return $flags;
     }
 
     private function getDocBlockReflectionTypeFromVarTag(\ReflectionProperty $ref): ?PhpDocumentorReflectionType
