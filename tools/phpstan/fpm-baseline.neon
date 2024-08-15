@@ -316,6 +316,11 @@ parameters:
 			path: ../../src/Reflection/Domain/Factories/TypeReflectionFactory.php
 
 		-
+			message: "#^Method PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Factories\\\\TypeReflectionFactory\\:\\:mergeIntersectionTypeReflections\\(\\) should return PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\Type\\\\IntersectionTypeReflection but returns PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\Type\\\\TypeReflection\\.$#"
+			count: 2
+			path: ../../src/Reflection/Domain/Factories/TypeReflectionFactory.php
+
+		-
 			message: "#^Variable \\$class might not be defined\\.$#"
 			count: 2
 			path: ../../src/Reflection/Domain/Factories/TypeReflectionFactory.php

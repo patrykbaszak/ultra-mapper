@@ -76,7 +76,11 @@ class TypeReflectionFactory
             return $this->mergeNamedTypeReflections($reflectionType, $phpDocumentatorType);
         }
 
+        if ($reflectionType instanceof IntersectionTypeReflection || $phpDocumentatorType instanceof IntersectionTypeReflection) {
+            return $this->mergeIntersectionTypeReflections($reflectionType, $phpDocumentatorType);
+        }
         // todo
+
         return $reflectionType;
     }
 
@@ -116,6 +120,29 @@ class TypeReflectionFactory
         return $updatedReflectionType->flags() >= $updatedPhpDocumentatorType->flags()
             ? $reflectionType
             : $phpDocumentatorType;
+    }
+
+    private function mergeIntersectionTypeReflections(?TypeReflection $reflectionType, ?TypeReflection $phpDocumentatorType): IntersectionTypeReflection
+    {
+        // if there is no reflection type and no phpDocumentator type
+        if (null === $reflectionType && null === $phpDocumentatorType) {
+            throw new \LogicException('One of the reflection types has to be set.', 17);
+        // accepts only IntersectionTypeReflection
+        } elseif (!$reflectionType instanceof IntersectionTypeReflection && !$phpDocumentatorType instanceof IntersectionTypeReflection) {
+            throw new \LogicException('The reflection types have to be IntersectionTypeReflection.', 18);
+        // if there is no reflection type or no phpDocumentator type
+        } elseif (null === $reflectionType || null === $phpDocumentatorType) {
+            return $reflectionType ?? $phpDocumentatorType;
+
+        // in there are two reflection the phpDocumentator is more important
+        } elseif ($phpDocumentatorType instanceof IntersectionTypeReflection) {
+            return $phpDocumentatorType;
+        }
+
+        // note:
+        // The resposibility of using doc comment with type hint is on the programmer of the application - not author of the package. Thank you for understanding. ~ Patryk Baszak
+
+        return $reflectionType;
     }
 
     private function createTypeReflectionBasedOnReflectionType(?\ReflectionType $ref): TypeReflection
