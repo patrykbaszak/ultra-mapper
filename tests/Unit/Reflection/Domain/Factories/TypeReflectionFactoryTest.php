@@ -24,17 +24,55 @@ require_once __DIR__.'/../../../../Support/Assets/Enums/TestEnum.php';
 class TypeReflectionFactoryTest extends TestCase
 {
     #[Test]
-    public function shouldReturnMixedType(): void
+    public function shouldReturnStringTypeForProperty(): void
     {
         $factory = new TypeReflectionFactory();
         $obj = new class() {
-            public $property;
+            public string $property;
         };
 
         /** @var NamedTypeReflection $reflection */
         $reflection = $factory->createForProperty(new \ReflectionProperty(get_class($obj), 'property'));
 
-        $this->assertEquals('mixed', $reflection->name());
+        $this->assertEquals('string', $reflection->name());
+        $this->assertEquals(NamedTypeReflection::IS_BUILT_IN, $reflection->flags());
+        $this->assertTrue($reflection->isBuiltIn());
+    }
+
+    #[Test]
+    public function shouldReturnStringTypeForMethod(): void
+    {
+        $factory = new TypeReflectionFactory();
+        $obj = new class() {
+            public function test(): string
+            {
+                return 'test';
+            }
+        };
+
+        /** @var NamedTypeReflection $reflection */
+        $reflection = $factory->createForMethod(new \ReflectionMethod(get_class($obj), 'test'));
+
+        $this->assertEquals('string', $reflection->name());
+        $this->assertEquals(NamedTypeReflection::IS_BUILT_IN, $reflection->flags());
+        $this->assertTrue($reflection->isBuiltIn());
+    }
+
+    #[Test]
+    public function shouldReturnStringTypeForPameter(): void
+    {
+        $factory = new TypeReflectionFactory();
+        $obj = new class() {
+            public function test(string $parameter): string
+            {
+                return 'test';
+            }
+        };
+
+        /** @var NamedTypeReflection $reflection */
+        $reflection = $factory->createForParameter((new \ReflectionMethod(get_class($obj), 'test'))->getParameters()[0]);
+
+        $this->assertEquals('string', $reflection->name());
         $this->assertEquals(NamedTypeReflection::IS_BUILT_IN, $reflection->flags());
         $this->assertTrue($reflection->isBuiltIn());
     }
