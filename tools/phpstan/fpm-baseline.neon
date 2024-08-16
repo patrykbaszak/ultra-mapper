@@ -316,7 +316,17 @@ parameters:
 			path: ../../src/Reflection/Domain/Factories/TypeReflectionFactory.php
 
 		-
+			message: "#^Method PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Factories\\\\TypeReflectionFactory\\:\\:mergeCollectionTypeReflections\\(\\) should return PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\Type\\\\CollectionTypeReflection but returns PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\Type\\\\TypeReflection\\.$#"
+			count: 2
+			path: ../../src/Reflection/Domain/Factories/TypeReflectionFactory.php
+
+		-
 			message: "#^Method PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Factories\\\\TypeReflectionFactory\\:\\:mergeIntersectionTypeReflections\\(\\) should return PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\Type\\\\IntersectionTypeReflection but returns PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\Type\\\\TypeReflection\\.$#"
+			count: 2
+			path: ../../src/Reflection/Domain/Factories/TypeReflectionFactory.php
+
+		-
+			message: "#^Method PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Factories\\\\TypeReflectionFactory\\:\\:mergeUnionTypeReflections\\(\\) should return PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\Type\\\\UnionTypeReflection but returns PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\Type\\\\TypeReflection\\.$#"
 			count: 2
 			path: ../../src/Reflection/Domain/Factories/TypeReflectionFactory.php
 

@@ -79,7 +79,14 @@ class TypeReflectionFactory
         if ($reflectionType instanceof IntersectionTypeReflection || $phpDocumentatorType instanceof IntersectionTypeReflection) {
             return $this->mergeIntersectionTypeReflections($reflectionType, $phpDocumentatorType);
         }
-        // todo
+
+        if ($reflectionType instanceof UnionTypeReflection || $phpDocumentatorType instanceof UnionTypeReflection) {
+            return $this->mergeUnionTypeReflections($reflectionType, $phpDocumentatorType);
+        }
+
+        if ($reflectionType instanceof CollectionTypeReflection || $phpDocumentatorType instanceof CollectionTypeReflection) {
+            return $this->mergeCollectionTypeReflections($reflectionType, $phpDocumentatorType);
+        }
 
         return $reflectionType;
     }
@@ -136,6 +143,52 @@ class TypeReflectionFactory
 
         // in there are two reflection the phpDocumentator is more important
         } elseif ($phpDocumentatorType instanceof IntersectionTypeReflection) {
+            return $phpDocumentatorType;
+        }
+
+        // note:
+        // The resposibility of using doc comment with type hint is on the programmer of the application - not author of the package. Thank you for understanding. ~ Patryk Baszak
+
+        return $reflectionType;
+    }
+
+    private function mergeUnionTypeReflections(?TypeReflection $reflectionType, ?TypeReflection $phpDocumentatorType): UnionTypeReflection
+    {
+        // if there is no reflection type and no phpDocumentator type
+        if (null === $reflectionType && null === $phpDocumentatorType) {
+            throw new \LogicException('One of the reflection types has to be set.', 17);
+        // accepts only UnionTypeReflection
+        } elseif (!$reflectionType instanceof UnionTypeReflection && !$phpDocumentatorType instanceof UnionTypeReflection) {
+            throw new \LogicException('The reflection types have to be UnionTypeReflection.', 18);
+        // if there is no reflection type or no phpDocumentator type
+        } elseif (null === $reflectionType || null === $phpDocumentatorType) {
+            return $reflectionType ?? $phpDocumentatorType;
+
+        // in there are two reflection the phpDocumentator is more important
+        } elseif ($phpDocumentatorType instanceof UnionTypeReflection) {
+            return $phpDocumentatorType;
+        }
+
+        // note:
+        // The resposibility of using doc comment with type hint is on the programmer of the application - not author of the package. Thank you for understanding. ~ Patryk Baszak
+
+        return $reflectionType;
+    }
+
+    private function mergeCollectionTypeReflections(?TypeReflection $reflectionType, ?TypeReflection $phpDocumentatorType): CollectionTypeReflection
+    {
+        // if there is no reflection type and no phpDocumentator type
+        if (null === $reflectionType && null === $phpDocumentatorType) {
+            throw new \LogicException('One of the reflection types has to be set.', 17);
+        // accepts only CollectionTypeReflection
+        } elseif (!$reflectionType instanceof CollectionTypeReflection && !$phpDocumentatorType instanceof CollectionTypeReflection) {
+            throw new \LogicException('The reflection types have to be UnionTypeReflection.', 18);
+        // if there is no reflection type or no phpDocumentator type
+        } elseif (null === $reflectionType || null === $phpDocumentatorType) {
+            return $reflectionType ?? $phpDocumentatorType;
+
+        // in there are two reflection the phpDocumentator is more important
+        } elseif ($phpDocumentatorType instanceof CollectionTypeReflection) {
             return $phpDocumentatorType;
         }
 

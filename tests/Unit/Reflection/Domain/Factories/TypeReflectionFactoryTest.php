@@ -613,6 +613,172 @@ class TypeReflectionFactoryTest extends TestCase
         $method->invokeArgs($factory, $input);
     }
 
+    public static function UnionTypeReflectionsDataProvider(): array
+    {
+        return [
+            [
+                UnionTypeReflection::recreate([
+                    NamedTypeReflection::recreate(\DateTime::class, NamedTypeReflection::IS_BUILT_IN),
+                    NamedTypeReflection::recreate(\DateTimeInterface::class, NamedTypeReflection::IS_BUILT_IN),
+                ]),
+                null,
+                UnionTypeReflection::recreate([
+                    NamedTypeReflection::recreate(\DateTime::class, NamedTypeReflection::IS_BUILT_IN),
+                    NamedTypeReflection::recreate(\DateTimeInterface::class, NamedTypeReflection::IS_BUILT_IN),
+                ]),
+            ],
+            [
+                UnionTypeReflection::recreate([
+                    NamedTypeReflection::recreate(\DateTime::class, NamedTypeReflection::IS_BUILT_IN),
+                    NamedTypeReflection::recreate(\DateTimeInterface::class, NamedTypeReflection::IS_BUILT_IN),
+                ]),
+                UnionTypeReflection::recreate([
+                    NamedTypeReflection::recreate(\Traversable::class, NamedTypeReflection::IS_BUILT_IN),
+                    NamedTypeReflection::recreate(\ArrayAccess::class, NamedTypeReflection::IS_BUILT_IN),
+                ]),
+                UnionTypeReflection::recreate([
+                    NamedTypeReflection::recreate(\Traversable::class, NamedTypeReflection::IS_BUILT_IN),
+                    NamedTypeReflection::recreate(\ArrayAccess::class, NamedTypeReflection::IS_BUILT_IN),
+                ]),
+            ],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('UnionTypeReflectionsDataProvider')]
+    public function shouldCorrectMergeUnionTypeReflections(?UnionTypeReflection $phpRef, ?UnionTypeReflection $docRef, UnionTypeReflection $expected): void
+    {
+        $factory = new TypeReflectionFactory();
+        $input = [$phpRef, $docRef];
+        $method = new \ReflectionMethod(TypeReflectionFactory::class, 'mergeUnionTypeReflections');
+
+        $result = $method->invokeArgs($factory, $input);
+
+        $this->assertEquals($expected, $result);
+    }
+
+    #[Test]
+    public function shouldThrowLogicExceptionBecauseMergeUnionTypeReflectionsDoNotAcceptBothNullArguments(): void
+    {
+        $factory = new TypeReflectionFactory();
+        $input = [
+            null,
+            null,
+        ];
+        $method = new \ReflectionMethod(TypeReflectionFactory::class, 'mergeUnionTypeReflections');
+
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionCode(17);
+        $method->invokeArgs($factory, $input);
+    }
+
+    #[Test]
+    public function shouldThrowLogicExceptionBecauseMergeUnionTypeReflectionsDoNotAcceptArgumentsWhichAreNotUnionTypeReflection(): void
+    {
+        $factory = new TypeReflectionFactory();
+        $input = [
+            NamedTypeReflection::recreate('int', NamedTypeReflection::IS_BUILT_IN),
+            null,
+        ];
+        $method = new \ReflectionMethod(TypeReflectionFactory::class, 'mergeUnionTypeReflections');
+
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionCode(18);
+        $method->invokeArgs($factory, $input);
+    }
+
+    public static function CollectionTypeReflectionsDataProvider(): array
+    {
+        return [
+            [
+                CollectionTypeReflection::recreate(
+                    NamedTypeReflection::recreate(\DateTime::class, NamedTypeReflection::IS_BUILT_IN),
+                    UnionTypeReflection::recreate([
+                        NamedTypeReflection::recreate('int', NamedTypeReflection::IS_BUILT_IN),
+                        NamedTypeReflection::recreate('string', NamedTypeReflection::IS_BUILT_IN),
+                    ]),
+                    NamedTypeReflection::recreate('mixed', NamedTypeReflection::IS_BUILT_IN),
+                ),
+                null,
+                CollectionTypeReflection::recreate(
+                    NamedTypeReflection::recreate(\DateTime::class, NamedTypeReflection::IS_BUILT_IN),
+                    UnionTypeReflection::recreate([
+                        NamedTypeReflection::recreate('int', NamedTypeReflection::IS_BUILT_IN),
+                        NamedTypeReflection::recreate('string', NamedTypeReflection::IS_BUILT_IN),
+                    ]),
+                    NamedTypeReflection::recreate('mixed', NamedTypeReflection::IS_BUILT_IN),
+                ),
+            ],
+            [
+                CollectionTypeReflection::recreate(
+                    NamedTypeReflection::recreate(\DateTime::class, NamedTypeReflection::IS_BUILT_IN),
+                    UnionTypeReflection::recreate([
+                        NamedTypeReflection::recreate('int', NamedTypeReflection::IS_BUILT_IN),
+                        NamedTypeReflection::recreate('string', NamedTypeReflection::IS_BUILT_IN),
+                    ]),
+                    NamedTypeReflection::recreate('mixed', NamedTypeReflection::IS_BUILT_IN),
+                ),
+                CollectionTypeReflection::recreate(
+                    NamedTypeReflection::recreate(\DateTime::class, NamedTypeReflection::IS_BUILT_IN),
+                    UnionTypeReflection::recreate([
+                        NamedTypeReflection::recreate('string', NamedTypeReflection::IS_BUILT_IN),
+                    ]),
+                    NamedTypeReflection::recreate('string', NamedTypeReflection::IS_BUILT_IN),
+                ),
+                CollectionTypeReflection::recreate(
+                    NamedTypeReflection::recreate(\DateTime::class, NamedTypeReflection::IS_BUILT_IN),
+                    UnionTypeReflection::recreate([
+                        NamedTypeReflection::recreate('string', NamedTypeReflection::IS_BUILT_IN),
+                    ]),
+                    NamedTypeReflection::recreate('string', NamedTypeReflection::IS_BUILT_IN),
+                ),
+            ],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('CollectionTypeReflectionsDataProvider')]
+    public function shouldCorrectMergeCollectionTypeReflections(?CollectionTypeReflection $phpRef, ?CollectionTypeReflection $docRef, CollectionTypeReflection $expected): void
+    {
+        $factory = new TypeReflectionFactory();
+        $input = [$phpRef, $docRef];
+        $method = new \ReflectionMethod(TypeReflectionFactory::class, 'mergeCollectionTypeReflections');
+
+        $result = $method->invokeArgs($factory, $input);
+
+        $this->assertEquals($expected, $result);
+    }
+
+    #[Test]
+    public function shouldThrowLogicExceptionBecauseMergeCollectionTypeReflectionsDoNotAcceptBothNullArguments(): void
+    {
+        $factory = new TypeReflectionFactory();
+        $input = [
+            null,
+            null,
+        ];
+        $method = new \ReflectionMethod(TypeReflectionFactory::class, 'mergeCollectionTypeReflections');
+
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionCode(17);
+        $method->invokeArgs($factory, $input);
+    }
+
+    #[Test]
+    public function shouldThrowLogicExceptionBecauseMergeCollectionTypeReflectionsDoNotAcceptArgumentsWhichAreNotCollectionTypeReflection(): void
+    {
+        $factory = new TypeReflectionFactory();
+        $input = [
+            NamedTypeReflection::recreate('int', NamedTypeReflection::IS_BUILT_IN),
+            null,
+        ];
+        $method = new \ReflectionMethod(TypeReflectionFactory::class, 'mergeCollectionTypeReflections');
+
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionCode(18);
+        $method->invokeArgs($factory, $input);
+    }
+
     public static function dataProvider(): array
     {
         return [
@@ -660,8 +826,8 @@ class TypeReflectionFactoryTest extends TestCase
                     public ?false $property;
                 },
                 'expected' => UnionTypeReflection::create([
-                    NamedTypeReflection::create('false', NamedTypeReflection::IS_BUILT_IN),
                     NamedTypeReflection::create('null', NamedTypeReflection::IS_BUILT_IN),
+                    NamedTypeReflection::create('false', NamedTypeReflection::IS_BUILT_IN),
                 ]),
             ],
             '?falseBasedOnDocBlock' => [
@@ -679,8 +845,8 @@ class TypeReflectionFactoryTest extends TestCase
                     public ?false $property;
                 },
                 'expected' => UnionTypeReflection::create([
-                    NamedTypeReflection::create('false', NamedTypeReflection::IS_BUILT_IN),
                     NamedTypeReflection::create('null', NamedTypeReflection::IS_BUILT_IN),
+                    NamedTypeReflection::create('false', NamedTypeReflection::IS_BUILT_IN),
                 ]),
             ],
             'true' => [
@@ -707,8 +873,8 @@ class TypeReflectionFactoryTest extends TestCase
                     public ?true $property;
                 },
                 'expected' => UnionTypeReflection::create([
-                    NamedTypeReflection::create('true', NamedTypeReflection::IS_BUILT_IN),
                     NamedTypeReflection::create('null', NamedTypeReflection::IS_BUILT_IN),
+                    NamedTypeReflection::create('true', NamedTypeReflection::IS_BUILT_IN),
                 ]),
             ],
             '?trueBasedOnDocBlock' => [
@@ -726,8 +892,8 @@ class TypeReflectionFactoryTest extends TestCase
                     public ?true $property;
                 },
                 'expected' => UnionTypeReflection::create([
-                    NamedTypeReflection::create('true', NamedTypeReflection::IS_BUILT_IN),
                     NamedTypeReflection::create('null', NamedTypeReflection::IS_BUILT_IN),
+                    NamedTypeReflection::create('true', NamedTypeReflection::IS_BUILT_IN),
                 ]),
             ],
             'bool' => [
@@ -754,8 +920,8 @@ class TypeReflectionFactoryTest extends TestCase
                     public ?bool $property;
                 },
                 'expected' => UnionTypeReflection::create([
-                    NamedTypeReflection::create('bool', NamedTypeReflection::IS_BUILT_IN),
                     NamedTypeReflection::create('null', NamedTypeReflection::IS_BUILT_IN),
+                    NamedTypeReflection::create('bool', NamedTypeReflection::IS_BUILT_IN),
                 ]),
             ],
             '?boolBasedOnDocBlock' => [
@@ -773,8 +939,8 @@ class TypeReflectionFactoryTest extends TestCase
                     public ?bool $property;
                 },
                 'expected' => UnionTypeReflection::create([
-                    NamedTypeReflection::create('bool', NamedTypeReflection::IS_BUILT_IN),
                     NamedTypeReflection::create('null', NamedTypeReflection::IS_BUILT_IN),
+                    NamedTypeReflection::create('bool', NamedTypeReflection::IS_BUILT_IN),
                 ]),
             ],
             'int' => [
@@ -801,8 +967,8 @@ class TypeReflectionFactoryTest extends TestCase
                     public ?int $property;
                 },
                 'expected' => UnionTypeReflection::create([
-                    NamedTypeReflection::create('int', NamedTypeReflection::IS_BUILT_IN),
                     NamedTypeReflection::create('null', NamedTypeReflection::IS_BUILT_IN),
+                    NamedTypeReflection::create('int', NamedTypeReflection::IS_BUILT_IN),
                 ]),
             ],
             '?intBasedOnDocBlock' => [
@@ -811,8 +977,8 @@ class TypeReflectionFactoryTest extends TestCase
                     public $property;
                 },
                 'expected' => UnionTypeReflection::create([
-                    NamedTypeReflection::create('int', NamedTypeReflection::IS_BUILT_IN),
                     NamedTypeReflection::create('null', NamedTypeReflection::IS_BUILT_IN),
+                    NamedTypeReflection::create('int', NamedTypeReflection::IS_BUILT_IN),
                 ]),
             ],
             '?intBasedOnDocBlockAndReflection' => [
@@ -820,8 +986,8 @@ class TypeReflectionFactoryTest extends TestCase
                     public ?int $property;
                 },
                 'expected' => UnionTypeReflection::create([
-                    NamedTypeReflection::create('int', NamedTypeReflection::IS_BUILT_IN),
                     NamedTypeReflection::create('null', NamedTypeReflection::IS_BUILT_IN),
+                    NamedTypeReflection::create('int', NamedTypeReflection::IS_BUILT_IN),
                 ]),
             ],
             'float' => [
@@ -848,8 +1014,8 @@ class TypeReflectionFactoryTest extends TestCase
                     public ?float $property;
                 },
                 'expected' => UnionTypeReflection::create([
-                    NamedTypeReflection::create('float', NamedTypeReflection::IS_BUILT_IN),
                     NamedTypeReflection::create('null', NamedTypeReflection::IS_BUILT_IN),
+                    NamedTypeReflection::create('float', NamedTypeReflection::IS_BUILT_IN),
                 ]),
             ],
             '?floatBasedOnDocBlock' => [
@@ -867,8 +1033,8 @@ class TypeReflectionFactoryTest extends TestCase
                     public ?float $property;
                 },
                 'expected' => UnionTypeReflection::create([
-                    NamedTypeReflection::create('float', NamedTypeReflection::IS_BUILT_IN),
                     NamedTypeReflection::create('null', NamedTypeReflection::IS_BUILT_IN),
+                    NamedTypeReflection::create('float', NamedTypeReflection::IS_BUILT_IN),
                 ]),
             ],
             'string' => [
@@ -895,8 +1061,8 @@ class TypeReflectionFactoryTest extends TestCase
                     public ?string $property;
                 },
                 'expected' => UnionTypeReflection::create([
-                    NamedTypeReflection::create('string', NamedTypeReflection::IS_BUILT_IN),
                     NamedTypeReflection::create('null', NamedTypeReflection::IS_BUILT_IN),
+                    NamedTypeReflection::create('string', NamedTypeReflection::IS_BUILT_IN),
                 ]),
             ],
             '?stringBasedOnDocBlock' => [
@@ -914,8 +1080,8 @@ class TypeReflectionFactoryTest extends TestCase
                     public ?string $property;
                 },
                 'expected' => UnionTypeReflection::create([
-                    NamedTypeReflection::create('string', NamedTypeReflection::IS_BUILT_IN),
                     NamedTypeReflection::create('null', NamedTypeReflection::IS_BUILT_IN),
+                    NamedTypeReflection::create('string', NamedTypeReflection::IS_BUILT_IN),
                 ]),
             ],
             'object' => [
@@ -942,8 +1108,8 @@ class TypeReflectionFactoryTest extends TestCase
                     public ?object $property;
                 },
                 'expected' => UnionTypeReflection::create([
-                    NamedTypeReflection::create('object', NamedTypeReflection::IS_BUILT_IN),
                     NamedTypeReflection::create('null', NamedTypeReflection::IS_BUILT_IN),
+                    NamedTypeReflection::create('object', NamedTypeReflection::IS_BUILT_IN),
                 ]),
             ],
             '?objectBasedOnDocBlock' => [
@@ -961,8 +1127,8 @@ class TypeReflectionFactoryTest extends TestCase
                     public ?object $property;
                 },
                 'expected' => UnionTypeReflection::create([
-                    NamedTypeReflection::create('object', NamedTypeReflection::IS_BUILT_IN),
                     NamedTypeReflection::create('null', NamedTypeReflection::IS_BUILT_IN),
+                    NamedTypeReflection::create('object', NamedTypeReflection::IS_BUILT_IN),
                 ]),
             ],
             'DateTime' => [
@@ -976,8 +1142,8 @@ class TypeReflectionFactoryTest extends TestCase
                     public ?\DateTime $property;
                 },
                 'expected' => UnionTypeReflection::create([
-                    NamedTypeReflection::create('DateTime', NamedTypeReflection::IS_CLASS),
                     NamedTypeReflection::create('null', NamedTypeReflection::IS_BUILT_IN),
+                    NamedTypeReflection::create('DateTime', NamedTypeReflection::IS_CLASS),
                 ]),
             ],
             '\\'.Dummy::class => [
@@ -1004,8 +1170,8 @@ class TypeReflectionFactoryTest extends TestCase
                     public ?Dummy $property;
                 },
                 'expected' => UnionTypeReflection::create([
-                    NamedTypeReflection::create(Dummy::class, NamedTypeReflection::IS_CLASS),
                     NamedTypeReflection::create('null', NamedTypeReflection::IS_BUILT_IN),
+                    NamedTypeReflection::create(Dummy::class, NamedTypeReflection::IS_CLASS),
                 ]),
             ],
             '?\\'.Dummy::class.'BasedOnDocBlock' => [
@@ -1023,8 +1189,8 @@ class TypeReflectionFactoryTest extends TestCase
                     public ?Dummy $property;
                 },
                 'expected' => UnionTypeReflection::create([
-                    NamedTypeReflection::create(Dummy::class, NamedTypeReflection::IS_CLASS),
                     NamedTypeReflection::create('null', NamedTypeReflection::IS_BUILT_IN),
+                    NamedTypeReflection::create(Dummy::class, NamedTypeReflection::IS_CLASS),
                 ]),
             ],
             '\\'.TestEnum::class => [
@@ -1051,8 +1217,8 @@ class TypeReflectionFactoryTest extends TestCase
                     public ?TestEnum $property;
                 },
                 'expected' => UnionTypeReflection::create([
-                    NamedTypeReflection::create(TestEnum::class, NamedTypeReflection::IS_ENUM),
                     NamedTypeReflection::create('null', NamedTypeReflection::IS_BUILT_IN),
+                    NamedTypeReflection::create(TestEnum::class, NamedTypeReflection::IS_ENUM),
                 ]),
             ],
             '?\\'.TestEnum::class.'BasedOnDocBlock' => [
@@ -1070,8 +1236,8 @@ class TypeReflectionFactoryTest extends TestCase
                     public ?TestEnum $property;
                 },
                 'expected' => UnionTypeReflection::create([
-                    NamedTypeReflection::create(TestEnum::class, NamedTypeReflection::IS_ENUM),
                     NamedTypeReflection::create('null', NamedTypeReflection::IS_BUILT_IN),
+                    NamedTypeReflection::create(TestEnum::class, NamedTypeReflection::IS_ENUM),
                 ]),
             ],
             'mixed' => [
@@ -1275,9 +1441,9 @@ class TypeReflectionFactoryTest extends TestCase
                     public int|float|string $property;
                 },
                 'expected' => UnionTypeReflection::create([
+                    NamedTypeReflection::create('string', NamedTypeReflection::IS_BUILT_IN),
                     NamedTypeReflection::create('int', NamedTypeReflection::IS_BUILT_IN),
                     NamedTypeReflection::create('float', NamedTypeReflection::IS_BUILT_IN),
-                    NamedTypeReflection::create('string', NamedTypeReflection::IS_BUILT_IN),
                 ]),
             ],
             'int|float|stringBasedOnDocBlock' => [
@@ -1296,9 +1462,9 @@ class TypeReflectionFactoryTest extends TestCase
                     public int|float|string $property;
                 },
                 'expected' => UnionTypeReflection::create([
+                    NamedTypeReflection::create('string', NamedTypeReflection::IS_BUILT_IN),
                     NamedTypeReflection::create('int', NamedTypeReflection::IS_BUILT_IN),
                     NamedTypeReflection::create('float', NamedTypeReflection::IS_BUILT_IN),
-                    NamedTypeReflection::create('string', NamedTypeReflection::IS_BUILT_IN),
                 ]),
             ],
             '?int|float|string' => [
@@ -1306,9 +1472,9 @@ class TypeReflectionFactoryTest extends TestCase
                     public int|float|string|null $property;
                 },
                 'expected' => UnionTypeReflection::create([
+                    NamedTypeReflection::create('string', NamedTypeReflection::IS_BUILT_IN),
                     NamedTypeReflection::create('int', NamedTypeReflection::IS_BUILT_IN),
                     NamedTypeReflection::create('float', NamedTypeReflection::IS_BUILT_IN),
-                    NamedTypeReflection::create('string', NamedTypeReflection::IS_BUILT_IN),
                     NamedTypeReflection::create('null', NamedTypeReflection::IS_BUILT_IN),
                 ]),
             ],
@@ -1329,9 +1495,9 @@ class TypeReflectionFactoryTest extends TestCase
                     public int|float|string|null $property;
                 },
                 'expected' => UnionTypeReflection::create([
+                    NamedTypeReflection::create('string', NamedTypeReflection::IS_BUILT_IN),
                     NamedTypeReflection::create('int', NamedTypeReflection::IS_BUILT_IN),
                     NamedTypeReflection::create('float', NamedTypeReflection::IS_BUILT_IN),
-                    NamedTypeReflection::create('string', NamedTypeReflection::IS_BUILT_IN),
                     NamedTypeReflection::create('null', NamedTypeReflection::IS_BUILT_IN),
                 ]),
             ],
@@ -1358,8 +1524,8 @@ class TypeReflectionFactoryTest extends TestCase
                 'expected' => CollectionTypeReflection::create(
                     NamedTypeReflection::create('array', NamedTypeReflection::IS_BUILT_IN),
                     UnionTypeReflection::create([
-                        NamedTypeReflection::create('int', NamedTypeReflection::IS_BUILT_IN),
                         NamedTypeReflection::create('string', NamedTypeReflection::IS_BUILT_IN),
+                        NamedTypeReflection::create('int', NamedTypeReflection::IS_BUILT_IN),
                     ]),
                     NamedTypeReflection::create('mixed', NamedTypeReflection::IS_BUILT_IN)
                 ),
@@ -1382,6 +1548,7 @@ class TypeReflectionFactoryTest extends TestCase
                     public ?array $property;
                 },
                 'expected' => UnionTypeReflection::create([
+                    NamedTypeReflection::create('null', NamedTypeReflection::IS_BUILT_IN),
                     CollectionTypeReflection::create(
                         NamedTypeReflection::create('array', NamedTypeReflection::IS_BUILT_IN),
                         UnionTypeReflection::create([
@@ -1390,7 +1557,6 @@ class TypeReflectionFactoryTest extends TestCase
                         ]),
                         NamedTypeReflection::create('mixed', NamedTypeReflection::IS_BUILT_IN)
                     ),
-                    NamedTypeReflection::create('null', NamedTypeReflection::IS_BUILT_IN),
                 ]),
             ],
             '?arrayBasedOnDocBlock' => [
@@ -1402,8 +1568,8 @@ class TypeReflectionFactoryTest extends TestCase
                     CollectionTypeReflection::create(
                         NamedTypeReflection::create('array', NamedTypeReflection::IS_BUILT_IN),
                         UnionTypeReflection::create([
-                            NamedTypeReflection::create('int', NamedTypeReflection::IS_BUILT_IN),
                             NamedTypeReflection::create('string', NamedTypeReflection::IS_BUILT_IN),
+                            NamedTypeReflection::create('int', NamedTypeReflection::IS_BUILT_IN),
                         ]),
                         NamedTypeReflection::create('mixed', NamedTypeReflection::IS_BUILT_IN)
                     ),
@@ -1416,15 +1582,15 @@ class TypeReflectionFactoryTest extends TestCase
                     public ?array $property;
                 },
                 'expected' => UnionTypeReflection::create([
+                    NamedTypeReflection::create('null', NamedTypeReflection::IS_BUILT_IN),
                     CollectionTypeReflection::create(
                         NamedTypeReflection::create('array', NamedTypeReflection::IS_BUILT_IN),
                         UnionTypeReflection::create([
-                            NamedTypeReflection::create('int', NamedTypeReflection::IS_BUILT_IN),
                             NamedTypeReflection::create('string', NamedTypeReflection::IS_BUILT_IN),
+                            NamedTypeReflection::create('int', NamedTypeReflection::IS_BUILT_IN),
                         ]),
                         NamedTypeReflection::create('mixed', NamedTypeReflection::IS_BUILT_IN)
                     ),
-                    NamedTypeReflection::create('null', NamedTypeReflection::IS_BUILT_IN),
                 ]),
             ],
             '\\ArrayObject' => [
@@ -1470,6 +1636,7 @@ class TypeReflectionFactoryTest extends TestCase
                     public ?\ArrayObject $property;
                 },
                 'expected' => UnionTypeReflection::create([
+                    NamedTypeReflection::create('null', NamedTypeReflection::IS_BUILT_IN),
                     CollectionTypeReflection::create(
                         NamedTypeReflection::create('ArrayObject', NamedTypeReflection::IS_CLASS),
                         UnionTypeReflection::create([
@@ -1478,7 +1645,6 @@ class TypeReflectionFactoryTest extends TestCase
                         ]),
                         NamedTypeReflection::create('mixed', NamedTypeReflection::IS_BUILT_IN)
                     ),
-                    NamedTypeReflection::create('null', NamedTypeReflection::IS_BUILT_IN),
                 ]),
             ],
             '?\\ArrayObjectBasedOnDocBlock' => [
@@ -1504,12 +1670,12 @@ class TypeReflectionFactoryTest extends TestCase
                     public ?\ArrayObject $property;
                 },
                 'expected' => UnionTypeReflection::create([
+                    NamedTypeReflection::create('null', NamedTypeReflection::IS_BUILT_IN),
                     CollectionTypeReflection::create(
                         NamedTypeReflection::create('ArrayObject', NamedTypeReflection::IS_CLASS),
                         NamedTypeReflection::create('string', NamedTypeReflection::IS_BUILT_IN),
                         NamedTypeReflection::create('string', NamedTypeReflection::IS_BUILT_IN)
                     ),
-                    NamedTypeReflection::create('null', NamedTypeReflection::IS_BUILT_IN),
                 ]),
             ],
 
@@ -1684,8 +1850,8 @@ class TypeReflectionFactoryTest extends TestCase
                 'expected' => CollectionTypeReflection::create(
                     NamedTypeReflection::create('ArrayObject', NamedTypeReflection::IS_CLASS),
                     UnionTypeReflection::create([
-                        NamedTypeReflection::create('int', NamedTypeReflection::IS_BUILT_IN),
                         NamedTypeReflection::create('string', NamedTypeReflection::IS_BUILT_IN),
+                        NamedTypeReflection::create('int', NamedTypeReflection::IS_BUILT_IN),
                     ]),
                     UnionTypeReflection::create([
                         NamedTypeReflection::create('int', NamedTypeReflection::IS_BUILT_IN),
@@ -1743,15 +1909,15 @@ class TypeReflectionFactoryTest extends TestCase
         ];
     }
 
-    // #[Test]
-    // #[DataProvider('dataProvider')]
-    // public function testOnDataFromDataProvider(object $obj, TypeReflection $expected): void
-    // {
-    //     $ref = new \ReflectionProperty($obj, 'property');
-    //     $factory = new TypeReflectionFactory();
+    #[Test]
+    #[DataProvider('dataProvider')]
+    public function testOnDataFromDataProvider(object $obj, TypeReflection $expected): void
+    {
+        $ref = new \ReflectionProperty($obj, 'property');
+        $factory = new TypeReflectionFactory();
 
-    //     $result = $factory->createForProperty($ref);
+        $result = $factory->createForProperty($ref);
 
-    //     $this->assertEquals($expected, $result);
-    // }
+        $this->assertEquals($expected, $result);
+    }
 }
