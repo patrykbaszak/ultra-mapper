@@ -34,6 +34,18 @@ final class CollectionTypeReflection extends TypeReflection
         return false;
     }
 
+    public function getListOfClasses(): array
+    {
+        $types = [$this->collectionType, $this->keyType, $this->valueType];
+
+        $classes = [];
+        foreach ($types as $type) {
+            $classes = array_merge($classes, $type->getListOfClasses());
+        }
+
+        return array_unique($classes);
+    }
+
     public function normalize(): array
     {
         return [

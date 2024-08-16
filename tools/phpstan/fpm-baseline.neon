@@ -41,6 +41,11 @@ parameters:
 			path: ../../src/Reflection/Domain/Entities/ClassReflection.php
 
 		-
+			message: "#^Argument of an invalid type array\\<string, PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\ParameterReflection\\>\\|PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\ParameterReflection supplied for foreach, only iterables are supported\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/ClassReflection.php
+
+		-
 			message: "#^Argument of an invalid type array\\<string, PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\PropertyReflection\\>\\|PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\PropertyReflection supplied for foreach, only iterables are supported\\.$#"
 			count: 1
 			path: ../../src/Reflection/Domain/Entities/ClassReflection.php
@@ -67,6 +72,11 @@ parameters:
 
 		-
 			message: "#^Method PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\ClassReflection\\:\\:__construct\\(\\) has parameter \\$properties with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../src/Reflection/Domain/Entities/ClassReflection.php
+
+		-
+			message: "#^Method PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\ClassReflection\\:\\:create\\(\\) should return PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\ClassReflection but returns array\\<string, PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\ClassReflection\\>\\|PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\ClassReflection\\.$#"
 			count: 1
 			path: ../../src/Reflection/Domain/Entities/ClassReflection.php
 
@@ -118,11 +128,6 @@ parameters:
 		-
 			message: "#^Parameter \\#1 \\$objectOrClass of class ReflectionClass constructor expects class\\-string\\<T of object\\>\\|T of object, string given\\.$#"
 			count: 2
-			path: ../../src/Reflection/Domain/Entities/ClassReflection.php
-
-		-
-			message: "#^Parameter \\#3 \\$parentProperty of static method PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\PropertyReflection\\:\\:create\\(\\) expects ReflectionProperty\\|null, PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\PropertyReflection\\|null given\\.$#"
-			count: 1
 			path: ../../src/Reflection/Domain/Entities/ClassReflection.php
 
 		-
@@ -286,9 +291,9 @@ parameters:
 			path: ../../src/Reflection/Domain/Entities/PropertyReflection.php
 
 		-
-			message: "#^Property PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\PropertyReflection\\:\\:\\$parentProperty \\(PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\PropertyReflection\\) does not accept ReflectionProperty\\|null\\.$#"
+			message: "#^Method PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\Type\\\\NamedTypeReflection\\:\\:getListOfClasses\\(\\) should return array\\<class\\-string\\> but returns array\\<int, string\\>\\.$#"
 			count: 1
-			path: ../../src/Reflection/Domain/Entities/PropertyReflection.php
+			path: ../../src/Reflection/Domain/Entities/Type/NamedTypeReflection.php
 
 		-
 			message: "#^Parameter \\#1 \\$objectOrClass of class ReflectionClass constructor expects class\\-string\\<T of object\\>\\|T of object, string given\\.$#"

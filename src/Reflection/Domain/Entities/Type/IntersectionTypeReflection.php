@@ -50,6 +50,16 @@ final class IntersectionTypeReflection extends TypeReflection
         ];
     }
 
+    public function getListOfClasses(): array
+    {
+        $classes = [];
+        foreach ($this->types as $type) {
+            $classes = array_merge($classes, $type->getListOfClasses());
+        }
+
+        return array_unique($classes);
+    }
+
     public static function denormalize(array $data): static
     {
         return static::recreate(

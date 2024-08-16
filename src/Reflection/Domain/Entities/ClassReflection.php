@@ -54,6 +54,10 @@ final class ClassReflection extends Entity implements Normalizable, AttributesSu
             throw new ReflectionException("Cannot create instance of $name class.", "Please do not use `ClassReflection::create` method to create instance of $name class.", 1);
         }
 
+        if ($root->hasClassReflection($name)) {
+            return $root->classReflections($name);
+        }
+
         try {
             $reflection = new \ReflectionClass($name);
         } catch (\ReflectionException $e) {
@@ -78,15 +82,36 @@ final class ClassReflection extends Entity implements Normalizable, AttributesSu
 
         if (true === $result = $root->addClassReflection($instance)) {
             foreach ($reflection->getAttributes() as $attribute) {
-                AttributeReflection::create($attribute, $instance);
+                $instance->addAttribute(
+                    AttributeReflection::create($attribute, $instance)
+                );
             }
 
             foreach ($reflection->getProperties() as $property) {
-                PropertyReflection::create($property, $instance, $parentProperty);
+                $instance->addProperty(
+                    $property = PropertyReflection::create($property, $instance, $parentProperty)
+                );
+                $classes = $property->type()->getListOfClasses();
+                foreach ($classes as $class) {
+                    ClassReflection::create($class, $root, $property);
+                }
             }
 
             foreach ($reflection->getMethods() as $method) {
-                MethodReflection::create($method, $instance);
+                $instance->addMethod(
+                    $method = MethodReflection::create($method, $instance)
+                );
+                $classes = $method->returnType()->getListOfClasses();
+                foreach ($classes as $class) {
+                    ClassReflection::create($class, $root);
+                }
+
+                foreach ($method->parameters() as $parameter) {
+                    $classes = $parameter->type()->getListOfClasses();
+                    foreach ($classes as $class) {
+                        ClassReflection::create($class, $root);
+                    }
+                }
             }
 
             return $instance;

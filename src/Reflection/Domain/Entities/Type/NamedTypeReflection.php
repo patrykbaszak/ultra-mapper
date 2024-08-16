@@ -99,6 +99,15 @@ final class NamedTypeReflection extends TypeReflection
         return 'null' === $this->name || 'mixed' === $this->name;
     }
 
+    public function getListOfClasses(): array
+    {
+        if ($this->isClass() && !$this->isAbstractClass()) {
+            return [$this->name];
+        }
+
+        return [];
+    }
+
     public function normalize(): array
     {
         return [

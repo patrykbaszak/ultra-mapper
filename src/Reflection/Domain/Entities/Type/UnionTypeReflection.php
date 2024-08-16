@@ -45,6 +45,16 @@ final class UnionTypeReflection extends TypeReflection
         return false;
     }
 
+    public function getListOfClasses(): array
+    {
+        $classes = [];
+        foreach ($this->types as $type) {
+            $classes = array_merge($classes, $type->getListOfClasses());
+        }
+
+        return array_unique($classes);
+    }
+
     public function normalize(): array
     {
         return [

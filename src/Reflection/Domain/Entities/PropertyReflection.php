@@ -19,7 +19,7 @@ final class PropertyReflection extends Entity implements Normalizable, Attribute
     use Attributes;
 
     private ClassReflection $parent;
-    private PropertyReflection $parentProperty;
+    private ?PropertyReflection $parentProperty;
 
     private function __construct(
         private ReflectionId $id,
@@ -30,7 +30,7 @@ final class PropertyReflection extends Entity implements Normalizable, Attribute
         $this->attributes = $attributes;
     }
 
-    public static function create(\ReflectionProperty $reflectionProperty, ClassReflection $parent, ?\ReflectionProperty $parentProperty): static
+    public static function create(\ReflectionProperty $reflectionProperty, ClassReflection $parent, ?PropertyReflection $parentProperty): static
     {
         $instance = new static(
             id: ReflectionId::uuid(),
@@ -88,7 +88,7 @@ final class PropertyReflection extends Entity implements Normalizable, Attribute
         throw new \InvalidArgumentException('Cannot set parent property. Parent property is read-only.');
     }
 
-    public function parentProperty(?PropertyReflection $parentProperty = null): PropertyReflection
+    public function parentProperty(?PropertyReflection $parentProperty = null): ?PropertyReflection
     {
         if (!$parentProperty) {
             return $this->parentProperty;

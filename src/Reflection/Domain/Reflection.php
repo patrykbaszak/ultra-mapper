@@ -89,6 +89,16 @@ final class Reflection extends AggregateRoot implements Normalizable
     }
 
     /**
+     * @param class-string|string $className
+     *
+     * @return bool Whether the class reflection exists in the collection
+     */
+    public function hasClassReflection(string $className): bool
+    {
+        return array_key_exists($className, $this->classReflections);
+    }
+
+    /**
      * @return true|ClassReflection If the class reflection already exists in the collection, it returns the existing one.
      *                              Otherwise, it returns true to indicate that the class reflection was successfully added.
      */
