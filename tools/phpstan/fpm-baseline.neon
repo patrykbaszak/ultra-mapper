@@ -26,6 +26,36 @@ parameters:
 			path: ../../src/Blueprint/Domain/Blueprint.php
 
 		-
+			message: "#^Argument of an invalid type array\\<string, PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\ClassReflection\\>\\|PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\ClassReflection supplied for foreach, only iterables are supported\\.$#"
+			count: 1
+			path: ../../src/Reflection/Application/Iterator/ReflectionIterator.php
+
+		-
+			message: "#^Argument of an invalid type array\\<string, PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\MethodReflection\\>\\|PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\MethodReflection supplied for foreach, only iterables are supported\\.$#"
+			count: 2
+			path: ../../src/Reflection/Application/Iterator/ReflectionIterator.php
+
+		-
+			message: "#^Argument of an invalid type array\\<string, PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\ParameterReflection\\>\\|PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\ParameterReflection supplied for foreach, only iterables are supported\\.$#"
+			count: 2
+			path: ../../src/Reflection/Application/Iterator/ReflectionIterator.php
+
+		-
+			message: "#^Argument of an invalid type array\\<string, PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\PropertyReflection\\>\\|PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\PropertyReflection supplied for foreach, only iterables are supported\\.$#"
+			count: 2
+			path: ../../src/Reflection/Application/Iterator/ReflectionIterator.php
+
+		-
+			message: "#^Parameter \\#2 of callable callable\\(PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Reflection, class\\-string, PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\ClassReflection\\)\\: void expects class\\-string, string given\\.$#"
+			count: 1
+			path: ../../src/Reflection/Application/Iterator/ReflectionIterator.php
+
+		-
+			message: "#^Parameter \\#3 of callable callable\\(PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Reflection, PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\ClassReflection\\|PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\MethodReflection\\|PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\ParameterReflection\\|PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\PropertyReflection, PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\AttributeReflection\\)\\: void expects PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\AttributeReflection, array\\<PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\AttributeReflection\\>\\|PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\AttributeReflection given\\.$#"
+			count: 4
+			path: ../../src/Reflection/Application/Iterator/ReflectionIterator.php
+
+		-
 			message: "#^Parameter \\$name of class PBaszak\\\\UltraMapper\\\\Reflection\\\\Domain\\\\Entities\\\\AttributeReflection constructor expects class\\-string, string given\\.$#"
 			count: 1
 			path: ../../src/Reflection/Domain/Entities/AttributeReflection.php
