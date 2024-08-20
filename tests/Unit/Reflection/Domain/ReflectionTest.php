@@ -19,9 +19,4 @@ class ReflectionTest extends TestCase
 
         self::assertSame($class, $reflection->rootClass());
     }
-
-    public function testRecreate(): void
-    {
-        $this->markTestIncomplete('This test has not been implemented yet.');
-    }
 }
